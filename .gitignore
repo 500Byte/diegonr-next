@@ -261,3 +261,10 @@ Thumbs.db
 .env.development.local
 .env.test.local
 .env.production.local
+
+# OpenNext
+.open-next
+
+# Cloudflare Worker
+.dev.vars
+.wrangler/

@@ -1,20 +1,23 @@
-import React from 'react';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-import { getAllProjects, getProject } from '@/lib/keystatic';
-import { SwissContainer } from '@/components/Layout';
-import { PageHeader } from '@/components/PageHeader';
-import { FadeIn } from '@/components/animations/text-reveal';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
-import { Magnetic } from '@/components/Magnetic';
-import { notFound } from 'next/navigation';
 import { DocumentRenderer } from '@/components/DocumentRenderer';
-import { StructuredData, generateProjectStructuredData, generateBreadcrumbStructuredData } from '@/components/StructuredData';
+import { SwissContainer } from '@/components/Layout';
+import { Magnetic } from '@/components/Magnetic';
+import { PageHeader } from '@/components/PageHeader';
+import {
+  StructuredData,
+  generateBreadcrumbStructuredData,
+  generateProjectStructuredData,
+} from '@/components/StructuredData';
+import { FadeIn } from '@/components/animations/text-reveal';
+import { getAllProjects, getProject } from '@/lib/keystatic';
+import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const projects = await getAllProjects();
-  return projects.map((project) => ({
+  return projects.map(project => ({
     id: project.id,
   }));
 }
@@ -23,7 +26,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const projectDoc = await getProject(id);
 
@@ -36,18 +41,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const project = {
     ...projectDoc,
-    id
+    id,
   };
 
   const title = `${project.title} | Diego NR`;
-  const description = project.description.es.length > 160
-    ? project.description.es.substring(0, 157) + '...'
-    : project.description.es;
+  const description =
+    project.description.es.length > 160
+      ? project.description.es.substring(0, 157) + '...'
+      : project.description.es;
 
   return {
     title,
     description,
-    keywords: [...project.category, ...project.tech, 'proyecto', 'portfolio', 'desarrollo'],
+    keywords: [
+      ...project.category,
+      ...project.tech,
+      'proyecto',
+      'portfolio',
+      'desarrollo',
+    ],
     authors: [{ name: 'Diego NR' }],
     creator: 'Diego NR',
     publisher: 'Diego NR',
@@ -76,7 +88,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       creator: '@diegonr',
-      images: [`/og?title=${encodeURIComponent(project.title)}&type=Proyecto&subtitle=${encodeURIComponent(project.category.join(' • '))}`],
+      images: [
+        `/og?title=${encodeURIComponent(project.title)}&type=Proyecto&subtitle=${encodeURIComponent(project.category.join(' • '))}`,
+      ],
     },
     robots: {
       index: true,
@@ -102,23 +116,28 @@ export default async function ProjectSingle({ params }: PageProps) {
 
   const project = {
     ...projectDoc,
-    id
+    id,
   };
 
   return (
     <div className="page-content">
       <div className="pt-32 pb-12">
         <SwissContainer>
-          <Link href="/projects" className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors w-fit mb-12">
+          <Link
+            href="/projects"
+            className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors w-fit mb-12"
+          >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="font-mono text-[10px] uppercase tracking-widest">Volver a proyectos</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest">
+              Volver a proyectos
+            </span>
           </Link>
         </SwissContainer>
       </div>
 
-      <PageHeader 
-        title={project.title} 
-        subtitle={project.category.join(" / ")}
+      <PageHeader
+        title={project.title}
+        subtitle={project.category.join(' / ')}
         description={project.description.es}
       />
 
@@ -126,9 +145,9 @@ export default async function ProjectSingle({ params }: PageProps) {
         <SwissContainer>
           <FadeIn>
             <div className="aspect-video bg-white/5 overflow-hidden mb-24">
-              <Image 
-                src={project.image || ''} 
-                alt={project.title} 
+              <Image
+                src={project.image || ''}
+                alt={project.title}
                 fill
                 className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
               />
@@ -138,14 +157,21 @@ export default async function ProjectSingle({ params }: PageProps) {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-24">
             <div className="md:col-span-4 space-y-12">
               <div>
-                <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">Año</p>
+                <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">
+                  Año
+                </p>
                 <p className="text-xl font-light">{project.year}</p>
               </div>
               <div>
-                <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">Tecnologías</p>
+                <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">
+                  Tecnologías
+                </p>
                 <div className="flex flex-wrap gap-3">
                   {project.tech.map(tag => (
-                    <span key={tag} className="px-3 py-1 border border-white/10 rounded-full font-mono text-[10px] text-white/60 uppercase tracking-widest">
+                    <span
+                      key={tag}
+                      className="px-3 py-1 border border-white/10 rounded-full font-mono text-[10px] text-white/60 uppercase tracking-widest"
+                    >
                       {tag}
                     </span>
                   ))}
@@ -153,16 +179,24 @@ export default async function ProjectSingle({ params }: PageProps) {
               </div>
             </div>
             <div className="md:col-span-8">
-              <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">Sobre el proyecto</p>
+              <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">
+                Sobre el proyecto
+              </p>
               <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80">
                 <DocumentRenderer document={await project.content()} />
               </div>
-              
+
               {project.url && (
                 <div className="mt-24 pt-12 border-t border-white/10">
                   <Magnetic strength={0.2}>
-                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 text-2xl font-medium tracking-tighter hover:text-white/60 transition-colors">
-                      Ver sitio en vivo <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-4 text-2xl font-medium tracking-tighter hover:text-white/60 transition-colors"
+                    >
+                      Ver sitio en vivo{' '}
+                      <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </a>
                   </Magnetic>
                 </div>
@@ -171,7 +205,7 @@ export default async function ProjectSingle({ params }: PageProps) {
           </div>
         </SwissContainer>
       </section>
-      <StructuredData 
+      <StructuredData
         data={generateProjectStructuredData(
           project.title,
           project.description.es,
@@ -180,14 +214,14 @@ export default async function ProjectSingle({ params }: PageProps) {
           project.year.toString(),
           [...project.tech],
           project.category.join(' • ')
-        )} 
+        )}
       />
-      <StructuredData 
+      <StructuredData
         data={generateBreadcrumbStructuredData([
           { name: 'Inicio', url: '/' },
           { name: 'Proyectos', url: '/projects' },
-          { name: project.title, url: `/projects/${id}` }
-        ])} 
+          { name: project.title, url: `/projects/${id}` },
+        ])}
       />
     </div>
   );

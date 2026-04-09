@@ -1,19 +1,22 @@
-import React from 'react';
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-import { getAllPosts, getPost } from '@/lib/keystatic';
+import { DocumentRenderer } from '@/components/DocumentRenderer';
 import { SwissContainer } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
+import {
+  StructuredData,
+  generateArticleStructuredData,
+  generateBreadcrumbStructuredData,
+} from '@/components/StructuredData';
 import { FadeIn } from '@/components/animations/text-reveal';
+import { getAllPosts, getPost } from '@/lib/keystatic';
 import { ArrowLeft, Clock, Tag } from 'lucide-react';
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { DocumentRenderer } from '@/components/DocumentRenderer';
-import { StructuredData, generateArticleStructuredData, generateBreadcrumbStructuredData } from '@/components/StructuredData';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
-  return posts.map((post) => ({
+  return posts.map(post => ({
     id: post.id,
   }));
 }
@@ -22,7 +25,9 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const postDoc = await getPost(id);
 
@@ -35,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const post = {
     ...postDoc,
-    id
+    id,
   };
 
   const title = `${post.title} | Blog - Diego NR`;
@@ -44,7 +49,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    keywords: [post.category, 'blog', 'desarrollo', 'tecnología', 'IA', 'programación'],
+    keywords: [
+      post.category,
+      'blog',
+      'desarrollo',
+      'tecnología',
+      'IA',
+      'programación',
+    ],
     authors: [{ name: 'Diego NR' }],
     creator: 'Diego NR',
     publisher: 'Diego NR',
@@ -75,7 +87,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       creator: '@diegonr',
-      images: [`/og?title=${encodeURIComponent(post.title)}&type=Blog&subtitle=${encodeURIComponent(post.category)}`],
+      images: [
+        `/og?title=${encodeURIComponent(post.title)}&type=Blog&subtitle=${encodeURIComponent(post.category)}`,
+      ],
     },
     robots: {
       index: true,
@@ -98,22 +112,27 @@ export default async function PostSingle({ params }: PageProps) {
   if (!postDoc) {
     notFound();
   }
-  
+
   const post = postDoc;
 
   return (
     <div className="page-content">
       <div className="pt-32 pb-12">
         <SwissContainer>
-          <Link href="/blog" className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors w-fit mb-12">
+          <Link
+            href="/blog"
+            className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors w-fit mb-12"
+          >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            <span className="font-mono text-[10px] uppercase tracking-widest">Volver al blog</span>
+            <span className="font-mono text-[10px] uppercase tracking-widest">
+              Volver al blog
+            </span>
           </Link>
         </SwissContainer>
       </div>
 
-      <PageHeader 
-        title={post.title} 
+      <PageHeader
+        title={post.title}
         subtitle={post.date || ''}
         description={post.excerpt}
       />
@@ -123,9 +142,9 @@ export default async function PostSingle({ params }: PageProps) {
           <div className="max-w-4xl mx-auto">
             <FadeIn>
               <div className="aspect-video bg-white/5 overflow-hidden mb-16">
-                <Image 
-                  src={post.image || ''} 
-                  alt={post.title} 
+                <Image
+                  src={post.image || ''}
+                  alt={post.title}
                   fill
                   className="object-cover grayscale"
                 />
@@ -134,11 +153,15 @@ export default async function PostSingle({ params }: PageProps) {
               <div className="flex items-center gap-8 mb-16 py-8 border-y border-white/10">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-white/40" />
-                  <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">{post.readTime} de lectura</span>
+                  <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
+                    {post.readTime} de lectura
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-white/40" />
-                  <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">{post.category}</span>
+                  <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
+                    {post.category}
+                  </span>
                 </div>
               </div>
 
@@ -154,7 +177,7 @@ export default async function PostSingle({ params }: PageProps) {
           </div>
         </SwissContainer>
       </section>
-      <StructuredData 
+      <StructuredData
         data={generateArticleStructuredData(
           post.title,
           post.excerpt || post.title,
@@ -163,14 +186,14 @@ export default async function PostSingle({ params }: PageProps) {
           post.date || new Date().toISOString(),
           post.date || new Date().toISOString(),
           [post.category, 'blog', 'tecnología', 'desarrollo']
-        )} 
+        )}
       />
-      <StructuredData 
+      <StructuredData
         data={generateBreadcrumbStructuredData([
           { name: 'Inicio', url: '/' },
           { name: 'Blog', url: '/blog' },
-          { name: post.title, url: `/blog/${id}` }
-        ])} 
+          { name: post.title, url: `/blog/${id}` },
+        ])}
       />
     </div>
   );

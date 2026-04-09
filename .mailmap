@@ -1,11 +1,21 @@
 # .mailmap
+
 #
+
 # This file maps author names and emails to canonical names and emails.
+
 # See: https://git-scm.com/docs/gitmailmap
+
 #
+
 # Format:
+
 # Proper Name <proper@email.com> Committed Name <committed@email.com>
+
 #
+
 # Example:
+
 # Diego NR <hola@diegonr.com> Diego <diego@example.com>
+
 # Diego NR <hola@diegonr.com> Diego Rodriguez <diego.rodriguez@example.com>

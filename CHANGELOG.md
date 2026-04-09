@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.0] - 2024-01-09
 
 ### Added
+
 - **Complete Portfolio Redesign**: Modern portfolio website built with Next.js 16
 - **Advanced Animations**: GSAP-powered animations with scroll-triggered effects
 - **Progressive Web App (PWA)**: Full PWA capabilities with service worker and offline support
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Component Library**: Reusable UI components with consistent design patterns
 
 ### Technical Features
+
 - **Next.js 16**: App Router with Server Components and streaming
 - **React 19**: Latest React features with concurrent rendering
 - **Advanced State Management**: React hooks with custom state management
@@ -37,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Caching Strategies**: Intelligent caching with ISR and revalidation
 
 ### Developer Experience
+
 - **ESLint Configuration**: Strict linting rules with TypeScript support
 - **Prettier Integration**: Consistent code formatting
 - **VS Code Configuration**: Optimized settings and recommended extensions
@@ -45,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Documentation**: Complete README, contributing guidelines, and API docs
 
 ### Infrastructure
+
 - **GitHub Actions**: CI/CD pipeline with automated testing and deployment
 - **Issue Templates**: Structured bug reports and feature requests
 - **Security Policy**: Responsible disclosure and security guidelines
@@ -52,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **License**: MIT license for open source distribution
 
 ### Performance Metrics
+
 - **Lighthouse Score**: 95+ on all categories
 - **Core Web Vitals**: All metrics in green
 - **Bundle Size**: Optimized with tree shaking and code splitting
@@ -61,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2023-12-01
 
 ### Added
+
 - Initial portfolio website
 - Basic Next.js setup
 - Simple contact form
@@ -70,6 +76,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ---
 
 ## Types of changes
+
 - `Added` for new features
 - `Changed` for changes in existing functionality
 - `Deprecated` for soon-to-be removed features

@@ -29,8 +29,8 @@ export default config({
         featured: fields.checkbox({ label: 'Featured', defaultValue: false }),
         image: fields.image({
           label: 'Cover Image',
-          directory: 'public/images/projects',
-          publicPath: '/images/projects',
+          directory: 'public/keystatic-assets/projects',
+          publicPath: '/keystatic-assets/projects',
         }),
         content: fields.document({
           label: 'Content',
@@ -38,8 +38,8 @@ export default config({
           dividers: true,
           links: true,
           images: {
-            directory: 'public/images/projects',
-            publicPath: '/images/projects',
+            directory: 'public/keystatic-assets/projects',
+            publicPath: '/keystatic-assets/projects',
           },
         }),
       },
@@ -88,8 +88,8 @@ export default config({
         excerpt: fields.text({ label: 'Excerpt', multiline: true }),
         image: fields.image({
           label: 'Cover Image',
-          directory: 'public/images/blog',
-          publicPath: '/images/blog',
+          directory: 'public/keystatic-assets/blog',
+          publicPath: '/keystatic-assets/blog',
         }),
         author: fields.text({ label: 'Author', defaultValue: 'Diego' }),
         tags: fields.array(
@@ -102,8 +102,8 @@ export default config({
           dividers: true,
           links: true,
           images: {
-            directory: 'public/images/blog',
-            publicPath: '/images/blog',
+            directory: 'public/keystatic-assets/blog',
+            publicPath: '/keystatic-assets/blog',
           },
         }),
       },

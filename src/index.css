@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-swiss-white: var(--text-primary);
+  --color-swiss-black: var(--bg-primary);
+  --color-swiss-gray-dark: #666666;
+  --color-swiss-gray-light: #999999;
+  
+  /* Redefine base colors to be dynamic */
+  --color-white: var(--text-primary);
+  --color-black: var(--bg-primary);
+}
+
+:root {
+  --bg-primary: #000000;
+  --text-primary: #FFFFFF;
+  --border-primary: rgba(255, 255, 255, 0.1);
+}
+
+.light {
+  --bg-primary: #FFFFFF;
+  --text-primary: #000000;
+  --border-primary: rgba(0, 0, 0, 0.1);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 80px;
+    @apply transition-colors duration-500;
+  }
+  
+  body {
+    @apply bg-swiss-black text-swiss-white font-sans antialiased selection:bg-swiss-white selection:text-swiss-black overflow-x-hidden transition-colors duration-500;
+  }
+
+  /* Noise Texture Overlay */
+  body::after {
+    content: "";
+    @apply fixed inset-0 pointer-events-none z-[9999] opacity-[0.03];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tighter uppercase;
+  }
+
+  /* Custom Cursor */
+  .custom-cursor {
+    @apply fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[10000] mix-blend-difference transition-all duration-300 ease-out;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (hover: none) {
+    .custom-cursor {
+      display: none;
+    }
+  }
+
+  .custom-cursor.hovering {
+    @apply scale-[4] opacity-50;
+  }
+
+  /* Custom underline for Swiss style */
+  .swiss-underline {
+    @apply relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-current after:transition-all after:duration-500 hover:after:w-full;
+  }
+
+  /* Lenis smooth scroll requirements */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.pause-animation {
+  animation-play-state: paused;
+}
+
+/* Magnetic Button Utility */
+.magnetic-wrap {
+  display: inline-block;
+}
+
+/* GSAP Reveal Classes */
+.reveal-text {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.reveal-image-mask {
+  clip-path: inset(0 100% 0 0);
+}
+
+.swiss-line {
+  @apply h-px bg-swiss-black w-full origin-left scale-x-0;
+}
+
+/* Accessibility: Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

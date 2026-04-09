@@ -65,7 +65,7 @@ Configure tracking IDs in environment variables for:
 - GitHub API integration
 - EmailJS for forms
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 
@@ -80,14 +80,14 @@ npm run build
 npm run start
 ```
 
-## 📊 Performance
+## Performance
 
 - **Lighthouse Score**: 95+ (Performance, SEO, Accessibility)
 - **Core Web Vitals**: All metrics in green
 - **Bundle Size**: Optimized with code splitting
 - **Image Optimization**: Next.js automatic optimization
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -95,11 +95,11 @@ npm run start
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - **Next.js** - The React framework for production
 - **Vercel** - Deployment platform
@@ -107,7 +107,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **GSAP** - Animation library
 - **Tailwind CSS** - Utility-first CSS framework
 
-## 📞 Contact
+## Contact
 
 **Diego NR**
 
@@ -118,9 +118,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<div align="center">
-  <p>Built with ❤️ using Next.js & TypeScript</p>
-  <p>
-    <a href="#diego-nr---portfolio">Back to top</a>
-  </p>
-</div>
+<a href="#diego-nr---portfolio">Back to top</a>

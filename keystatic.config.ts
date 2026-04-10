@@ -1,9 +1,14 @@
 import { config, fields, collection } from '@keystatic/core';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: isProd
+    ? { kind: 'cloud' }
+    : { kind: 'local' },
+  cloud: isProd
+    ? { project: 'portafolio/diegonr-next' }
+    : undefined,
   collections: {
     projects: collection({
       label: 'Projects',

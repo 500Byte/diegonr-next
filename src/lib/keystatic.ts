@@ -1,8 +1,19 @@
 import { createReader } from '@keystatic/core/reader';
+import { createGitHubReader } from '@keystatic/core/reader/github';
 import keystaticConfig from '../../keystatic.config';
 import { Project, Service, BlogPost } from '../types';
 
-export const reader = createReader(process.cwd(), keystaticConfig);
+// Use the GitHub reader in production (Cloudflare Workers) when a token is
+// provided. During `next build` and local dev, the local filesystem reader is
+// used so that builds never make network requests to GitHub.
+const githubToken = process.env.KEYSTATIC_GITHUB_TOKEN;
+
+export const reader = githubToken
+  ? createGitHubReader(keystaticConfig, {
+      repo: 'diegonr/diegonr-next',
+      token: githubToken,
+    })
+  : createReader(process.cwd(), keystaticConfig);
 
 export async function getAllProjects(): Promise<Project[]> {
   const projects = await reader.collections.projects.all();

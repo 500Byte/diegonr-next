@@ -4,12 +4,12 @@ import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
-import { TextReveal, FadeIn } from "../components/animations/text-reveal"
-import { Magnetic } from "../components/Magnetic"
-import { Project } from "../types"
+import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
+import { Magnetic } from "@/components/Magnetic"
+import { Project } from "@/types"
 import { ArrowUpRight } from "lucide-react"
-import { cn } from "../lib/utils"
-import { SwissContainer } from "../components/Layout"
+import { cn } from "@/lib/utils"
+import { SwissContainer } from "@/components/Layout"
 
 export function Works({ projects }: { projects: Project[] }) {
   const sectionRef = useRef<HTMLElement>(null)

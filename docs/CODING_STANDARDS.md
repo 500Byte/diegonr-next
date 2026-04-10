@@ -34,3 +34,18 @@
 - Page sections and complex components: `PascalCase.tsx`
 - Small, reusable UI components: `kebab-case.tsx`
 - Utility files and hooks: `camelCase.ts`
+
+## Colocation & Structure Rules
+
+### Static Data
+- Arrays and config objects under 20 lines must be inlined in the consuming component, not extracted to separate files.
+- Only extract to a shared file when the same data is imported by 3+ files.
+
+### Component Placement
+- Components used by a single page belong in that page's `_components/` or `_sections/` directory.
+- Only truly reusable components (used by 2+ pages) belong in `src/components/`.
+- Never create global directories (`src/sections/`, `src/data/`, `src/constants/`) for single-consumer code.
+
+### Barrel Files
+- Do not create `index.ts` re-export files in component directories. Import directly from the source file.
+- Exception: `src/types/index.ts` is acceptable for centralizing shared TypeScript interfaces.

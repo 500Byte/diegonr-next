@@ -3,13 +3,23 @@
 import { useRef, useState, useEffect } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
-import { Barcode } from "../components/ui/barcode"
-import { TextScramble } from "../components/animations/text-scramble"
-import { Magnetic } from "../components/Magnetic"
-import { coreStack } from "@/data"
+import { Barcode } from "@/components/ui/barcode"
+import { TextScramble } from "@/components/animations/text-scramble"
+import { Magnetic } from "@/components/Magnetic"
 import { ArrowDown } from "lucide-react"
-import { SwissContainer } from "../components/Layout"
+import { SwissContainer } from "@/components/Layout"
 import { scrollTo } from "@/lib/lenis";
+
+const coreStack = [
+  "React / Next.js",
+  "TypeScript",
+  "Node.js",
+  "Python",
+  "PostgreSQL",
+  "AWS / GCP",
+  "Docker",
+  "LLMs / AI",
+];
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)

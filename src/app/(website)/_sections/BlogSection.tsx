@@ -1,12 +1,12 @@
 "use client";
 
 import React from 'react';
-import { SwissContainer } from '../components/Layout';
-import { FadeIn } from '../components/animations/text-reveal';
+import { SwissContainer } from '@/components/Layout';
+import { FadeIn } from '@/components/animations/text-reveal';
 import { ArrowUpRight } from 'lucide-react';
-import { Magnetic } from '../components/Magnetic';
+import { Magnetic } from '@/components/Magnetic';
 import Link from 'next/link';
-import { BlogPost } from '../types';
+import { BlogPost } from '@/types';
 
 export const BlogSection: React.FC<{ blogPosts: BlogPost[] }> = ({ blogPosts }) => {
   return (

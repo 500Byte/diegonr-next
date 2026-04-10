@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
-import { SwissContainer } from '../components/Layout';
-import { Magnetic } from '../components/Magnetic';
-import { TextReveal, FadeIn } from '../components/animations/text-reveal';
-import { cn } from '../lib/utils';
+import { SwissContainer } from '@/components/Layout';
+import { Magnetic } from '@/components/Magnetic';
+import { TextReveal, FadeIn } from '@/components/animations/text-reveal';
+import { cn } from '@/lib/utils';
 
 const tabs = [
   {

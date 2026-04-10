@@ -1,11 +1,11 @@
 import React from 'react';
 import { Metadata } from 'next';
-import { Hero } from '@/sections/Hero';
-import { About } from '@/sections/About';
-import { Works } from '@/sections/Works';
-import { Vision } from '@/sections/Vision';
-import { Services } from '@/sections/Services';
-import { BlogSection } from '@/sections/BlogSection';
+import { Hero } from './_sections/Hero';
+import { About } from './_sections/About';
+import { Works } from './_sections/Works';
+import { Vision } from './_sections/Vision';
+import { Services } from './_sections/Services';
+import { BlogSection } from './_sections/BlogSection';
 import { MarqueeBanner } from '@/components/ui/marquee-banner';
 import { getAllProjects, getAllServices, getAllPosts } from '@/lib/keystatic';
 

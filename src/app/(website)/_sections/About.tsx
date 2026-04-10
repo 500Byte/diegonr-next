@@ -3,10 +3,10 @@
 import { useRef, useState } from "react"
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
-import { TextReveal, FadeIn } from "../components/animations/text-reveal"
-import { Magnetic } from "../components/Magnetic"
-import { cn } from "../lib/utils"
-import { SwissContainer } from "../components/Layout"
+import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
+import { Magnetic } from "@/components/Magnetic"
+import { cn } from "@/lib/utils"
+import { SwissContainer } from "@/components/Layout"
 
 const stats = [
   { value: "5+", label: "Años de experiencia", suffix: "" },

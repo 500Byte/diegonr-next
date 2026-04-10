@@ -3,12 +3,12 @@
 import { useRef, useState } from "react"
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
-import { TextReveal, FadeIn } from "../components/animations/text-reveal"
-import { Magnetic } from "../components/Magnetic"
-import { Service } from "../types"
-import { cn } from "../lib/utils"
+import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
+import { Magnetic } from "@/components/Magnetic"
+import { Service } from "@/types"
+import { cn } from "@/lib/utils"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
-import { SwissContainer } from "../components/Layout"
+import { SwissContainer } from "@/components/Layout"
 
 export function Services({ services }: { services: Service[] }) {
   const sectionRef = useRef<HTMLElement>(null)

@@ -6,12 +6,13 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
-import { Project } from "@/types"
+import { ProjectDocument } from "@/types"
+import * as prismic from "@prismicio/client"
 import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SwissContainer } from "@/components/Layout"
 
-export function Works({ projects }: { projects: Project[] }) {
+export function Works({ projects }: { projects: ProjectDocument[] }) {
   const sectionRef = useRef<HTMLElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -78,8 +79,8 @@ export function Works({ projects }: { projects: Project[] }) {
     }
   }, { scope: previewRef, dependencies: [hoveredProject] })
 
-  const featuredProjects = projects.filter((p) => p.featured)
-  const currentProject = hoveredProject ? featuredProjects.find((p) => p.id === hoveredProject) : null
+  const featuredProjects = projects.filter((p) => p.data.featured)
+  const currentProject = hoveredProject ? featuredProjects.find((p) => p.uid === hoveredProject) : null
 
   return (
     <section
@@ -113,16 +114,16 @@ export function Works({ projects }: { projects: Project[] }) {
             <div className="relative z-10 p-5 h-full flex flex-col justify-between">
               <div>
                 <p className="font-mono text-white text-[10px] mb-2 uppercase tracking-widest">
-                  [{currentProject.category[0]?.toUpperCase()}]
+                  [{currentProject.data.category?.[0]?.item?.toString().toUpperCase()}]
                 </p>
                 <p className="text-lg font-medium leading-tight tracking-tight">
-                  {currentProject.title}
+                  {currentProject.data.title}
                 </p>
               </div>
               <div className="flex gap-2">
-                {currentProject.tech?.slice(0, 3).map((tech) => (
-                  <span key={tech} className="font-mono text-[9px] text-swiss-gray-light uppercase tracking-widest">
-                    {tech}
+                {currentProject.data.tech?.slice(0, 3).map((techField) => (
+                  <span key={techField.item?.toString()} className="font-mono text-[9px] text-swiss-gray-light uppercase tracking-widest">
+                    {techField.item}
                   </span>
                 ))}
               </div>
@@ -160,20 +161,20 @@ export function Works({ projects }: { projects: Project[] }) {
         <div ref={listRef} className="relative">
           {featuredProjects.map((project, index) => (
             <Link
-              key={project.id}
-              href={`/projects/${project.id}`}
+              key={project.uid}
+              href={`/projects/${project.uid}`}
               className={cn(
                 "project-item group block py-10 md:py-14 border-t border-white/10 first:border-t-0",
                 "transition-all duration-500"
               )}
-              onMouseEnter={() => setHoveredProject(project.id)}
+              onMouseEnter={() => setHoveredProject(project.uid)}
               onMouseLeave={() => setHoveredProject(null)}
               data-cursor-text="VIEW"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
                 <span className={cn(
                   "font-mono text-white/40 w-12 flex-shrink-0 transition-all duration-300 uppercase tracking-widest",
-                  hoveredProject === project.id && "text-white"
+                  hoveredProject === project.uid && "text-white"
                 )}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
@@ -183,35 +184,35 @@ export function Works({ projects }: { projects: Project[] }) {
                     className={cn(
                       "text-3xl md:text-4xl lg:text-5xl font-medium transition-all duration-500 tracking-tighter",
                       "transform",
-                      hoveredProject && hoveredProject !== project.id
+                      hoveredProject && hoveredProject !== project.uid
                         ? "text-white/10 translate-x-0"
                         : "text-white",
-                      hoveredProject === project.id && "translate-x-4"
+                      hoveredProject === project.uid && "translate-x-4"
                     )}
                   >
-                    {project.title}
+                    {project.data.title}
                   </h3>
                 </div>
 
                 <div className={cn(
                   "hidden lg:flex items-center gap-2 flex-shrink-0 transition-all duration-300",
-                  hoveredProject && hoveredProject !== project.id && "opacity-30"
+                  hoveredProject && hoveredProject !== project.uid && "opacity-30"
                 )}>
-                  {project.category.slice(0, 2).map((cat) => (
+                  {project.data.category?.slice(0, 2).map((catField) => (
                     <span
-                      key={cat}
+                      key={catField.item?.toString()}
                       className="font-mono text-[10px] text-white/60 px-2.5 py-1.5 border border-white/10 uppercase tracking-widest"
                     >
-                      {cat.toUpperCase()}
+                      {catField.item?.toString().toUpperCase()}
                     </span>
                   ))}
                 </div>
 
                 <span className={cn(
                   "font-mono text-white/60 w-16 text-right flex-shrink-0 transition-all duration-300 uppercase tracking-widest",
-                  hoveredProject && hoveredProject !== project.id && "opacity-30"
+                  hoveredProject && hoveredProject !== project.uid && "opacity-30"
                 )}>
-                  {project.year}
+                  {project.data.year}
                 </span>
 
                 <Magnetic
@@ -221,11 +222,11 @@ export function Works({ projects }: { projects: Project[] }) {
                 >
                   <div className={cn(
                     "w-full h-full rounded-full flex items-center justify-center transition-all duration-300",
-                    hoveredProject === project.id && "bg-white text-black"
+                    hoveredProject === project.uid && "bg-white text-black"
                   )}>
                     <ArrowUpRight className={cn(
                       "w-5 h-5 transition-transform duration-300",
-                      hoveredProject === project.id && "rotate-45"
+                      hoveredProject === project.uid && "rotate-45"
                     )} />
                   </div>
                 </Magnetic>
@@ -240,15 +241,15 @@ export function Works({ projects }: { projects: Project[] }) {
               >
                 <div className="flex items-start gap-8 md:ml-20">
                   <p className="text-swiss-gray-light max-w-xl leading-relaxed text-sm">
-                    {project.description.es}
+                    {prismic.asText(project.data.description_es)}
                   </p>
                   <div className="hidden md:flex flex-wrap gap-2">
-                    {project.tech?.slice(0, 4).map((tech) => (
+                    {project.data.tech?.slice(0, 4).map((techField) => (
                       <span
-                        key={tech}
+                        key={techField.item?.toString()}
                         className="font-mono text-[9px] text-white/80 px-2 py-1 bg-white/5 rounded-sm uppercase tracking-widest"
                       >
-                        {tech}
+                        {techField.item}
                       </span>
                     ))}
                   </div>

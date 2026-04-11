@@ -8,17 +8,18 @@ import {
   generateProjectStructuredData,
 } from '@/components/StructuredData';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllProjects, getProject } from '@/lib/keystatic';
+import { getAllProjects, getProject } from '@/lib/prismic';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { Metadata } from 'next';
-import Image from 'next/image';
+import { PrismicNextImage } from '@prismicio/next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import * as prismic from '@prismicio/client';
 
 export async function generateStaticParams() {
   const projects = await getAllProjects();
   return projects.map(project => ({
-    id: project.id,
+    id: project.uid,
   }));
 }
 
@@ -39,23 +40,23 @@ export async function generateMetadata({
     };
   }
 
-  const project = {
-    ...projectDoc,
-    id,
-  };
-
+  const project = projectDoc.data;
   const title = `${project.title} | Diego NR`;
+  const descText = prismic.asText(project.description_es);
   const description =
-    project.description.es.length > 160
-      ? project.description.es.substring(0, 157) + '...'
-      : project.description.es;
+    descText.length > 160
+      ? descText.substring(0, 157) + '...'
+      : descText;
+
+  const cats = (project.category?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
+  const techs = (project.tech?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
 
   return {
     title,
     description,
     keywords: [
-      ...project.category,
-      ...project.tech,
+      ...cats,
+      ...techs,
       'proyecto',
       'portfolio',
       'desarrollo',
@@ -76,7 +77,7 @@ export async function generateMetadata({
       type: 'article',
       images: [
         {
-          url: `/og?title=${encodeURIComponent(project.title)}&type=Proyecto&subtitle=${encodeURIComponent(project.category.join(' • '))}`,
+          url: `/og?title=${encodeURIComponent(project.title as string || '')}&type=Proyecto&subtitle=${encodeURIComponent(cats.join(' • '))}`,
           width: 1200,
           height: 630,
           alt: `${project.title} - Proyecto de Diego NR`,
@@ -89,7 +90,7 @@ export async function generateMetadata({
       description,
       creator: '@diegonr',
       images: [
-        `/og?title=${encodeURIComponent(project.title)}&type=Proyecto&subtitle=${encodeURIComponent(project.category.join(' • '))}`,
+        `/og?title=${encodeURIComponent(project.title as string || '')}&type=Proyecto&subtitle=${encodeURIComponent(cats.join(' • '))}`,
       ],
     },
     robots: {
@@ -114,10 +115,9 @@ export default async function ProjectSingle({ params }: PageProps) {
     notFound();
   }
 
-  const project = {
-    ...projectDoc,
-    id,
-  };
+  const project = projectDoc.data;
+  const cats = (project.category?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
+  const techs = (project.tech?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
 
   return (
     <div className="page-content">
@@ -136,18 +136,18 @@ export default async function ProjectSingle({ params }: PageProps) {
       </div>
 
       <PageHeader
-        title={project.title}
-        subtitle={project.category.join(' / ')}
-        description={project.description.es}
+        title={project.title as string}
+        subtitle={cats.join(' / ')}
+        description={prismic.asText(project.description_es)}
       />
 
       <section className="py-24">
         <SwissContainer>
           <FadeIn>
-            <div className="aspect-video bg-white/5 overflow-hidden mb-24">
-              <Image
-                src={project.image || ''}
-                alt={project.title}
+            <div className="aspect-video bg-white/5 overflow-hidden mb-24 relative">
+              <PrismicNextImage
+                field={project.image}
+                fallbackAlt=""
                 fill
                 className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
               />
@@ -160,14 +160,14 @@ export default async function ProjectSingle({ params }: PageProps) {
                 <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">
                   Año
                 </p>
-                <p className="text-xl font-light">{project.year}</p>
+                <p className="text-xl font-light">{project.year as string}</p>
               </div>
               <div>
                 <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">
                   Tecnologías
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  {project.tech.map(tag => (
+                  {techs.map(tag => (
                     <span
                       key={tag}
                       className="px-3 py-1 border border-white/10 rounded-full font-mono text-[10px] text-white/60 uppercase tracking-widest"
@@ -182,15 +182,15 @@ export default async function ProjectSingle({ params }: PageProps) {
               <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">
                 Sobre el proyecto
               </p>
-              <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80">
-                <DocumentRenderer document={await project.content()} />
+              <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 prismic-content">
+                <DocumentRenderer field={project.content} />
               </div>
 
-              {project.url && (
+              {prismic.isFilled.link(project.url) && (
                 <div className="mt-24 pt-12 border-t border-white/10">
                   <Magnetic strength={0.2}>
                     <a
-                      href={project.url}
+                      href={prismic.asLink(project.url) || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center gap-4 text-2xl font-medium tracking-tighter hover:text-white/60 transition-colors"
@@ -207,20 +207,20 @@ export default async function ProjectSingle({ params }: PageProps) {
       </section>
       <StructuredData
         data={generateProjectStructuredData(
-          project.title,
-          project.description.es,
+          project.title as string,
+          prismic.asText(project.description_es),
           `https://diegonr.com/projects/${id}`,
-          project.image || '',
-          project.year.toString(),
-          [...project.tech],
-          project.category.join(' • ')
+          prismic.asImageSrc(project.image) || '',
+          (project.year as string) || '',
+          techs,
+          cats.join(' • ')
         )}
       />
       <StructuredData
         data={generateBreadcrumbStructuredData([
           { name: 'Inicio', url: '/' },
           { name: 'Proyectos', url: '/projects' },
-          { name: project.title, url: `/projects/${id}` },
+          { name: project.title as string, url: `/projects/${id}` },
         ])}
       />
     </div>

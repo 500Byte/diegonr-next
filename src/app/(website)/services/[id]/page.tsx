@@ -3,16 +3,17 @@ import { SwissContainer } from '@/components/Layout';
 import { Magnetic } from '@/components/Magnetic';
 import { PageHeader } from '@/components/PageHeader';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllServices, getService } from '@/lib/keystatic';
+import { getAllServices, getService } from '@/lib/prismic';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import * as prismic from '@prismicio/client';
 
 export async function generateStaticParams() {
   const services = await getAllServices();
   return services.map(service => ({
-    id: service.id,
+    id: service.uid,
   }));
 }
 
@@ -33,22 +34,19 @@ export async function generateMetadata({
     };
   }
 
-  const service = {
-    ...serviceDoc,
-    id,
-  };
-
-  const title = `${service.title} | Servicios - Diego NR`;
+  const service = serviceDoc.data;
+  const title = `${service.title_es} | Servicios - Diego NR`;
+  const descText = prismic.asText(service.description_es);
   const description =
-    service.description.es.length > 160
-      ? service.description.es.substring(0, 157) + '...'
-      : service.description.es;
+    descText.length > 160
+      ? descText.substring(0, 157) + '...'
+      : descText;
 
   return {
     title,
     description,
     keywords: [
-      service.title,
+      (service.title_es as string) || 'Servicio',
       'servicio',
       'desarrollo',
       'consultoría',
@@ -70,10 +68,10 @@ export async function generateMetadata({
       type: 'website',
       images: [
         {
-          url: `/og?title=${encodeURIComponent(service.title)}&type=Servicio&subtitle=Desarrollo Profesional`,
+          url: `/og?title=${encodeURIComponent((service.title_es as string) || '')}&type=Servicio&subtitle=Desarrollo Profesional`,
           width: 1200,
           height: 630,
-          alt: `${service.title} - Servicios de Diego NR`,
+          alt: `${service.title_es} - Servicios de Diego NR`,
         },
       ],
     },
@@ -83,7 +81,7 @@ export async function generateMetadata({
       description,
       creator: '@diegonr',
       images: [
-        `/og?title=${encodeURIComponent(service.title)}&type=Servicio&subtitle=Desarrollo Profesional`,
+        `/og?title=${encodeURIComponent((service.title_es as string) || '')}&type=Servicio&subtitle=Desarrollo Profesional`,
       ],
     },
     robots: {
@@ -108,7 +106,7 @@ export default async function ServiceSingle({ params }: PageProps) {
     notFound();
   }
 
-  const service = serviceDoc;
+  const service = serviceDoc.data;
 
   return (
     <div className="page-content">
@@ -127,9 +125,9 @@ export default async function ServiceSingle({ params }: PageProps) {
       </div>
 
       <PageHeader
-        title={service.titleObj.es}
+        title={(service.title_es as string) || (service.title as string) || ''}
         subtitle="Servicio Especializado"
-        description={service.description.es}
+        description={prismic.asText(service.description_es)}
       />
 
       <section className="py-24">
@@ -138,8 +136,8 @@ export default async function ServiceSingle({ params }: PageProps) {
             <div className="md:col-span-8">
               <FadeIn>
                 <div className="space-y-12">
-                  <div className="text-3xl md:text-4xl font-light leading-relaxed text-white/80">
-                    <DocumentRenderer document={await service.content()} />
+                  <div className="text-3xl md:text-4xl font-light leading-relaxed text-white/80 prismic-content">
+                    <DocumentRenderer field={service.content} />
                   </div>
 
                   <div className="pt-12 space-y-8">
@@ -147,7 +145,7 @@ export default async function ServiceSingle({ params }: PageProps) {
                       Lo que ofrezco
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {service.items.map((item, index) => (
+                      {service.items?.map((itemField, index) => (
                         <div
                           key={index}
                           className="p-8 border border-white/10 hover:border-white/30 transition-colors"
@@ -156,7 +154,7 @@ export default async function ServiceSingle({ params }: PageProps) {
                             0{index + 1}
                           </span>
                           <h3 className="text-xl font-medium tracking-tight mb-2">
-                            {item.es}
+                            {itemField.es as string}
                           </h3>
                           <p className="text-white/60 font-light text-sm">
                             Excelencia técnica y atención al detalle en cada

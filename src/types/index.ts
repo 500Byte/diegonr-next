@@ -1,39 +1,37 @@
-export interface ProjectDescription {
-  es: string;
-  en: string;
-}
+import { PrismicDocument, RichTextField, KeyTextField, GroupField, ImageField, DateField, NumberField, LinkField, BooleanField } from '@prismicio/client';
 
-export interface Project {
-  id: string;
-  title: string;
-  category: string[];
-  year: string;
-  description: ProjectDescription;
-  tech: string[];
-  url?: string;
-  featured: boolean;
-  image?: string; // Optional for now as real projects might not have them yet
-}
+export type ProjectDocument = PrismicDocument<{
+  title: KeyTextField;
+  category: GroupField<{ item: KeyTextField }>;
+  year: KeyTextField;
+  description_es: RichTextField;
+  description_en: RichTextField;
+  tech: GroupField<{ item: KeyTextField }>;
+  url: LinkField;
+  featured: BooleanField;
+  image: ImageField;
+  content: RichTextField;
+}, "project">;
 
-export interface ServiceItem {
-  es: string;
-  en: string;
-}
+export type ServiceDocument = PrismicDocument<{
+  title: KeyTextField;
+  title_es: KeyTextField;
+  title_en: KeyTextField;
+  description_es: RichTextField;
+  description_en: RichTextField;
+  items: GroupField<{ es: KeyTextField; en: KeyTextField }>;
+  order: NumberField;
+  content: RichTextField;
+}, "service">;
 
-export interface Service {
-  id: string;
-  title: ProjectDescription;
-  description: ProjectDescription;
-  items: ServiceItem[];
-}
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  date: string;
-  category: string;
-  readTime: string;
-  image: string;
-}
+export type BlogPostDocument = PrismicDocument<{
+  title: KeyTextField;
+  date: DateField;
+  category: KeyTextField;
+  read_time: KeyTextField;
+  excerpt: RichTextField;
+  image: ImageField;
+  author: KeyTextField;
+  tags: GroupField<{ tag: KeyTextField }>;
+  content: RichTextField;
+}, "blog_post">;

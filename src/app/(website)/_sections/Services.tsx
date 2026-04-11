@@ -5,14 +5,15 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
-import { Service } from "@/types"
+import { ServiceDocument } from "@/types"
+import * as prismic from "@prismicio/client"
 import { cn } from "@/lib/utils"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { SwissContainer } from "@/components/Layout"
 
-export function Services({ services }: { services: Service[] }) {
+export function Services({ services }: { services: ServiceDocument[] }) {
   const sectionRef = useRef<HTMLElement>(null)
-  const [activeTab, setActiveTab] = useState(services?.[0]?.id || '')
+  const [activeTab, setActiveTab] = useState(services?.[0]?.uid || '')
   const [hoveredTab, setHoveredTab] = useState<string | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -62,7 +63,7 @@ export function Services({ services }: { services: Service[] }) {
     )
   }, { scope: contentRef, dependencies: [activeTab] })
 
-  const activeService = services.find((s) => s.id === activeTab)
+  const activeService = services.find((s) => s.uid === activeTab)
 
   return (
     <section
@@ -108,13 +109,13 @@ export function Services({ services }: { services: Service[] }) {
           <div className="lg:col-span-5 space-y-6">
             {services.map((service, index) => (
               <button
-                key={service.id}
-                onClick={() => setActiveTab(service.id)}
-                onMouseEnter={() => setHoveredTab(service.id)}
+                key={service.uid}
+                onClick={() => setActiveTab(service.uid as string)}
+                onMouseEnter={() => setHoveredTab(service.uid)}
                 onMouseLeave={() => setHoveredTab(null)}
                 className={cn(
                   "service-card w-full text-left p-8 border relative overflow-hidden transition-all duration-500 group",
-                  activeTab === service.id
+                  activeTab === service.uid
                     ? "border-white/20"
                     : "border-white/5 hover:border-white/20",
                 )}
@@ -123,29 +124,29 @@ export function Services({ services }: { services: Service[] }) {
                 {/* Background fill animation */}
                 <div className={cn(
                   "absolute inset-0 bg-white transition-transform duration-500 origin-left",
-                  activeTab === service.id ? "scale-x-100" : "scale-x-0"
+                  activeTab === service.uid ? "scale-x-100" : "scale-x-0"
                 )} />
                 
                 <div className="relative z-10">
                   <div className="flex items-center justify-between mb-4">
                     <span className={cn(
                       "font-mono text-[10px] transition-colors duration-300 uppercase tracking-widest",
-                      activeTab === service.id ? "text-black/60" : "text-white/40"
+                      activeTab === service.uid ? "text-black/60" : "text-white/40"
                     )}>
                       0{index + 1}
                     </span>
                     <ArrowRight className={cn(
                       "w-5 h-5 transition-all duration-300",
-                      activeTab === service.id 
+                      activeTab === service.uid 
                         ? "text-black rotate-0" 
                         : "text-white/40 -rotate-45 group-hover:rotate-0 group-hover:text-white"
                     )} />
                   </div>
                   <h3 className={cn(
                     "text-3xl font-medium transition-colors duration-300 tracking-tight",
-                    activeTab === service.id ? "text-black" : "text-white"
+                    activeTab === service.uid ? "text-black" : "text-white"
                   )}>
-                    {service.title.es}
+                    {service.data.title_es}
                   </h3>
                 </div>
               </button>
@@ -160,11 +161,11 @@ export function Services({ services }: { services: Service[] }) {
                 <div className="content-item">
                   <div className="flex items-start justify-between mb-6">
                     <p className="font-mono text-xs text-white uppercase tracking-widest">
-                      [{activeService.id.toUpperCase()}]
+                      [{activeService.uid?.toUpperCase()}]
                     </p>
                   </div>
                   <p className="text-2xl md:text-3xl text-white/90 leading-tight font-light">
-                    {activeService.description.es}
+                    {prismic.asText(activeService.data.description_es)}
                   </p>
                 </div>
 
@@ -177,13 +178,13 @@ export function Services({ services }: { services: Service[] }) {
                     [CAPABILITIES]
                   </p>
                   <div className="grid grid-cols-2 gap-4">
-                    {activeService.items.map((item, index) => (
+                    {activeService.data.items?.map((itemField, index) => (
                       <div
                         key={index}
                         className="flex items-start gap-3 p-3 border border-white/5 hover:border-white/10 transition-colors group"
                       >
                         <span className="w-1.5 h-1.5 bg-white rounded-full mt-2 flex-shrink-0 group-hover:scale-150 transition-transform" />
-                        <span className="text-sm text-white/80 font-light">{item.es}</span>
+                        <span className="text-sm text-white/80 font-light">{itemField.es}</span>
                       </div>
                     ))}
                   </div>
@@ -211,11 +212,11 @@ export function Services({ services }: { services: Service[] }) {
         <div className="lg:hidden space-y-4">
           {services.map((service, index) => (
             <div
-              key={service.id}
+              key={service.uid}
               className="service-card border border-white/10 overflow-hidden"
             >
               <button
-                onClick={() => setActiveTab(activeTab === service.id ? "" : service.id)}
+                onClick={() => setActiveTab(activeTab === service.uid ? "" : (service.uid as string))}
                 className="w-full p-6 text-left flex items-center justify-between"
               >
                 <div>
@@ -223,12 +224,12 @@ export function Services({ services }: { services: Service[] }) {
                     0{index + 1}
                   </span>
                   <h3 className="text-xl font-medium tracking-tight">
-                    {service.title.es}
+                    {service.data.title_es}
                   </h3>
                 </div>
                 <div className={cn(
                   "w-10 h-10 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300",
-                  activeTab === service.id && "bg-white text-black rotate-45"
+                  activeTab === service.uid && "bg-white text-black rotate-45"
                 )}>
                   <ArrowRight className="w-5 h-5" />
                 </div>
@@ -236,17 +237,17 @@ export function Services({ services }: { services: Service[] }) {
               
               <div className={cn(
                 "overflow-hidden transition-all duration-500",
-                activeTab === service.id ? "max-h-[500px]" : "max-h-0"
+                activeTab === service.uid ? "max-h-[500px]" : "max-h-0"
               )}>
                 <div className="px-6 pb-6 space-y-6 border-t border-white/10 pt-6">
                   <p className="text-white/80 leading-relaxed font-light">
-                    {service.description.es}
+                    {prismic.asText(service.data.description_es)}
                   </p>
                   <div className="space-y-2">
-                    {service.items.map((item, i) => (
+                    {service.data.items?.map((itemField, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-swiss-gray-light font-light">
                         <span className="w-1 h-1 bg-white rounded-full" />
-                        {item.es}
+                        {itemField.es}
                       </div>
                     ))}
                   </div>

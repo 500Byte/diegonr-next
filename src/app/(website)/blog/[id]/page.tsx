@@ -7,17 +7,18 @@ import {
   generateBreadcrumbStructuredData,
 } from '@/components/StructuredData';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllPosts, getPost } from '@/lib/keystatic';
+import { getAllPosts, getPost } from '@/lib/prismic';
 import { ArrowLeft, Clock, Tag } from 'lucide-react';
 import { Metadata } from 'next';
-import Image from 'next/image';
+import { PrismicNextImage } from '@prismicio/next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import * as prismic from '@prismicio/client';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map(post => ({
-    id: post.id,
+    id: post.uid,
   }));
 }
 
@@ -38,19 +39,15 @@ export async function generateMetadata({
     };
   }
 
-  const post = {
-    ...postDoc,
-    id,
-  };
-
+  const post = postDoc.data;
   const title = `${post.title} | Blog - Diego NR`;
-  const description = post.excerpt || 'Artículo del blog de Diego NR';
+  const descText = prismic.asText(post.excerpt) || 'Artículo del blog de Diego NR';
 
   return {
     title,
-    description,
+    description: descText,
     keywords: [
-      post.category,
+      (post.category as string) || '',
       'blog',
       'desarrollo',
       'tecnología',
@@ -66,16 +63,16 @@ export async function generateMetadata({
     },
     openGraph: {
       title,
-      description,
+      description: descText,
       url: `/blog/${id}`,
       siteName: 'Diego NR Blog',
       locale: 'es_ES',
       type: 'article',
-      publishedTime: post.date || undefined,
+      publishedTime: post.date as string || undefined,
       authors: ['Diego NR'],
       images: [
         {
-          url: `/og?title=${encodeURIComponent(post.title)}&type=Blog&subtitle=${encodeURIComponent(post.category)}`,
+          url: `/og?title=${encodeURIComponent((post.title as string) || '')}&type=Blog&subtitle=${encodeURIComponent((post.category as string) || '')}`,
           width: 1200,
           height: 630,
           alt: `${post.title} - Blog de Diego NR`,
@@ -85,10 +82,10 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
       title,
-      description,
+      description: descText,
       creator: '@diegonr',
       images: [
-        `/og?title=${encodeURIComponent(post.title)}&type=Blog&subtitle=${encodeURIComponent(post.category)}`,
+        `/og?title=${encodeURIComponent((post.title as string) || '')}&type=Blog&subtitle=${encodeURIComponent((post.category as string) || '')}`,
       ],
     },
     robots: {
@@ -113,7 +110,7 @@ export default async function PostSingle({ params }: PageProps) {
     notFound();
   }
 
-  const post = postDoc;
+  const post = postDoc.data;
 
   return (
     <div className="page-content">
@@ -132,19 +129,19 @@ export default async function PostSingle({ params }: PageProps) {
       </div>
 
       <PageHeader
-        title={post.title}
-        subtitle={post.date || ''}
-        description={post.excerpt}
+        title={post.title as string}
+        subtitle={post.date?.toString() || ''}
+        description={prismic.asText(post.excerpt)}
       />
 
       <section className="py-24">
         <SwissContainer>
           <div className="max-w-4xl mx-auto">
             <FadeIn>
-              <div className="aspect-video bg-white/5 overflow-hidden mb-16">
-                <Image
-                  src={post.image || ''}
-                  alt={post.title}
+              <div className="aspect-video bg-white/5 overflow-hidden mb-16 relative">
+                <PrismicNextImage
+                  field={post.image}
+                  fallbackAlt=""
                   fill
                   className="object-cover grayscale"
                 />
@@ -154,23 +151,23 @@ export default async function PostSingle({ params }: PageProps) {
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-white/40" />
                   <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
-                    {post.readTime} de lectura
+                    {post.read_time as string} de lectura
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Tag className="w-4 h-4 text-white/40" />
                   <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
-                    {post.category}
+                    {post.category as string}
                   </span>
                 </div>
               </div>
 
               <div className="prose prose-invert prose-lg max-w-none">
                 <p className="text-2xl font-light leading-relaxed text-white/80 mb-12 italic">
-                  {post.excerpt}
+                  {prismic.asText(post.excerpt)}
                 </p>
-                <div className="text-xl font-light leading-relaxed text-white/60 space-y-8">
-                  <DocumentRenderer document={await post.content()} />
+                <div className="text-xl font-light leading-relaxed text-white/60 space-y-8 prismic-content">
+                  <DocumentRenderer field={post.content} />
                 </div>
               </div>
             </FadeIn>
@@ -179,20 +176,20 @@ export default async function PostSingle({ params }: PageProps) {
       </section>
       <StructuredData
         data={generateArticleStructuredData(
-          post.title,
-          post.excerpt || post.title,
+          post.title as string,
+          prismic.asText(post.excerpt) || (post.title as string),
           `https://diegonr.com/blog/${id}`,
-          post.image || '',
-          post.date || new Date().toISOString(),
-          post.date || new Date().toISOString(),
-          [post.category, 'blog', 'tecnología', 'desarrollo']
+          prismic.asImageSrc(post.image) || '',
+          (post.date as string) || new Date().toISOString(),
+          (post.date as string) || new Date().toISOString(),
+          [(post.category as string) || 'blog', 'tecnología', 'desarrollo']
         )}
       />
       <StructuredData
         data={generateBreadcrumbStructuredData([
           { name: 'Inicio', url: '/' },
           { name: 'Blog', url: '/blog' },
-          { name: post.title, url: `/blog/${id}` },
+          { name: post.title as string, url: `/blog/${id}` },
         ])}
       />
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllProjects } from '@/lib/keystatic';
+import { getAllProjects } from '@/lib/prismic';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
@@ -67,22 +67,24 @@ export default async function ProjectsPage() {
       <section className="py-24">
         <SwissContainer>
           <div className="space-y-0">
-            {projects.map((project, index) => (
-              <FadeIn key={project.id} delay={index * 0.1}>
+            {projects.map((project, index) => {
+              const cats = project.data.category?.map(c => c.item?.toString()) || [];
+              return (
+              <FadeIn key={project.uid} delay={index * 0.1}>
                 <Link 
-                  href={`/projects/${project.id}`}
+                  href={`/projects/${project.uid}`}
                   className="group border-b border-white/10 py-12 md:py-20 flex flex-col md:flex-row md:items-center justify-between cursor-pointer block"
                 >
                   <div className="flex items-baseline gap-8">
                     <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest">0{index + 1}</span>
                     <h2 className="text-5xl md:text-8xl font-medium tracking-tighter group-hover:italic transition-all duration-500">
-                      {project.title}
+                      {project.data.title as string}
                     </h2>
                   </div>
                   <div className="flex items-center gap-12 mt-8 md:mt-0">
                     <div className="text-right">
-                      <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest mb-1">{project.category.join(" / ")}</p>
-                      <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest">{project.year}</p>
+                      <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest mb-1">{cats.join(" / ")}</p>
+                      <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest">{project.data.year as string}</p>
                     </div>
                     <div className="w-16 h-16 border border-white/20 rounded-full flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
                       <ArrowUpRight className="w-6 h-6" />
@@ -90,7 +92,8 @@ export default async function ProjectsPage() {
                   </div>
                 </Link>
               </FadeIn>
-            ))}
+              );
+            })}
           </div>
         </SwissContainer>
       </section>

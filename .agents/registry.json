@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "agents": [
+    {
+      "id": "portfolio-architect",
+      "name": "Portfolio Next.js Architect",
+      "description": "Desarrollador Full-Stack especializado en Next.js, GSAP y Prismic para el mantenimiento del portafolio.",
+      "entryPoint": "./portfolio-architect/agent.json",
+      "triggers": ["nextjs", "gsap", "prismic", "portfolio", "ui"]
+    },
+    {
+      "id": "brutalist-frontend-specialist",
+      "name": "Diego Navarro Style Specialist",
+      "description": "Especialista en frontend brutalista minimalista: negro absoluto, tipografía agresiva y layouts asimétricos.",
+      "entryPoint": "./brutalist-frontend-specialist/agent.json",
+      "triggers": ["ui", "design", "brutalism", "frontend", "tailwind"]
+    }
+  ]
+}

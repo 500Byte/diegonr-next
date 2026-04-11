@@ -4,8 +4,6 @@ import { Preloader } from "@/components/Preloader";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { StructuredData, generatePersonStructuredData, generateWebSiteStructuredData, generateOrganizationStructuredData } from "@/components/StructuredData";
-import { AnalyticsProvider, WebVitals } from "@/lib/analytics";
-import { PWAInstallButton, OfflineIndicator } from "@/hooks/usePWA";
 
 export default function WebsiteLayout({
   children,
@@ -26,10 +24,6 @@ export default function WebsiteLayout({
       <StructuredData data={generatePersonStructuredData()} />
       <StructuredData data={generateWebSiteStructuredData()} />
       <StructuredData data={generateOrganizationStructuredData()} />
-      <AnalyticsProvider />
-      <WebVitals />
-      <PWAInstallButton />
-      <OfflineIndicator />
     </LenisProvider>
   );
 }

@@ -63,7 +63,8 @@
 ## Deployment & Secrets
 - **Hosting**: The project is deployed as a **Cloudflare Worker Service** via OpenNext.
 - **Secrets Management**: Sensitive variables (Prismic, GitHub, etc.) are managed via Cloudflare Worker secrets.
-- **Synchronization**: To sync local `.env` values to production, use the `wrangler secret put` command for the `diegonr-next` service.
+- **Synchronization**: To sync local `.env` values to production, follow the workflow in [cloudflare-sync.md](file:///home/diego/Documents/GitHub/diegonr-next/.agents/workflows/cloudflare-sync.md).
+- **Rules**: Refer to [cloudflare-sync.md](file:///home/diego/Documents/GitHub/diegonr-next/.agents/rules/cloudflare-sync.md) for enforcement rules.
 
 ## Testing
 - No testing framework is currently configured in `package.json`.

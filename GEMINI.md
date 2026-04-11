@@ -8,15 +8,15 @@ A modern, animated personal portfolio and professional services website built fo
 - Language: TypeScript/JavaScript
 - Styling: Tailwind CSS v4
 - Animation: GSAP 3, @gsap/react, Lenis (smooth scrolling)
-- CMS: Keystatic (local in dev, Cloud + GitHub reader in production)
-- Hosting: Cloudflare Workers via OpenNext
+- CMS: Prismic CMS (Slice Machine)
+- Hosting: Cloudflare Workers (via OpenNext)
 - Package Manager: npm
 
-## Architecture Patterns
-- **Next.js App Router**: Utilizes the `src/app` directory. Pages are Server Components by default (e.g., `app/(website)/page.tsx` fetches CMS data asynchronously).
-- **Client Components**: Interactive sections and animated components use `"use client"` directives (e.g., `src/app/(website)/_sections/Hero.tsx`).
-- **Colocation**: Page-specific sections live in `_`-prefixed directories next to their page, not in global directories.
-- **CMS Integration**: Content is managed via Keystatic and stored locally as Markdoc (`.mdoc`) files in the `content/` directory. In production, content is read via GitHub reader.
+- **Architecture Patterns**
+  - **Next.js App Router**: Utilizes the `src/app` directory. Pages are Server Components by default.
+  - **Client Components**: Interactive sections and animated components use `"use client"` directives.
+  - **Colocation**: Page-specific sections live in `_`-prefixed directories next to their page.
+  - **CMS Integration**: Content is managed via Prismic and fetched as native documents (`doc.data`). Images are served from `images.prismic.io`.
 
 ## Code Conventions
 - **Component Exports**: Predominantly named exports (`export function Component()`).
@@ -26,10 +26,10 @@ A modern, animated personal portfolio and professional services website built fo
 ## File Organization
 - `src/app/`: Next.js routing and page definitions.
 - `src/app/(website)/_sections/`: Home page sections, colocated and private.
-- `src/components/`: Shared UI components, layouts, and providers (used by 2+ pages).
-- `src/lib/`: Utility functions, Keystatic data fetchers, analytics.
-- `src/types/`: Shared TypeScript interfaces for CMS content models.
-- `content/`: CMS data (projects, services, posts).
+- `src/components/`: Shared UI components, layouts, and providers.
+- `src/lib/`: Utility functions, Prismic data fetchers, analytics.
+- `src/types/`: Shared TypeScript interfaces for Prismic content models.
+- `customtypes/`: Prismic Custom Type JSON definitions.
 
 ## Critical Rules
 - Avoid using `"use client"` on top-level pages; reserve it for specific interactive components or sections that require hooks (`useRef`, `useGSAP`, `useEffect`).

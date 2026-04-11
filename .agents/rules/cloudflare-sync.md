@@ -1,6 +1,5 @@
 ---
-trigger: when_modifying_env
-glob: .env
+trigger: model_decision
 description: Asegura que los cambios en .env se sincronicen con Cloudflare Workers.
 ---
 

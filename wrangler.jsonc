@@ -7,6 +7,9 @@
 		"nodejs_compat",
 		"global_fetch_strictly_public"
 	],
+	"vars": {
+		"PRISMIC_REPOSITORY_NAME": "diegonr-next"
+	},
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"

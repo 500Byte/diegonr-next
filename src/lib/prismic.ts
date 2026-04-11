@@ -1,11 +1,21 @@
 import * as prismic from '@prismicio/client';
 import { ProjectDocument, ServiceDocument, BlogPostDocument } from '../types';
 
-export const repositoryName = process.env.PRISMIC_REPOSITORY_NAME || 'your-repo-name';
+// Helper to get environment variables across different runtimes (Node.js, Cloudflare Workers)
+const getEnvVar = (key: string): string | undefined => {
+  return process.env[key] || (globalThis as any).env?.[key];
+}
+
+export const repositoryName = getEnvVar('PRISMIC_REPOSITORY_NAME') || 'diegonr-next';
+export const accessToken = getEnvVar('PRISMIC_ACCESS_TOKEN');
+
+if (!getEnvVar('PRISMIC_REPOSITORY_NAME')) {
+  console.log('⚠️ [Prismic] PRISMIC_REPOSITORY_NAME is not defined in process.env or globalThis.env. Falling back to diegonr-next.');
+}
 
 export const createClient = (config: prismic.ClientConfig = {}) => {
   const client = prismic.createClient(repositoryName, {
-    accessToken: process.env.PRISMIC_ACCESS_TOKEN,
+    accessToken,
     ...config,
   });
   return client;

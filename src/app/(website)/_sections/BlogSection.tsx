@@ -7,7 +7,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { Magnetic } from '@/components/Magnetic';
 import Link from 'next/link';
 import { BlogPostDocument } from '@/types';
-import * as prismic from '@prismicio/client';
+
 
 export const BlogSection: React.FC<{ blogPosts: BlogPostDocument[] }> = ({ blogPosts }) => {
   return (
@@ -33,29 +33,29 @@ export const BlogSection: React.FC<{ blogPosts: BlogPostDocument[] }> = ({ blogP
 
         <div className="space-y-0">
           {blogPosts.slice(0, 3).map((post, index) => (
-            <FadeIn key={post.uid} delay={index * 0.1}>
+            <FadeIn key={post.slug?.current} delay={index * 0.1}>
               <Link 
-                href={`/blog/${post.uid}`}
+                href={`/blog/${post.slug?.current}`}
                 className="group relative py-10 md:py-14 border-t border-white/10 flex flex-col md:flex-row md:items-center gap-8 cursor-pointer overflow-hidden block"
               >
                 {/* Hover Background */}
                 <div className="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
                 
                 <div className="relative z-10 font-mono text-white/40 w-32 flex-shrink-0 uppercase tracking-widest text-[10px]">
-                  {post.data.date?.toString()}
+                  {post.date?.toString()}
                 </div>
                 
                 <div className="relative z-10 flex-1">
                   <div className="flex items-center gap-4 mb-2">
                     <span className="px-2 py-0.5 bg-white/10 text-white/60 text-[8px] font-mono rounded-sm uppercase tracking-widest">
-                      {post.data.category}
+                      {post.category}
                     </span>
                     <span className="font-mono text-[8px] text-white/40 uppercase tracking-widest">
-                      {post.data.read_time}
+                      {post.read_time}
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-4xl font-medium group-hover:translate-x-4 transition-transform duration-500 ease-out">
-                    {post.data.title}
+                    {post.title}
                   </h3>
                 </div>
 

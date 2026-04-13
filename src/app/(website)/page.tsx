@@ -7,7 +7,7 @@ import { Vision } from './_sections/Vision';
 import { Services } from './_sections/Services';
 import { BlogSection } from './_sections/BlogSection';
 import { MarqueeBanner } from '@/components/ui/marquee-banner';
-import { getAllProjects, getAllServices, getAllPosts } from '@/lib/prismic';
+import { getAllProjects, getAllServices, getAllPosts } from '@/lib/sanity';
 
 export const metadata: Metadata = {
   title: 'Diego NR | Solutions Architect & Full-Stack Developer',

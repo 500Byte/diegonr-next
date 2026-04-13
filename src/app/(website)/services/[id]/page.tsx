@@ -1,19 +1,20 @@
+import { toPlainText } from '@portabletext/react';
 import { DocumentRenderer } from '@/components/DocumentRenderer';
 import { SwissContainer } from '@/components/Layout';
 import { Magnetic } from '@/components/Magnetic';
 import { PageHeader } from '@/components/PageHeader';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllServices, getService } from '@/lib/prismic';
+import { getAllServices, getService } from '@/lib/sanity';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import * as prismic from '@prismicio/client';
+
 
 export async function generateStaticParams() {
   const services = await getAllServices();
   return services.map(service => ({
-    id: service.uid,
+    id: service.slug?.current,
   }));
 }
 
@@ -34,9 +35,9 @@ export async function generateMetadata({
     };
   }
 
-  const service = serviceDoc.data;
+  const service = serviceDoc;
   const title = `${service.title_es} | Servicios - Diego NR`;
-  const descText = prismic.asText(service.description_es);
+  const descText = toPlainText(service.description_es || []);
   const description =
     descText.length > 160
       ? descText.substring(0, 157) + '...'
@@ -106,7 +107,7 @@ export default async function ServiceSingle({ params }: PageProps) {
     notFound();
   }
 
-  const service = serviceDoc.data;
+  const service = serviceDoc;
 
   return (
     <div className="page-content">
@@ -127,7 +128,7 @@ export default async function ServiceSingle({ params }: PageProps) {
       <PageHeader
         title={(service.title_es as string) || (service.title as string) || ''}
         subtitle="Servicio Especializado"
-        description={prismic.asText(service.description_es)}
+        description={toPlainText(service.description_es || [])}
       />
 
       <section className="py-24">
@@ -145,7 +146,7 @@ export default async function ServiceSingle({ params }: PageProps) {
                       Lo que ofrezco
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {service.items?.map((itemField, index) => (
+                      {service.items?.map((itemField: { es?: string; en?: string }, index: number) => (
                         <div
                           key={index}
                           className="p-8 border border-white/10 hover:border-white/30 transition-colors"

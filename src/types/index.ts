@@ -1,37 +1,70 @@
-import { PrismicDocument, RichTextField, KeyTextField, GroupField, ImageField, DateField, NumberField, LinkField, BooleanField } from '@prismicio/client';
+import { PortableTextBlock } from '@portabletext/types';
 
-export type ProjectDocument = PrismicDocument<{
-  title: KeyTextField;
-  category: GroupField<{ item: KeyTextField }>;
-  year: KeyTextField;
-  description_es: RichTextField;
-  description_en: RichTextField;
-  tech: GroupField<{ item: KeyTextField }>;
-  url: LinkField;
-  featured: BooleanField;
-  image: ImageField;
-  content: RichTextField;
-}, "project">;
+export interface BaseSanityDocument {
+  _id: string;
+  _type: string;
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+}
 
-export type ServiceDocument = PrismicDocument<{
-  title: KeyTextField;
-  title_es: KeyTextField;
-  title_en: KeyTextField;
-  description_es: RichTextField;
-  description_en: RichTextField;
-  items: GroupField<{ es: KeyTextField; en: KeyTextField }>;
-  order: NumberField;
-  content: RichTextField;
-}, "service">;
+export interface Slug {
+  _type: 'slug';
+  current: string;
+}
 
-export type BlogPostDocument = PrismicDocument<{
-  title: KeyTextField;
-  date: DateField;
-  category: KeyTextField;
-  read_time: KeyTextField;
-  excerpt: RichTextField;
-  image: ImageField;
-  author: KeyTextField;
-  tags: GroupField<{ tag: KeyTextField }>;
-  content: RichTextField;
-}, "blog_post">;
+export interface SanityImage {
+  _type: 'image';
+  asset: {
+    _ref: string;
+    _type: 'reference';
+  };
+  alt?: string;
+  [key: string]: unknown;
+}
+
+export interface ProjectDocument extends BaseSanityDocument {
+  _type: 'project';
+  title?: string;
+  slug?: Slug;
+  category?: { item?: string }[];
+  year?: string;
+  description_es?: PortableTextBlock[];
+  description_en?: PortableTextBlock[];
+  tech?: { item?: string }[];
+  url?: {
+    link_type?: string;
+    url?: string;
+    target?: string;
+  };
+  featured?: boolean;
+  image?: SanityImage;
+  content?: PortableTextBlock[];
+}
+
+export interface ServiceDocument extends BaseSanityDocument {
+  _type: 'service';
+  title?: string;
+  slug?: Slug;
+  title_es?: string;
+  title_en?: string;
+  description_es?: PortableTextBlock[];
+  description_en?: PortableTextBlock[];
+  items?: { es?: string; en?: string }[];
+  order?: number;
+  content?: PortableTextBlock[];
+}
+
+export interface BlogPostDocument extends BaseSanityDocument {
+  _type: 'blog_post';
+  title?: string;
+  slug?: Slug;
+  date?: string;
+  category?: string;
+  read_time?: string;
+  excerpt?: PortableTextBlock[];
+  image?: SanityImage;
+  author?: string;
+  tags?: { tag?: string }[];
+  content?: PortableTextBlock[];
+}

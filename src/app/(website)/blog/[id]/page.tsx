@@ -1,3 +1,4 @@
+import { toPlainText } from '@portabletext/react';
 import { DocumentRenderer } from '@/components/DocumentRenderer';
 import { SwissContainer } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
@@ -7,18 +8,19 @@ import {
   generateBreadcrumbStructuredData,
 } from '@/components/StructuredData';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllPosts, getPost } from '@/lib/prismic';
+import { getAllPosts, getPost } from '@/lib/sanity';
 import { ArrowLeft, Clock, Tag } from 'lucide-react';
 import { Metadata } from 'next';
-import { PrismicNextImage } from '@prismicio/next';
+import Image from 'next/image';
+import { urlFor } from '@/lib/sanity';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import * as prismic from '@prismicio/client';
+
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map(post => ({
-    id: post.uid,
+    id: post.slug?.current,
   }));
 }
 
@@ -39,9 +41,9 @@ export async function generateMetadata({
     };
   }
 
-  const post = postDoc.data;
+  const post = postDoc;
   const title = `${post.title} | Blog - Diego NR`;
-  const descText = prismic.asText(post.excerpt) || 'Artículo del blog de Diego NR';
+  const descText = toPlainText(post.excerpt || []) || 'Artículo del blog de Diego NR';
 
   return {
     title,
@@ -110,7 +112,7 @@ export default async function PostSingle({ params }: PageProps) {
     notFound();
   }
 
-  const post = postDoc.data;
+  const post = postDoc;
 
   return (
     <div className="page-content">
@@ -131,7 +133,7 @@ export default async function PostSingle({ params }: PageProps) {
       <PageHeader
         title={post.title as string}
         subtitle={post.date?.toString() || ''}
-        description={prismic.asText(post.excerpt)}
+        description={toPlainText(post.excerpt || [])}
       />
 
       <section className="py-24">
@@ -139,12 +141,9 @@ export default async function PostSingle({ params }: PageProps) {
           <div className="max-w-4xl mx-auto">
             <FadeIn>
               <div className="aspect-video bg-white/5 overflow-hidden mb-16 relative">
-                <PrismicNextImage
-                  field={post.image}
-                  fallbackAlt=""
-                  fill
+                { post.image && <Image src={urlFor(post.image).url()} alt="" fill
                   className="object-cover grayscale"
-                />
+                 /> }
               </div>
 
               <div className="flex items-center gap-8 mb-16 py-8 border-y border-white/10">
@@ -164,7 +163,7 @@ export default async function PostSingle({ params }: PageProps) {
 
               <div className="prose prose-invert prose-lg max-w-none">
                 <p className="text-2xl font-light leading-relaxed text-white/80 mb-12 italic">
-                  {prismic.asText(post.excerpt)}
+                  {toPlainText(post.excerpt || [])}
                 </p>
                 <div className="text-xl font-light leading-relaxed text-white/60 space-y-8 prismic-content">
                   <DocumentRenderer field={post.content} />
@@ -177,9 +176,9 @@ export default async function PostSingle({ params }: PageProps) {
       <StructuredData
         data={generateArticleStructuredData(
           post.title as string,
-          prismic.asText(post.excerpt) || (post.title as string),
+          toPlainText(post.excerpt || []) || (post.title as string),
           `https://diegonr.com/blog/${id}`,
-          prismic.asImageSrc(post.image) || '',
+          post?.image ? urlFor(post.image).url() : "",
           (post.date as string) || new Date().toISOString(),
           (post.date as string) || new Date().toISOString(),
           [(post.category as string) || 'blog', 'tecnología', 'desarrollo']

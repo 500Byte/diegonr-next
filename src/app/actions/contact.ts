@@ -27,9 +27,6 @@ export async function sendContactForm(formData: FormData) {
     // For now, we'll just log the data and simulate success
     console.log('Contact form submission:', validatedData);
 
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
     // In production, you would send the email here
     // Example with a service like Resend, SendGrid, etc.:
     /*

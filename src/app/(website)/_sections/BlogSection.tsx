@@ -6,8 +6,8 @@ import { FadeIn } from '@/components/animations/text-reveal';
 import { ArrowUpRight } from 'lucide-react';
 import { Magnetic } from '@/components/Magnetic';
 import Link from 'next/link';
-import { BlogPostDocument } from '@/types';
-import * as prismic from '@prismicio/client';
+import { ExtendedBlogPost as BlogPostDocument } from '@/lib/sanity';
+
 
 export const BlogSection: React.FC<{ blogPosts: BlogPostDocument[] }> = ({ blogPosts }) => {
   return (
@@ -42,20 +42,20 @@ export const BlogSection: React.FC<{ blogPosts: BlogPostDocument[] }> = ({ blogP
                 <div className="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
                 
                 <div className="relative z-10 font-mono text-white/40 w-32 flex-shrink-0 uppercase tracking-widest text-[10px]">
-                  {post.data.date?.toString()}
+                  {post.date?.toString()}
                 </div>
                 
                 <div className="relative z-10 flex-1">
                   <div className="flex items-center gap-4 mb-2">
                     <span className="px-2 py-0.5 bg-white/10 text-white/60 text-[8px] font-mono rounded-sm uppercase tracking-widest">
-                      {post.data.category}
+                      {post.category}
                     </span>
                     <span className="font-mono text-[8px] text-white/40 uppercase tracking-widest">
-                      {post.data.read_time}
+                      {post.read_time}
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-4xl font-medium group-hover:translate-x-4 transition-transform duration-500 ease-out">
-                    {post.data.title}
+                    {post.title}
                   </h3>
                 </div>
 

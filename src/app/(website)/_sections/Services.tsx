@@ -5,11 +5,10 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
-import { ServiceDocument } from "@/types"
-import * as prismic from "@prismicio/client"
 import { cn } from "@/lib/utils"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { SwissContainer } from "@/components/Layout"
+import { ExtendedService as ServiceDocument, toPlainText } from "@/lib/sanity"
 
 export function Services({ services }: { services: ServiceDocument[] }) {
   const sectionRef = useRef<HTMLElement>(null)
@@ -146,7 +145,7 @@ export function Services({ services }: { services: ServiceDocument[] }) {
                     "text-3xl font-medium transition-colors duration-300 tracking-tight",
                     activeTab === service.uid ? "text-black" : "text-white"
                   )}>
-                    {service.data.title_es}
+                    {service.title_es}
                   </h3>
                 </div>
               </button>
@@ -165,7 +164,7 @@ export function Services({ services }: { services: ServiceDocument[] }) {
                     </p>
                   </div>
                   <p className="text-2xl md:text-3xl text-white/90 leading-tight font-light">
-                    {prismic.asText(activeService.data.description_es)}
+                    {toPlainText(activeService.description_es)}
                   </p>
                 </div>
 
@@ -178,7 +177,7 @@ export function Services({ services }: { services: ServiceDocument[] }) {
                     [CAPABILITIES]
                   </p>
                   <div className="grid grid-cols-2 gap-4">
-                    {activeService.data.items?.map((itemField, index) => (
+                    {activeService.items?.map((itemField: {es?: string}, index: number) => (
                       <div
                         key={index}
                         className="flex items-start gap-3 p-3 border border-white/5 hover:border-white/10 transition-colors group"
@@ -224,7 +223,7 @@ export function Services({ services }: { services: ServiceDocument[] }) {
                     0{index + 1}
                   </span>
                   <h3 className="text-xl font-medium tracking-tight">
-                    {service.data.title_es}
+                    {service.title_es}
                   </h3>
                 </div>
                 <div className={cn(
@@ -241,10 +240,10 @@ export function Services({ services }: { services: ServiceDocument[] }) {
               )}>
                 <div className="px-6 pb-6 space-y-6 border-t border-white/10 pt-6">
                   <p className="text-white/80 leading-relaxed font-light">
-                    {prismic.asText(service.data.description_es)}
+                    {toPlainText(service.description_es)}
                   </p>
                   <div className="space-y-2">
-                    {service.data.items?.map((itemField, i) => (
+                    {service.items?.map((itemField: {es?: string}, i: number) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-swiss-gray-light font-light">
                         <span className="w-1 h-1 bg-white rounded-full" />
                         {itemField.es}

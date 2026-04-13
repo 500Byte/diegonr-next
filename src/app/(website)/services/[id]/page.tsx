@@ -3,16 +3,15 @@ import { SwissContainer } from '@/components/Layout';
 import { Magnetic } from '@/components/Magnetic';
 import { PageHeader } from '@/components/PageHeader';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllServices, getService } from '@/lib/prismic';
+import { getAllServices, getService, toPlainText } from '@/lib/sanity';
 import { ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import * as prismic from '@prismicio/client';
 
 export async function generateStaticParams() {
   const services = await getAllServices();
-  return services.map(service => ({
+  return services.map((service: any) => ({
     id: service.uid,
   }));
 }
@@ -25,18 +24,17 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const serviceDoc = await getService(id);
+  const service = await getService(id);
 
-  if (!serviceDoc) {
+  if (!service) {
     return {
       title: 'Servicio no encontrado | Diego NR',
       description: 'El servicio que buscas no existe.',
     };
   }
 
-  const service = serviceDoc.data;
   const title = `${service.title_es} | Servicios - Diego NR`;
-  const descText = prismic.asText(service.description_es);
+  const descText = toPlainText(service.description_es);
   const description =
     descText.length > 160
       ? descText.substring(0, 157) + '...'
@@ -100,13 +98,11 @@ export async function generateMetadata({
 
 export default async function ServiceSingle({ params }: PageProps) {
   const { id } = await params;
-  const serviceDoc = await getService(id);
+  const service = await getService(id);
 
-  if (!serviceDoc) {
+  if (!service) {
     notFound();
   }
-
-  const service = serviceDoc.data;
 
   return (
     <div className="page-content">
@@ -127,7 +123,7 @@ export default async function ServiceSingle({ params }: PageProps) {
       <PageHeader
         title={(service.title_es as string) || (service.title as string) || ''}
         subtitle="Servicio Especializado"
-        description={prismic.asText(service.description_es)}
+        description={toPlainText(service.description_es)}
       />
 
       <section className="py-24">
@@ -136,8 +132,8 @@ export default async function ServiceSingle({ params }: PageProps) {
             <div className="md:col-span-8">
               <FadeIn>
                 <div className="space-y-12">
-                  <div className="text-3xl md:text-4xl font-light leading-relaxed text-white/80 prismic-content">
-                    <DocumentRenderer field={service.content} />
+                  <div className="text-3xl md:text-4xl font-light leading-relaxed text-white/80 sanity-content">
+                    <DocumentRenderer value={service.content} />
                   </div>
 
                   <div className="pt-12 space-y-8">
@@ -145,7 +141,7 @@ export default async function ServiceSingle({ params }: PageProps) {
                       Lo que ofrezco
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {service.items?.map((itemField, index) => (
+                      {service.items?.map((itemField: any, index: number) => (
                         <div
                           key={index}
                           className="p-8 border border-white/10 hover:border-white/30 transition-colors"

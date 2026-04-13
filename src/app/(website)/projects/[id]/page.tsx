@@ -8,17 +8,16 @@ import {
   generateProjectStructuredData,
 } from '@/components/StructuredData';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { getAllProjects, getProject } from '@/lib/prismic';
+import { getAllProjects, getProject, toPlainText, urlFor } from '@/lib/sanity';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { Metadata } from 'next';
-import { PrismicNextImage } from '@prismicio/next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import * as prismic from '@prismicio/client';
 
 export async function generateStaticParams() {
   const projects = await getAllProjects();
-  return projects.map(project => ({
+  return projects.map((project: any) => ({
     id: project.uid,
   }));
 }
@@ -31,25 +30,24 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const projectDoc = await getProject(id);
+  const project = await getProject(id);
 
-  if (!projectDoc) {
+  if (!project) {
     return {
       title: 'Proyecto no encontrado | Diego NR',
       description: 'El proyecto que buscas no existe.',
     };
   }
 
-  const project = projectDoc.data;
   const title = `${project.title} | Diego NR`;
-  const descText = prismic.asText(project.description_es);
+  const descText = toPlainText(project.description_es);
   const description =
     descText.length > 160
       ? descText.substring(0, 157) + '...'
       : descText;
 
-  const cats = (project.category?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
-  const techs = (project.tech?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
+  const cats = project.category || [];
+  const techs = project.tech || [];
 
   return {
     title,
@@ -109,15 +107,14 @@ export async function generateMetadata({
 
 export default async function ProjectSingle({ params }: PageProps) {
   const { id } = await params;
-  const projectDoc = await getProject(id);
+  const project = await getProject(id);
 
-  if (!projectDoc) {
+  if (!project) {
     notFound();
   }
 
-  const project = projectDoc.data;
-  const cats = (project.category?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
-  const techs = (project.tech?.map(c => c.item?.toString() || '').filter(Boolean) as string[]) || [];
+  const cats = project.category || [];
+  const techs = project.tech || [];
 
   return (
     <div className="page-content">
@@ -138,19 +135,21 @@ export default async function ProjectSingle({ params }: PageProps) {
       <PageHeader
         title={project.title as string}
         subtitle={cats.join(' / ')}
-        description={prismic.asText(project.description_es)}
+        description={toPlainText(project.description_es)}
       />
 
       <section className="py-24">
         <SwissContainer>
           <FadeIn>
             <div className="aspect-video bg-white/5 overflow-hidden mb-24 relative">
-              <PrismicNextImage
-                field={project.image}
-                fallbackAlt=""
-                fill
-                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
-              />
+              {project.image && (
+                <Image
+                  src={urlFor(project.image).url()}
+                  alt={project.title || ''}
+                  fill
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                />
+              )}
             </div>
           </FadeIn>
 
@@ -167,7 +166,7 @@ export default async function ProjectSingle({ params }: PageProps) {
                   Tecnologías
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  {techs.map(tag => (
+                  {techs.map((tag: string) => (
                     <span
                       key={tag}
                       className="px-3 py-1 border border-white/10 rounded-full font-mono text-[10px] text-white/60 uppercase tracking-widest"
@@ -182,15 +181,15 @@ export default async function ProjectSingle({ params }: PageProps) {
               <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">
                 Sobre el proyecto
               </p>
-              <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 prismic-content">
-                <DocumentRenderer field={project.content} />
+              <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 sanity-content">
+                <DocumentRenderer value={project.content} />
               </div>
 
-              {prismic.isFilled.link(project.url) && (
+              {project.url && (
                 <div className="mt-24 pt-12 border-t border-white/10">
                   <Magnetic strength={0.2}>
                     <a
-                      href={prismic.asLink(project.url) || '#'}
+                      href={project.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center gap-4 text-2xl font-medium tracking-tighter hover:text-white/60 transition-colors"
@@ -208,9 +207,9 @@ export default async function ProjectSingle({ params }: PageProps) {
       <StructuredData
         data={generateProjectStructuredData(
           project.title as string,
-          prismic.asText(project.description_es),
+          toPlainText(project.description_es),
           `https://diegonr.com/projects/${id}`,
-          prismic.asImageSrc(project.image) || '',
+          project.image ? urlFor(project.image).url() : '',
           (project.year as string) || '',
           techs,
           cats.join(' • ')

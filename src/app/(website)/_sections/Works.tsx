@@ -6,11 +6,10 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
-import { ProjectDocument } from "@/types"
-import * as prismic from "@prismicio/client"
 import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SwissContainer } from "@/components/Layout"
+import { ExtendedProject as ProjectDocument, toPlainText } from "@/lib/sanity"
 
 export function Works({ projects }: { projects: ProjectDocument[] }) {
   const sectionRef = useRef<HTMLElement>(null)
@@ -79,7 +78,7 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
     }
   }, { scope: previewRef, dependencies: [hoveredProject] })
 
-  const featuredProjects = projects.filter((p) => p.data.featured)
+  const featuredProjects = projects.filter((p) => p.featured)
   const currentProject = hoveredProject ? featuredProjects.find((p) => p.uid === hoveredProject) : null
 
   return (
@@ -114,16 +113,16 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
             <div className="relative z-10 p-5 h-full flex flex-col justify-between">
               <div>
                 <p className="font-mono text-white text-[10px] mb-2 uppercase tracking-widest">
-                  [{currentProject.data.category?.[0]?.item?.toString().toUpperCase()}]
+                  [{currentProject?.category?.[0]?.toUpperCase()}]
                 </p>
                 <p className="text-lg font-medium leading-tight tracking-tight">
-                  {currentProject.data.title}
+                  {currentProject?.title}
                 </p>
               </div>
               <div className="flex gap-2">
-                {currentProject.data.tech?.slice(0, 3).map((techField) => (
-                  <span key={techField.item?.toString()} className="font-mono text-[9px] text-swiss-gray-light uppercase tracking-widest">
-                    {techField.item}
+                {currentProject?.tech?.slice(0, 3).map((techField: string) => (
+                  <span key={techField} className="font-mono text-[9px] text-swiss-gray-light uppercase tracking-widest">
+                    {techField}
                   </span>
                 ))}
               </div>
@@ -190,7 +189,7 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
                       hoveredProject === project.uid && "translate-x-4"
                     )}
                   >
-                    {project.data.title}
+                    {project.title}
                   </h3>
                 </div>
 
@@ -198,12 +197,12 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
                   "hidden lg:flex items-center gap-2 flex-shrink-0 transition-all duration-300",
                   hoveredProject && hoveredProject !== project.uid && "opacity-30"
                 )}>
-                  {project.data.category?.slice(0, 2).map((catField) => (
+                  {project.category?.slice(0, 2).map((catField: string) => (
                     <span
-                      key={catField.item?.toString()}
+                      key={catField}
                       className="font-mono text-[10px] text-white/60 px-2.5 py-1.5 border border-white/10 uppercase tracking-widest"
                     >
-                      {catField.item?.toString().toUpperCase()}
+                      {catField.toUpperCase()}
                     </span>
                   ))}
                 </div>
@@ -212,7 +211,7 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
                   "font-mono text-white/60 w-16 text-right flex-shrink-0 transition-all duration-300 uppercase tracking-widest",
                   hoveredProject && hoveredProject !== project.uid && "opacity-30"
                 )}>
-                  {project.data.year}
+                  {project.year}
                 </span>
 
                 <Magnetic
@@ -241,15 +240,15 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
               >
                 <div className="flex items-start gap-8 md:ml-20">
                   <p className="text-swiss-gray-light max-w-xl leading-relaxed text-sm">
-                    {prismic.asText(project.data.description_es)}
+                    {toPlainText(project.description_es)}
                   </p>
                   <div className="hidden md:flex flex-wrap gap-2">
-                    {project.data.tech?.slice(0, 4).map((techField) => (
+                    {project.tech?.slice(0, 4).map((techField: string) => (
                       <span
-                        key={techField.item?.toString()}
+                        key={techField}
                         className="font-mono text-[9px] text-white/80 px-2 py-1 bg-white/5 rounded-sm uppercase tracking-widest"
                       >
-                        {techField.item}
+                        {techField}
                       </span>
                     ))}
                   </div>

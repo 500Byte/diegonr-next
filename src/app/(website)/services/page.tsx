@@ -1,8 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllServices } from '@/lib/prismic';
-import * as prismic from '@prismicio/client';
+import { getAllServices, toPlainText, ExtendedService } from '@/lib/sanity';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
@@ -67,16 +66,16 @@ export default async function ServicesPage() {
       <section className="py-24 md:py-48">
         <SwissContainer>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-24">
-            {services.map((service, index) => (
+            {services.map((service: ExtendedService, index: number) => (
               <FadeIn key={service.uid} delay={index * 0.2}>
                 <Link href={`/services/${service.uid}`} className="space-y-8 block group">
                   <div className="h-px bg-white/20 w-full group-hover:bg-white transition-colors" />
-                  <h2 className="text-3xl font-medium tracking-tighter">{service.data.title_es as string}</h2>
+                  <h2 className="text-3xl font-medium tracking-tighter">{service.title_es as string}</h2>
                   <p className="text-white/60 leading-relaxed font-light">
-                    {prismic.asText(service.data.description_es)}
+                    {toPlainText(service.description_es)}
                   </p>
                   <ul className="space-y-3 pt-4">
-                    {service.data.items?.map((item, i) => (
+                    {service.items?.map((item: {es?: string}, i: number) => (
                       <li key={i} className="flex items-center gap-3">
                         <span className="w-1.5 h-1.5 bg-white rounded-full opacity-40" />
                         <span className="font-mono text-[10px] text-white/80 uppercase tracking-widest">{item.es as string}</span>

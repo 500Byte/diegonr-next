@@ -1,5 +1,5 @@
 import { createClient } from 'next-sanity'
-import imageUrlBuilder from '@sanity/image-url'
+import { createImageUrlBuilder } from '@sanity/image-url'
 import { Project, Service, Blog_post } from '@/sanity.types'
 import { defineQuery } from 'next-sanity'
 import { PortableTextBlock } from '@portabletext/types'
@@ -16,7 +16,7 @@ export const client = createClient({
   useCdn: false, // Ensure fresh data for portfolio
 })
 
-const builder = imageUrlBuilder(client)
+const builder = createImageUrlBuilder(client)
 
 // @ts-ignore
 export function urlFor(source: any) {

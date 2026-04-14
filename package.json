@@ -20,10 +20,10 @@
   "homepage": "https://diegonr.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/diegonr/diegonr-next.git"
+    "url": "https://github.com/500byte/diegonr-next.git"
   },
   "bugs": {
-    "url": "https://github.com/diegonr/diegonr-next/issues"
+    "url": "https://github.com/500byte/diegonr-next/issues"
   },
   "engines": {
     "node": ">=20.19.0",

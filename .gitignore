@@ -118,8 +118,6 @@ temp/
 sw.js
 workbox-*.js
 
-# Keystatic
-.keystatic/
 
 # Build artifacts
 *.min.js
@@ -251,8 +249,6 @@ logs
 ehthumbs.db
 Thumbs.db
 
-# Keystatic
-.keystatic/
 
 # Local development
 .env.local

@@ -14,4 +14,4 @@ Cada vez que se modifique el archivo `.env` o se añadan nuevas variables que de
 - **Seguridad**: NUNCA intentes sincronizar si no tienes la certeza de que el usuario está logueado en Wrangler.
 
 > [!WARNING]
-> Olvidar sincronizar el `.env` con los secretos del Worker causará que la aplicación falle en producción debido a variables de entorno `undefined` (ej: Prismic docs no cargando).
+> Olvidar sincronizar el `.env` con los secretos del Worker causará que la aplicación falle en producción debido a variables de entorno `undefined` (ej: Sanity docs no cargando).

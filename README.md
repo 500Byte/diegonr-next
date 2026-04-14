@@ -1,131 +1,96 @@
-# Diego NR
+# Diego NR Portfolio
 
-Solutions Architect & Full-Stack Developer
+Modern portfolio website for Diego NR - Solutions Architect & Full-Stack Developer.
 
-## About
+## Description
+A highly optimized, modern personal portfolio and professional services website built to showcase expertise in web development, AI integration, and advanced frontend architectures. It features high-end GSAP animations, a custom Sanity Cloud CMS integration, and a sophisticated monochromatic/Swiss design system.
 
-A modern portfolio built with Next.js, showcasing expertise in web development, AI integration, and performance optimization. This project demonstrates advanced techniques in React development, TypeScript, and modern web standards.
+## Technology Stack
 
-## Technology
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Animations**: GSAP & Lenis (Smooth Scrolling)
+- **CMS**: Sanity Cloud (Headless CMS)
+- **Hosting**: Cloudflare Pages (via OpenNext)
+- **Forms**: EmailJS
+- **Analytics**: Google Analytics 4
 
-- Next.js 16 with App Router
-- TypeScript for type safety
-- Tailwind CSS v4 for styling
-- GSAP for animations
-- Sanity Cloud for content management
-- Cloudflare Pages for hosting
-
-## Features
-
-- Responsive design with fluid typography
-- Advanced animations and micro-interactions
-- SEO optimization with structured data
-- Performance monitoring and analytics
-- Contact forms with email integration
-- Content management system
-- Dark/light theme support
-
-## Development
+## Installation
 
 ```bash
 # Install dependencies
 npm install
 
 # Start development server
-npm run dev
+npm run dev &
 
 # Build for production
 npm run build
 
 # Start production server
-npm run start
+npm run start &
 ```
 
-## Configuration
+## Environment Variables
 
-Copy `.env.example` to `.env.local` and configure:
+Copy `.env.example` to `.env.local` and fill in the required values:
 
-- Google Analytics tracking ID
-- EmailJS service credentials
-- GitHub API token (optional)
+```env
+# SANITY CMS (Required)
+NEXT_PUBLIC_SANITY_PROJECT_ID=
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_TOKEN=
 
-## License
+# Analytics & Tracking (Optional)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=
 
-This project is private and proprietary.
+# GitHub Stats (Optional)
+NEXT_PUBLIC_GITHUB_TOKEN=
 
-- **Colors**: Modify `tailwind.config.js`
-- **Fonts**: Update `src/app/layout.tsx`
-- **Animations**: Adjust GSAP configurations
+# EmailJS (Required for forms)
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=
+NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID=
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=
+```
 
-### Analytics
+## Folder Structure
 
-Configure tracking IDs in environment variables for:
+```
+├── docs/                # Architecture and coding standards documentation
+├── public/              # Static assets (images, icons)
+├── sanity/              # Standalone Sanity Studio admin panel
+├── src/
+│   ├── app/             # Next.js App Router (pages, layouts, actions)
+│   │   ├── (website)/   # Main website routes and colocated _sections
+│   ├── components/      # Shared components (UI, animations, providers)
+│   ├── lib/             # Utilities and configurations (sanity, lenis, utils)
+│   └── types/           # Shared TypeScript types for Sanity CMS
+```
 
-- Google Analytics 4
-- GitHub API integration
-- EmailJS for forms
+## Development Guidelines
+
+Refer to the `/docs` directory for detailed architectural and coding standards:
+- `ARCHITECTURE.md`
+- `CODING_STANDARDS.md`
+- `DEPENDENCIES.md`
+- `DEPLOYMENT.md`
 
 ## Deployment
 
-### Cloudflare Pages (Recommended)
+### Cloudflare Pages
+This project is configured to deploy seamlessly to Cloudflare Pages using OpenNext.
+1. Configure secrets in the Cloudflare Dashboard.
+2. Build and deploy: `npm run deploy`
 
-1. Connect your GitHub repository to Cloudflare Pages.
-2. The project uses OpenNext to bridge Next.js to Cloudflare.
-3. Configure environment variables in the Cloudflare Dashboard.
-4. Deployments are automatic on every push to `master`.
-
-### Sanity Studio (Standalone)
-
-The CMS admin panel is located in the `/sanity` directory and is deployed to Sanity's global CDN:
-
+### Sanity Studio
+The admin interface lives in `/sanity`:
 ```bash
 cd sanity
 npx sanity deploy
 ```
 
-### Manual Deployment
-
-```bash
-npm run build
-npm run start
-```
-
-## Performance
-
-- **Lighthouse Score**: 95+ (Performance, SEO, Accessibility)
-- **Core Web Vitals**: All metrics in green
-- **Bundle Size**: Optimized with code splitting
-- **Image Optimization**: Next.js automatic optimization
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- **Next.js** - The React framework for production
-- **Cloudflare** - Hosting and Edge computing platform
-- **Sanity** - Headless CMS & Content Platform
-- **GSAP** - Animation library
-- **Tailwind CSS** - Utility-first CSS framework
-
-## Contact
-
-**Diego NR**
-
-- Website: [diegonr.com](https://diegonr.com)
-- LinkedIn: [linkedin.com/in/diegonr](https://linkedin.com/in/diegonr)
-- GitHub: [github.com/diegonr](https://github.com/diegonr)
-- Email: hola@diegonr.com
-
----
-
-<a href="#diego-nr---portfolio">Back to top</a>

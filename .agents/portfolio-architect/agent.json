@@ -1,7 +1,7 @@
 {
   "id": "portfolio-architect",
   "name": "Portfolio Next.js Architect",
-  "description": "Desarrollador Full-Stack especializado en Next.js, GSAP y Prismic para el mantenimiento del portafolio.",
+  "description": "Desarrollador Full-Stack especializado en Next.js, GSAP y Sanity para el mantenimiento del portafolio.",
   "model": {
     "name": "gemini-2.5-pro",
     "temperature": 0.2,

@@ -4,7 +4,7 @@
 This project is a modern web application built on **Next.js (App Router)**. It serves as a portfolio and service catalog, emphasizing high performance, SEO optimization, and rich interactive animations.
 
 ## Data Flow & CMS Integration
-1. **Content Storage**: Content is managed centrally in **Sanity Cloud**. It is accessible via the Sanity API and edited at `tudominio.sanity.studio`.
+1. **Content Storage**: Content is managed centrally in **Sanity Cloud**. It is accessible via the Sanity API and edited at `diegonr.sanity.studio`.
 2. **CMS Configuration**: The Sanity Studio is a **standalone project** located in the `/sanity` directory. It has its own `package.json` and dependencies to keep the main application bundle (Cloudflare Worker) under the 3MB size limit.
 3. **Data Fetching**: Next.js Server Components (`app/(website)/page.tsx`) fetch data from Sanity using **GROQ (Graph-Relational Object Queries)** via utility functions in `src/lib/sanity.ts`.
 4. **Rendering**:

@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CMS Integration**: Keystatic headless CMS for content management
 - **Advanced Forms**: Contact forms with EmailJS integration and validation
 - **Newsletter System**: Dynamic newsletter signup with interest selection
-- **Analytics Integration**: Google Analytics 4 (Vercel Analytics removed)
+- **Analytics Integration**: Google Analytics 4
 - **SEO Optimization**: Complete meta tags, structured data, and performance optimization
 - **Social Media Integration**: GitHub API integration for dynamic project showcases
 - **Dark/Light Theme**: Automatic theme switching with next-themes

@@ -93,7 +93,6 @@ temp/
 *.sln
 *.sw?
 
-# Keystatic content
 content/
 
 # Generated files

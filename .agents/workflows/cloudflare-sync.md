@@ -32,7 +32,7 @@ Sigue estos pasos para sincronizar de forma segura sin exponer los valores en lo
 
 ## Cuándo usar este workflow
 
-- Después de añadir nuevas variables de Prismic, GitHub o EmailJS.
+- Después de añadir nuevas variables de Sanity, GitHub o EmailJS.
 - Al cambiar el `REPOSITORY_NAME` o los tokens de acceso.
 - Antes de realizar un `npx wrangler deploy` si hay cambios en la configuración.
 

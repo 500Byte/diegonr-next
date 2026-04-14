@@ -30,7 +30,7 @@ npx sanity deploy
 ```
 
 ## CMS Considerations
-This project uses **Sanity Cloud**. Ensure the following environment variables are set in your deployment environment (Vercel/Cloudflare):
+This project uses **Sanity Cloud**. Ensure the following environment variables are set in your deployment environment (Cloudflare):
 
 | Variable | Description |
 |---|---|

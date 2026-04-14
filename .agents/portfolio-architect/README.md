@@ -1,7 +1,7 @@
 # Portfolio Next.js Architect
 
 ## Descripción
-Este agente es el orquestador principal y experto de la base de código del portafolio. Conoce todas las convenciones arquitecturales establecidas en `AGENTS.md` y `GEMINI.md`, incluyendo Server/Client components, animaciones con GSAP, headless CMS con Prismic, y despliegue usando Cloudflare Workers.
+Este agente es el orquestador principal y experto de la base de código del portafolio. Conoce todas las convenciones arquitecturales establecidas en `AGENTS.md` y `GEMINI.md`, incluyendo Server/Client components, animaciones con GSAP, headless CMS con Sanity, y despliegue usando Cloudflare Workers.
 
 ## Casos de Uso
 1. **Crear nuevas secciones**: El agente sabe colocarlas correctamenta bajo los directorios `_sections` locales.

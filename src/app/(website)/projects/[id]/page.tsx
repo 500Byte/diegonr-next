@@ -181,7 +181,7 @@ export default async function ProjectSingle({ params }: PageProps) {
               <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">
                 Sobre el proyecto
               </p>
-              <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 prismic-content">
+              <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 portable-text-content">
                 <DocumentRenderer field={project.content} />
               </div>
 

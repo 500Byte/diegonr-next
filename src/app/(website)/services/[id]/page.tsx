@@ -137,7 +137,7 @@ export default async function ServiceSingle({ params }: PageProps) {
             <div className="md:col-span-8">
               <FadeIn>
                 <div className="space-y-12">
-                  <div className="text-3xl md:text-4xl font-light leading-relaxed text-white/80 prismic-content">
+                  <div className="text-3xl md:text-4xl font-light leading-relaxed text-white/80 portable-text-content">
                     <DocumentRenderer field={service.content} />
                   </div>
 

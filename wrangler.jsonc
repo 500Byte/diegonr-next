@@ -8,7 +8,8 @@
 		"global_fetch_strictly_public"
 	],
 	"vars": {
-		"PRISMIC_REPOSITORY_NAME": "diegonr-next"
+		"NEXT_PUBLIC_SANITY_PROJECT_ID": "qda0c21o",
+		"NEXT_PUBLIC_SANITY_DATASET": "production"
 	},
 	"assets": {
 		"directory": ".open-next/assets",

@@ -8,8 +8,8 @@ const getEnvVar = (key: string): string | undefined => {
   return process.env[key] || envObj?.[key];
 }
 
-const projectId = 'qda0c21o';
-const dataset = 'production';
+const projectId = getEnvVar('NEXT_PUBLIC_SANITY_PROJECT_ID') || 'qda0c21o';
+const dataset = getEnvVar('NEXT_PUBLIC_SANITY_DATASET') || 'production';
 const apiVersion = '2024-01-01'; // Use a recent date
 const token = getEnvVar('SANITY_API_TOKEN');
 

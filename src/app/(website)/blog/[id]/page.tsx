@@ -165,7 +165,7 @@ export default async function PostSingle({ params }: PageProps) {
                 <p className="text-2xl font-light leading-relaxed text-white/80 mb-12 italic">
                   {toPlainText(post.excerpt || [])}
                 </p>
-                <div className="text-xl font-light leading-relaxed text-white/60 space-y-8 prismic-content">
+                <div className="text-xl font-light leading-relaxed text-white/60 space-y-8 portable-text-content">
                   <DocumentRenderer field={post.content} />
                 </div>
               </div>

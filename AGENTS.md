@@ -15,7 +15,7 @@
 
 ### Imports & Exports
 - **Exports**: Named exports are the strong preference for components and utilities (e.g., `export function Hero()`). Default exports are mostly used for Next.js mandatory files (`page.tsx`, `layout.tsx`) and config files.
-- **Imports**: Group third-party library imports first (React, GSAP), followed by local alias imports (`@/components/...`), and relative imports last.
+- **Imports**: Group third-party library imports first (React, GSAP, Sanity), followed by local alias imports (`@/components/...`), and relative imports last.
 
 ### Naming Conventions
 - **Components/Sections**: PascalCase files (`Hero.tsx`, `About.tsx`).
@@ -23,7 +23,7 @@
 - **Functions/Hooks**: camelCase.
 
 ### Component Patterns
-- **Server Components**: Used for data fetching (e.g., fetch Prismic documents in `page.tsx`). They pass data down to sections.
+- **Server Components**: Used for data fetching (e.g., fetch Sanity documents using GROQ in `page.tsx`). They pass data down to sections.
 - **Client Components**: Declared with `"use client"`. Heavy use of `useRef` for GSAP targeting and `useState`/`useEffect` for interaction.
 
 ### Error Handling
@@ -42,15 +42,16 @@
 - `src/components/ui/`: Reusable, atomic UI components (kebab-case).
 - `src/components/animations/`: Specific animation wrappers.
 - `src/components/providers/`: Context providers (Lenis, Theme).
-- `src/lib/`: Utilities (`utils.ts`, `lenis.ts`, `prismic.ts`, `analytics.tsx`).
-- `src/types/`: Shared TypeScript interfaces for Prismic document models.
-- `customtypes/`: JSON schemas for Prismic Custom Types (managed via Slice Machine).
+- `src/lib/`: Utilities (`utils.ts`, `lenis.ts`, `sanity.ts`, `analytics.tsx`).
+- `src/types/`: Shared TypeScript interfaces for Sanity document models.
+- `sanity/`: Standalone Sanity Studio project (configuration and schema definitions).
 
 ## Key Design Patterns
 - **Animations**: Uses GSAP `useGSAP` hook for React-safe animations. Always pass a `scope` (usually a ref to the section container) to `useGSAP` to avoid global selector conflicts.
-- **Headless CMS**: Content is managed via **Prismic CMS**. Data is fetched using the native `@prismicio/client` and helpers.
-  - Documents are accessed via `doc.data.field_name`.
-  - Rich Text is rendered using the `<DocumentRenderer />` component.
+- **Headless CMS**: Content is managed via **Sanity Cloud**. Data is fetched using `next-sanity` and GROQ queries.
+  - Documents are typed and accessed directly (e.g., `doc.title`, `doc.slug.current`).
+  - Rich Text is rendered using the `<PortableText />` component from `@portabletext/react`.
+  - Images are processed using `urlFor()` helper from `@sanity/image-url`.
 - **Colocation**: Page-specific components live next to their page in `_`-prefixed directories. Only truly shared components go in `src/components/`.
 
 ## Anti-Patterns (DO NOT)
@@ -61,10 +62,9 @@
 - **DO NOT** create route groups `(group)` unless there is a real layout conflict between routes.
 
 ## Deployment & Secrets
-- **Hosting**: The project is deployed as a **Cloudflare Worker Service** via OpenNext.
-- **Secrets Management**: Sensitive variables (Prismic, GitHub, etc.) are managed via Cloudflare Worker secrets.
-- **Synchronization**: To sync local `.env` values to production, follow the workflow in [cloudflare-sync.md](file:///home/diego/Documents/GitHub/diegonr-next/.agents/workflows/cloudflare-sync.md).
-- **Rules**: Refer to [cloudflare-sync.md](file:///home/diego/Documents/GitHub/diegonr-next/.agents/rules/cloudflare-sync.md) for enforcement rules.
+- **Hosting**: The project is deployed as **Cloudflare Pages** via OpenNext.
+- **Secrets Management**: Sensitive variables (Sanity, GitHub, etc.) are managed via Cloudflare Dashboard secrets.
+- **Environment Variables**: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_TOKEN` are required.
 
 ## Testing
 - No testing framework is currently configured in `package.json`.

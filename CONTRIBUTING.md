@@ -85,12 +85,14 @@ export function MyComponent({ title, onClick }: ComponentProps) {
 ### File Organization
 ```
 src/
-├── components/        # Reusable UI components
-│   ├── ui/           # Basic UI elements
-│   └── sections/     # Page sections
-├── lib/              # Utilities and configurations
-├── hooks/            # Custom React hooks
-└── types/            # TypeScript definitions
+├── app/               # Routes and layouts
+│   └── (website)/
+│       └── _sections/ # Page-specific private sections
+├── components/        # Shared, truly reusable UI components
+│   └── ui/           # Atomic UIPrimitives
+├── lib/              # Service connectors & utilities (sanity.ts, analytics.tsx)
+├── types/            # Shared TypeScript interfaces for Sanity content
+└── sanity/            # Standalone Sanity Studio project (outside src actually, but described in context)
 ```
 
 ## 🎨 Design Guidelines

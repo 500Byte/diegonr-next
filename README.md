@@ -10,10 +10,10 @@ A modern portfolio built with Next.js, showcasing expertise in web development, 
 
 - Next.js 16 with App Router
 - TypeScript for type safety
-- Tailwind CSS for styling
+- Tailwind CSS v4 for styling
 - GSAP for animations
-- Keystatic for content management
-- Progressive Web App features
+- Sanity Cloud for content management
+- Cloudflare Pages for hosting
 
 ## Features
 
@@ -67,11 +67,21 @@ Configure tracking IDs in environment variables for:
 
 ## Deployment
 
-### Vercel (Recommended)
+### Cloudflare Pages (Recommended)
 
-1. Connect your GitHub repository to Vercel
-2. Add environment variables
-3. Deploy automatically on push
+1. Connect your GitHub repository to Cloudflare Pages.
+2. The project uses OpenNext to bridge Next.js to Cloudflare.
+3. Configure environment variables in the Cloudflare Dashboard.
+4. Deployments are automatic on every push to `master`.
+
+### Sanity Studio (Standalone)
+
+The CMS admin panel is located in the `/sanity` directory and is deployed to Sanity's global CDN:
+
+```bash
+cd sanity
+npx sanity deploy
+```
 
 ### Manual Deployment
 
@@ -102,8 +112,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 - **Next.js** - The React framework for production
-- **Vercel** - Deployment platform
-- **Keystatic** - Headless CMS
+- **Cloudflare** - Hosting and Edge computing platform
+- **Sanity** - Headless CMS & Content Platform
 - **GSAP** - Animation library
 - **Tailwind CSS** - Utility-first CSS framework
 

@@ -16,4 +16,6 @@
 - **Lenis (`lenis`)**: Lightweight smooth scrolling library to enhance the feel of scroll-triggered animations.
 
 ## CMS & Content
-- **Keystatic (`@keystatic/core`, `@keystatic/next`)**: A local, Git-based CMS that allows editing content via an admin UI while storing data as Markdown/Markdoc files in the repository.
+- **Sanity (`next-sanity`)**: Headless CMS client for fetching content from Sanity Cloud using GROQ.
+- **Portable Text (`@portabletext/react`)**: Renders Sanity's Portable Text rich text content as React components.
+- **Sanity Image Utility (`@sanity/image-url`)**: Helper to generate and transform URLs for images hosted on Sanity.

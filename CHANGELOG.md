@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **CMS Migration**: Migrated from Prismic/Keystatic to **Sanity Cloud**.
+- **Admin Panel**: Moved Sanity Studio to a standalone directory (`/sanity`) to optimize Cloudflare Workers bundle size (bypassing the 3MB limit).
+- **Hosting Migration**: Fully transitioned to **Cloudflare Pages** via OpenNext, removing all Vercel-specific dependencies and configurations.
+- **Styling**: Upgraded to **Tailwind CSS v4**.
+- **Data Fetching**: Implemented GROQ queries and Sanity Image pipeline.
+- **Project Structure**: Enforced strict colocation and removed global directories (e.g., `src/sections/`).
+
 ## [2.0.0] - 2024-01-09
 
 ### Added
@@ -15,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CMS Integration**: Keystatic headless CMS for content management
 - **Advanced Forms**: Contact forms with EmailJS integration and validation
 - **Newsletter System**: Dynamic newsletter signup with interest selection
-- **Analytics Integration**: Google Analytics 4 and Vercel Analytics
+- **Analytics Integration**: Google Analytics 4 (Vercel Analytics removed)
 - **SEO Optimization**: Complete meta tags, structured data, and performance optimization
 - **Social Media Integration**: GitHub API integration for dynamic project showcases
 - **Dark/Light Theme**: Automatic theme switching with next-themes

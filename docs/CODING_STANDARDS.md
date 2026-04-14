@@ -3,7 +3,7 @@
 ## TypeScript
 - Ensure proper typings for component props using interfaces or type aliases.
 - Despite some disabled ESLint rules (`any`, `unused-vars`), strive for strict typing to maintain codebase health.
-- Use `React.FC` or explicitly type `children: React.ReactNode` for layout and wrapper components.
+- Use Sanity-specific types from `src/types/index.ts` for all CMS-fetched data.
 
 ## React Components
 - **Client vs. Server**: Default to Server Components. Only add `"use client"` to the top of a file when you need interactivity, lifecycle hooks (`useEffect`, `useState`), or DOM manipulation (GSAP refs).
@@ -42,10 +42,10 @@
 - Only extract to a shared file when the same data is imported by 3+ files.
 
 ### Component Placement
-- Components used by a single page belong in that page's `_components/` or `_sections/` directory.
+- Components used by a single page belong in that page's `_sections/` directory.
 - Only truly reusable components (used by 2+ pages) belong in `src/components/`.
 - Never create global directories (`src/sections/`, `src/data/`, `src/constants/`) for single-consumer code.
 
 ### Barrel Files
 - Do not create `index.ts` re-export files in component directories. Import directly from the source file.
-- Exception: `src/types/index.ts` is acceptable for centralizing shared TypeScript interfaces.
+- Exception: `src/types/index.ts` is acceptable for centralizing shared TypeScript interfaces for Sanity content.

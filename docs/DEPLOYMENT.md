@@ -8,16 +8,34 @@ npm run build
 This command compiles the application into the `.next` folder, ready for production deployment.
 
 ## Hosting Environments
-As a Next.js application, it is highly optimized for deployment on Vercel:
-1. Push the repository to GitHub/GitLab.
-2. Import the project into Vercel.
-3. Vercel will automatically detect Next.js and apply the correct build settings (`npm run build`).
 
-Alternatively, it can be deployed on any Node.js hosting provider (e.g., Railway, Render, AWS, DigitalOcean) by running:
+### Cloudflare Pages (Production)
+This project is configured for deployment on **Cloudflare Pages** via **OpenNext**.
+1. Push the repository to GitHub.
+2. Connect the repo to Cloudflare Pages.
+3. Configure build settings:
+   - Build command: `npx opennextjs-cloudflare build`
+   - Build output directory: `.open-next`
+4. Deploy:
+   ```bash
+   npm run deploy
+   ```
+This requires configuring the worker environment in `wrangler.jsonc` and managing secrets in the Cloudflare dashboard.
+
+### Sanity Studio (Admin Panel)
+The CMS management interface is a standalone React application located in the `/sanity` directory. It is deployed to Sanity's global hosting:
 ```bash
-npm run build
-npm run start
+cd sanity
+npx sanity deploy
 ```
 
 ## CMS Considerations
-Since Keystatic is configured in `local` storage mode (`kind: 'local'` in `keystatic.config.ts`), content edits should be made locally during development, committed to Git, and then pushed. If remote editing is desired in production, Keystatic would need to be reconfigured to use the `github` storage kind.
+This project uses **Sanity Cloud**. Ensure the following environment variables are set in your deployment environment (Vercel/Cloudflare):
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Your Sanity Project ID |
+| `NEXT_PUBLIC_SANITY_DATASET` | Usually "production" |
+| `SANITY_API_TOKEN` | A Sanity API Token (Read-only or Editor as needed) |
+
+Content edits are made at `cloud.sanity.io` and reflect in the production build according to the `useCdn` setting and ISR/Revalidation configuration in `src/lib/sanity.ts`.

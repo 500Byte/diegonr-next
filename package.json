@@ -51,6 +51,7 @@
     "@portabletext/react": "^6.0.3",
     "@portabletext/types": "^4.0.2",
     "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.20.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "clsx": "^2.1.1",
@@ -64,6 +65,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.72.1",
+    "sanity": "^5.20.0",
+    "styled-components": "^6.4.0",
     "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },

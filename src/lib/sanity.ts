@@ -1,5 +1,5 @@
 import { createClient } from 'next-sanity';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import { ProjectDocument, ServiceDocument, BlogPostDocument } from '../types';
 
 // Helper to get environment variables across different runtimes (Node.js, Cloudflare Workers)
@@ -21,7 +21,7 @@ export const client = createClient({
   token,
 });
 
-const builder = imageUrlBuilder(client);
+const builder = createImageUrlBuilder(client);
 
 
 export function urlFor(source: Parameters<typeof builder.image>[0]) {
@@ -30,7 +30,7 @@ export function urlFor(source: Parameters<typeof builder.image>[0]) {
 
 export async function getAllProjects(): Promise<ProjectDocument[]> {
   const projects = await client.fetch<ProjectDocument[]>(
-    `*[_type == "project"] | order(year desc)`
+    `*[_type == "project" && !(_id in path("drafts.**"))] | order(year desc)`
   );
 
   return projects.sort((a, b) => {
@@ -42,33 +42,33 @@ export async function getAllProjects(): Promise<ProjectDocument[]> {
 
 export async function getProject(slug: string): Promise<ProjectDocument | null> {
   return await client.fetch<ProjectDocument | null>(
-    `*[_type == "project" && slug.current == $slug][0]`,
+    `*[_type == "project" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
     { slug }
   );
 }
 
 export async function getAllServices(): Promise<ServiceDocument[]> {
   return await client.fetch<ServiceDocument[]>(
-    `*[_type == "service"] | order(order asc)`
+    `*[_type == "service" && !(_id in path("drafts.**"))] | order(order asc)`
   );
 }
 
 export async function getService(slug: string): Promise<ServiceDocument | null> {
   return await client.fetch<ServiceDocument | null>(
-    `*[_type == "service" && slug.current == $slug][0]`,
+    `*[_type == "service" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
     { slug }
   );
 }
 
 export async function getAllPosts(): Promise<BlogPostDocument[]> {
   return await client.fetch<BlogPostDocument[]>(
-    `*[_type == "blog_post"] | order(date desc)`
+    `*[_type == "blog_post" && !(_id in path("drafts.**"))] | order(date desc)`
   );
 }
 
 export async function getPost(slug: string): Promise<BlogPostDocument | null> {
   return await client.fetch<BlogPostDocument | null>(
-    `*[_type == "blog_post" && slug.current == $slug][0]`,
+    `*[_type == "blog_post" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
     { slug }
   );
 }

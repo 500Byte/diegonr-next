@@ -12,34 +12,37 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   useGSAP(() => {
     // Respect user's motion preferences
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    // Page Entrance Animation
-    gsap.fromTo(
-      container.current,
-      { 
-        y: "100vh",
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 1.1,
-        ease: "power4.out",
-        clearProps: "all"
-      }
-    );
+    // Page Entrance Animation - only if container exists
+    if (container.current) {
+      gsap.fromTo(
+        container.current,
+        { 
+          opacity: 0.8,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out",
+          clearProps: "all"
+        }
+      );
+    }
 
     // Scroll to top on change
-    window.scrollTo(0, 0);
-    scrollTo(0, { immediate: true });
+    if (typeof window !== 'undefined') {
+      window.scrollTo(0, 0);
+      scrollTo(0, { immediate: true });
+    }
   }, [pathname]);
 
   return (
     <div 
       ref={container} 
       className="template-wrapper bg-swiss-black"
-      style={{ willChange: "transform, opacity" }}
     >
       {children}
     </div>

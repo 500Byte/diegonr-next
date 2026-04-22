@@ -21,61 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: t('home_title'),
     description: t('home_description'),
-    keywords: [
-      'desarrollador full-stack', 'arquitecto de soluciones', 'IA',
-      'React', 'Next.js', 'TypeScript', 'Node.js', 'diseño UX/UI',
-      'full-stack developer', 'solutions architect', 'AI'
-    ],
-    authors: [{ name: 'Diego NR' }],
-    creator: 'Diego NR',
-    publisher: 'Diego NR',
-    formatDetection: {
-      email: false,
-      address: false,
-      telephone: false,
-    },
-    metadataBase: new URL('https://diegonr.com'),
-    alternates: {
-      canonical: `/${locale}`,
-      languages: {
-        'es': '/es',
-        'en': '/en',
-      },
-    },
-    openGraph: {
-      title: t('home_title'),
-      description: t('home_description'),
-      url: `/${locale}`,
-      siteName: 'Diego NR Portfolio',
-      locale: locale === 'en' ? 'en_US' : 'es_ES',
-      type: 'website',
-      images: [
-        {
-          url: `/og?title=Diego NR&type=Portfolio&subtitle=Solutions Architect • Full-Stack Developer • AI Specialist&lang=${locale}`,
-          width: 1200,
-          height: 630,
-          alt: t('home_title'),
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('home_title'),
-      description: t('home_description'),
-      creator: '@diegonr',
-      images: [`/og?title=Diego NR&type=Portfolio&subtitle=Solutions Architect • Full-Stack Developer • AI Specialist&lang=${locale}`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
   };
 }
 

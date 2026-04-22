@@ -1,5 +1,6 @@
 import React from 'react';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { getAllProjects } from '@/lib/sanity';
 import { PageHeader } from '@/components/PageHeader';
@@ -7,52 +8,68 @@ import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
 import { ArrowUpRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Proyectos | Diego NR',
-  description: 'Una colección de experimentos, productos y soluciones digitales construidas con precisión y propósito. Explora mi portafolio de desarrollo full-stack.',
-  keywords: ['proyectos', 'portafolio', 'desarrollo', 'full-stack', 'soluciones digitales', 'productos'],
-  authors: [{ name: 'Diego NR' }],
-  creator: 'Diego NR',
-  publisher: 'Diego NR',
-  metadataBase: new URL('https://diegonr.com'),
-  alternates: {
-    canonical: '/projects',
-  },
-  openGraph: {
-    title: 'Proyectos | Diego NR',
-    description: 'Una colección de experimentos, productos y soluciones digitales construidas con precisión y propósito.',
-    url: '/projects',
-    siteName: 'Diego NR Portfolio',
-    locale: 'es_ES',
-    type: 'website',
-    images: [
-      {
-        url: '/og?title=Proyectos&type=Portfolio&subtitle=Trabajos Seleccionados',
-        width: 1200,
-        height: 630,
-        alt: 'Proyectos - Diego NR Portfolio',
-      },
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+
+  return {
+    title: t('projects_title'),
+    description: t('projects_description'),
+    keywords: [
+      'proyectos', 'portafolio', 'trabajos', 'case studies', 'desarrollo web',
+      'projects', 'portfolio', 'works', 'case studies', 'web development'
     ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Proyectos | Diego NR',
-    description: 'Una colección de experimentos, productos y soluciones digitales construidas con precisión y propósito.',
-    creator: '@diegonr',
-    images: ['/og?title=Proyectos&type=Portfolio&subtitle=Trabajos Seleccionados'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    authors: [{ name: 'Diego NR' }],
+    creator: 'Diego NR',
+    publisher: 'Diego NR',
+    metadataBase: new URL('https://diegonr.com'),
+    alternates: {
+      canonical: `/${locale}/projects`,
+      languages: {
+        'es': '/es/projects',
+        'en': '/en/projects',
+      },
+    },
+    openGraph: {
+      title: t('projects_title'),
+      description: t('projects_description'),
+      url: `/${locale}/projects`,
+      siteName: 'Diego NR Portfolio',
+      locale: locale === 'en' ? 'en_US' : 'es_ES',
+      type: 'website',
+      images: [
+        {
+          url: `/og?title=Projects&type=Projects&subtitle=Selected Work&lang=${locale}`,
+          width: 1200,
+          height: 630,
+          alt: t('projects_title'),
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('projects_title'),
+      description: t('projects_description'),
+      creator: '@diegonr',
+      images: [`/og?title=Projects&type=Projects&subtitle=Selected Work&lang=${locale}`],
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-};
+  };
+}
 
 export default async function ProjectsPage() {
   const projects = await getAllProjects();

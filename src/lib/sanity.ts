@@ -62,13 +62,13 @@ export async function getService(slug: string): Promise<ServiceDocument | null> 
 
 export async function getAllPosts(): Promise<BlogPostDocument[]> {
   return await client.fetch<BlogPostDocument[]>(
-    `*[_type == "blog_post" && !(_id in path("drafts.**"))] | order(date desc)`
+    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc)`
   );
 }
 
 export async function getPost(slug: string): Promise<BlogPostDocument | null> {
   return await client.fetch<BlogPostDocument | null>(
-    `*[_type == "blog_post" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
+    `*[_type == "blog_post" && slug.current == $slug && !(_id in path("drafts.**")) && published == true][0]`,
     { slug }
   );
 }

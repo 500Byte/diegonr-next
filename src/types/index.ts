@@ -55,6 +55,7 @@ export interface BlogPostDocument extends BaseSanityDocument {
   _type: 'blog_post';
   title?: string;
   slug?: Slug;
+  published?: boolean;
   date?: string;
   category?: string;
   read_time?: string;

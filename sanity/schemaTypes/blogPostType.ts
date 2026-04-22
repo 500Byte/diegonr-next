@@ -19,6 +19,13 @@ export const blogPostType = defineType({
       validation: (Rule) => Rule.required()
     }),
     defineField({
+      name: 'published',
+      title: 'Published',
+      type: 'boolean',
+      initialValue: false,
+      description: 'Set to true when ready to publish'
+    }),
+    defineField({
       name: 'date',
       title: 'Date',
       type: 'date',

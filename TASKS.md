@@ -28,6 +28,32 @@
 - [ ] **PWA Complete** - Service worker with Workbox, full manifest
 - [ ] **Social Preview Testing** - Verify OG images on Twitter/Facebook/LinkedIn
 
+### i18n Implementation (Post-Audit)
+*See `docs/I18N_AUDIT.md` for full report*
+
+**Decision Required:** Choose approach:
+- **Option A**: Quick fix (2-3h) - Context + dynamic field selection
+- **Option B**: Proper i18n (1-2d) - next-intl, translation files, /en routes
+- **Option C**: Remove toggle (30min) - Avoid confusion until ready
+
+Once decided, specific tasks will be:
+- [ ] Implement chosen i18n architecture
+- [ ] Update all components to use dynamic language selection
+- [ ] Create translation files for static UI content
+- [ ] Add language persistence (localStorage)
+- [ ] Populate English content in Sanity (if Option A or B)
+
+### In Progress (Assigned)
+
+- [ ] **Copy Refactoring** - User is currently refactoring all copy text
+  - **Note**: Work in progress by user
+  - **Scope**: All copy across the site
+
+- [x] **Multi-language Audit** - ✅ COMPLETED - See `docs/I18N_AUDIT.md`
+  - **Status**: Partial implementation - toggle UI exists but non-functional
+  - **Critical Issue**: All components hardcoded to `*_es` fields
+  - **Decision needed**: Choose implementation approach (see audit report)
+
 ---
 
 ## Done

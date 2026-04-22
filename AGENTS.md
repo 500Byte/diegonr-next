@@ -62,9 +62,20 @@
 - **DO NOT** create route groups `(group)` unless there is a real layout conflict between routes.
 
 ## Deployment & Secrets
-- **Hosting**: The project is deployed as **Cloudflare Pages** via OpenNext.
-- **Secrets Management**: Sensitive variables (Sanity, GitHub, etc.) are managed via Cloudflare Dashboard secrets.
-- **Environment Variables**: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_TOKEN` are required.
+- **Hosting**: The project is deployed to **Cloudflare Workers** via OpenNext.
+- **CI/CD**: Automatic deployment via GitHub Actions on every push to `master`.
+- **Node.js**: Version 22 LTS required for CI/CD pipeline.
+- **GitHub Actions**: Uses `actions/checkout@v5`, `actions/setup-node@v5`, and `cloudflare/wrangler-action@v3`.
+- **Secrets Management**: 
+  - GitHub Secrets (for CI/CD): `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`
+  - Cloudflare Secrets (for runtime): `SANITY_API_TOKEN`
+- **Required Environment Variables**: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_TOKEN`.
+
+### Workflow
+1. Push to `master` branch
+2. GitHub Actions triggers automatically
+3. Runs: lint → type-check → build → deploy
+4. If any step fails, deployment is aborted
 
 ## Testing
 - No testing framework is currently configured in `package.json`.

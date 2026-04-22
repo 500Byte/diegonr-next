@@ -12,7 +12,9 @@ A highly optimized, modern personal portfolio and professional services website 
 - **Styling**: Tailwind CSS v4
 - **Animations**: GSAP & Lenis (Smooth Scrolling)
 - **CMS**: Sanity Cloud (Headless CMS)
-- **Hosting**: Cloudflare Pages (via OpenNext)
+- **Hosting**: Cloudflare Workers (via OpenNext)
+- **CI/CD**: GitHub Actions
+- **Node.js**: 22 LTS
 - **Forms**: EmailJS
 - **Analytics**: Google Analytics 4
 
@@ -79,10 +81,18 @@ Refer to the `/docs` directory for detailed architectural and coding standards:
 
 ## Deployment
 
-### Cloudflare Pages
-This project is configured to deploy seamlessly to Cloudflare Pages using OpenNext.
-1. Configure secrets in the Cloudflare Dashboard.
-2. Build and deploy: `npm run deploy`
+### Cloudflare Workers (via GitHub Actions)
+This project deploys automatically to Cloudflare Workers on every push to `master`:
+
+**Workflow**: `git push origin master` → GitHub Actions → lint → type-check → build → deploy
+
+**Required Secrets** (configured in GitHub → Settings → Secrets):
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`
+- `NEXT_PUBLIC_SANITY_DATASET`
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed setup instructions.
 
 ### Sanity Studio
 The admin interface lives in `/sanity`:

@@ -7,6 +7,7 @@
   --color-swiss-black: var(--bg-primary);
   --color-swiss-gray-dark: #666666;
   --color-swiss-gray-light: #999999;
+  --color-error: var(--color-error);
   
   /* Redefine base colors to be dynamic */
   --color-white: var(--text-primary);
@@ -17,6 +18,14 @@
   --bg-primary: #000000;
   --text-primary: #FFFFFF;
   --border-primary: rgba(255, 255, 255, 0.1);
+  --color-error: #f87171;
+}
+
+.light {
+  --bg-primary: #FFFFFF;
+  --text-primary: #000000;
+  --border-primary: rgba(0, 0, 0, 0.1);
+  --color-error: #dc2626;
 }
 
 .light {

@@ -41,6 +41,8 @@ Ensure `wrangler.jsonc` is properly configured:
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "diegonr-next",
+  // IMPORTANT: Update quarterly. See https://developers.cloudflare.com/workers/configuration/compatibility-dates/
+  // Current: 2026-04-09 — verify this is within 30 days before deployment
   "compatibility_date": "2026-04-09",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "vars": {
@@ -183,6 +185,33 @@ npm run preview
 Check Worker startup time:
 ```bash
 wrangler check startup
+```
+
+### Generate TypeScript Types
+
+After changing `wrangler.jsonc`, regenerate types:
+```bash
+wrangler types
+```
+
+### Local Development Secrets
+
+For local development, create `.dev.vars` (never commit this file):
+```bash
+# .dev.vars content (example)
+SANITY_API_TOKEN=your-local-token
+```
+
+## Local Development
+
+Start local dev with Cloudflare runtime simulation:
+```bash
+wrangler dev
+```
+
+Start local dev with remote bindings (AI, Vectorize, etc.):
+```bash
+wrangler dev --remote
 ```
 
 ## Environment Variables

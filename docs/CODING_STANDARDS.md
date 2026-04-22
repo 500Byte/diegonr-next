@@ -4,6 +4,7 @@
 - Ensure proper typings for component props using interfaces or type aliases.
 - Despite some disabled ESLint rules (`any`, `unused-vars`), strive for strict typing to maintain codebase health.
 - Use Sanity-specific types from `src/types/index.ts` for all CMS-fetched data.
+- **Keep types in sync with Sanity schemas**: When adding fields to `/sanity/schemaTypes/*.ts`, update corresponding interfaces in `src/types/index.ts`.
 
 ## React Components
 - **Client vs. Server**: Default to Server Components. Only add `"use client"` to the top of a file when you need interactivity, lifecycle hooks (`useEffect`, `useState`), or DOM manipulation (GSAP refs).

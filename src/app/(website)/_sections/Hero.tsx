@@ -31,8 +31,11 @@ export function Hero() {
   const gridRef = useRef<HTMLDivElement>(null)
   const bottomBarRef = useRef<HTMLDivElement>(null)
   const mousePositionRef = useRef({ x: 0, y: 0 })
+  const mousePosRef = useRef({ x: 0, y: 0 })
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
+  const rafIdRef = useRef<number | undefined>(undefined)
+  const lastUpdateRef = useRef(0)
 
   // Track mouse for parallax effect and coordinates
   useEffect(() => {
@@ -40,11 +43,21 @@ export function Hero() {
       const x = (e.clientX / window.innerWidth - 0.5) * 2
       const y = (e.clientY / window.innerHeight - 0.5) * 2
       
-      // Update refs
+      // Update refs immediately for GSAP animations
       mousePositionRef.current = { x, y }
-      setMousePos({ x: e.clientX, y: e.clientY })
+      mousePosRef.current = { x: e.clientX, y: e.clientY }
       
-      // Animate parallax elements with GSAP
+      // Throttle React state updates to every 100ms for performance
+      const now = Date.now()
+      if (now - lastUpdateRef.current > 100) {
+        lastUpdateRef.current = now
+        if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = requestAnimationFrame(() => {
+          setMousePos(mousePosRef.current)
+        })
+      }
+      
+      // Animate parallax elements with GSAP (direct DOM manipulation, no React re-render)
       if (gridRef.current) {
         gsap.to(gridRef.current, {
           x: x * 10,
@@ -84,6 +97,7 @@ export function Hero() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
       clearTimeout(timeout)
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current)
     }
   }, [])
 

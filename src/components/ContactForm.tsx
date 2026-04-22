@@ -136,7 +136,7 @@ export function ContactForm() {
               />
             </div>
             {errors.name && (
-              <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+              <p className="text-error text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -155,7 +155,7 @@ export function ContactForm() {
               />
             </div>
             {errors.email && (
-              <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-error text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
         </div>
@@ -193,7 +193,7 @@ export function ContactForm() {
             ))}
           </select>
           {errors.service && (
-            <p className="text-red-400 text-sm mt-1">{errors.service.message}</p>
+            <p className="text-error text-sm mt-1">{errors.service.message}</p>
           )}
         </div>
 
@@ -215,7 +215,7 @@ export function ContactForm() {
               ))}
             </select>
             {errors.budget && (
-              <p className="text-red-400 text-sm mt-1">{errors.budget.message}</p>
+              <p className="text-error text-sm mt-1">{errors.budget.message}</p>
             )}
           </div>
 
@@ -236,7 +236,7 @@ export function ContactForm() {
               ))}
             </select>
             {errors.timeline && (
-              <p className="text-red-400 text-sm mt-1">{errors.timeline.message}</p>
+              <p className="text-error text-sm mt-1">{errors.timeline.message}</p>
             )}
           </div>
         </div>
@@ -253,7 +253,7 @@ export function ContactForm() {
             placeholder="Breve descripción del proyecto"
           />
           {errors.subject && (
-            <p className="text-red-400 text-sm mt-1">{errors.subject.message}</p>
+            <p className="text-error text-sm mt-1">{errors.subject.message}</p>
           )}
         </div>
 
@@ -269,16 +269,22 @@ export function ContactForm() {
             placeholder="Cuéntame más sobre tu proyecto, objetivos, desafíos, etc."
           />
           {errors.message && (
-            <p className="text-red-400 text-sm mt-1">{errors.message.message}</p>
+            <p className="text-error text-sm mt-1">{errors.message.message}</p>
           )}
         </div>
 
         <div className="pt-4">
+          <div id="form-status" aria-live="polite" aria-atomic="true" className="sr-only">
+            {submitStatus === 'success' && 'Mensaje enviado correctamente'}
+            {submitStatus === 'error' && 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.'}
+            {isSubmitting && 'Enviando mensaje...'}
+          </div>
           <Magnetic strength={0.3}>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group w-full md:w-auto px-8 py-4 bg-swiss-white text-swiss-black font-medium rounded-lg hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              aria-describedby={submitStatus !== 'idle' ? 'form-status' : undefined}
+              className="group w-full md:w-auto px-8 py-4 bg-swiss-white text-swiss-black font-medium rounded-lg hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black"
             >
               {isSubmitting ? (
                 <>

@@ -98,46 +98,48 @@ export const Navigation: React.FC = () => {
               </Link>
             </Magnetic>
             <div className="hidden lg:flex gap-4 text-[10px] tracking-widest uppercase">
-              <Magnetic strength={0.2}>
-                <span 
-                  className={cn(
-                    "cursor-pointer transition-opacity",
-                    language === 'ES' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
-                  )}
-                  onClick={() => setLanguage('ES')}
-                >
-                  ES
-                </span>
-              </Magnetic>
-              <span className="opacity-20">/</span>
-              <Magnetic strength={0.2}>
-                <span 
-                  className={cn(
-                    "cursor-pointer transition-opacity",
-                    language === 'EN' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
-                  )}
-                  onClick={() => setLanguage('EN')}
-                >
-                  EN
-                </span>
-              </Magnetic>
+              <button
+                type="button"
+                aria-label="Cambiar a español"
+                aria-pressed={language === 'ES'}
+                className={cn(
+                  "cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
+                  language === 'ES' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
+                )}
+                onClick={() => setLanguage('ES')}
+              >
+                ES
+              </button>
+              <span className="opacity-20" aria-hidden="true">/</span>
+              <button
+                type="button"
+                aria-label="Change to English"
+                aria-pressed={language === 'EN'}
+                className={cn(
+                  "cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
+                  language === 'EN' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
+                )}
+                onClick={() => setLanguage('EN')}
+              >
+                EN
+              </button>
             </div>
           </div>
 
-          <Magnetic strength={0.2}>
-            <div 
-              className="hidden md:flex items-center gap-2 text-[10px] tracking-widest uppercase cursor-pointer group"
-              onClick={toggleTheme}
-            >
-              <span className="opacity-60 group-hover:opacity-100 transition-opacity">
-                {!mounted ? 'THEME' : (theme === 'dark' ? 'LIGHT' : 'DARK')}
-              </span>
-              <div className={cn(
-                "w-2 h-2 border border-swiss-white rounded-full transition-colors",
-                !mounted ? "bg-transparent" : (theme === 'light' ? "bg-swiss-white" : "bg-transparent")
-              )} />
-            </div>
-          </Magnetic>
+          <button
+            type="button"
+            aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+            className="hidden md:flex items-center gap-2 text-[10px] tracking-widest uppercase cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm"
+            onClick={toggleTheme}
+          >
+            <span className="opacity-60 group-hover:opacity-100 transition-opacity">
+              {!mounted ? 'THEME' : (theme === 'dark' ? 'LIGHT' : 'DARK')}
+            </span>
+            <div className={cn(
+              "w-2 h-2 border border-swiss-white rounded-full transition-colors",
+              !mounted ? "bg-transparent" : (theme === 'light' ? "bg-swiss-white" : "bg-transparent")
+            )} />
+          </button>
 
           <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             {navItems.map((item) => (
@@ -146,7 +148,7 @@ export const Navigation: React.FC = () => {
                   href={item.path}
                   onClick={(e) => handleLinkClick(e, item.id, item.path)}
                   className={cn(
-                    "text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] swiss-underline opacity-80 hover:opacity-100 transition-opacity py-2",
+                    "text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] swiss-underline opacity-80 hover:opacity-100 transition-opacity py-3",
                     pathname === item.path && "opacity-100 after:w-full"
                   )}
                 >

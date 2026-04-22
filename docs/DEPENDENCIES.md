@@ -19,3 +19,5 @@
 - **Sanity (`next-sanity`)**: Headless CMS client for fetching content from Sanity Cloud using GROQ.
 - **Portable Text (`@portabletext/react`)**: Renders Sanity's Portable Text rich text content as React components.
 - **Sanity Image Utility (`@sanity/image-url`)**: Helper to generate and transform URLs for images hosted on Sanity.
+
+See [SANITY.md](SANITY.md) for detailed CMS integration documentation.

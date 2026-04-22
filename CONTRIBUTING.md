@@ -123,7 +123,7 @@ src/
 
 ### Automated Testing
 ```bash
-# Run tests
+# Run tests (currently not specified)
 npm test
 
 # Run linting

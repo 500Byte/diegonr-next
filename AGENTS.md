@@ -5,6 +5,9 @@
 - Build for production: `npm run build`
 - Start production server: `npm run start`
 - Run linter: `npm run lint`
+- Auto-fix lint errors: `npm run lint:fix`
+- TypeScript check: `npm run type-check`
+- Preview build (Cloudflare): `npm run preview`
 
 ## TypeScript Configuration
 - Targeting ES2022 with `esnext` modules.
@@ -47,7 +50,7 @@
 - `sanity/`: Standalone Sanity Studio project (configuration and schema definitions).
 
 ## Key Design Patterns
-- **Animations**: Uses GSAP `useGSAP` hook for React-safe animations. Always pass a `scope` (usually a ref to the section container) to `useGSAP` to avoid global selector conflicts.
+- **Animations**: Uses GSAP `useGSAP` hook for React-safe animations. Always pass a `scope` (usually a ref to the section container) to `useGSAP` to avoid global selector conflicts. For scroll-linked animations, use GSAP ScrollTrigger (`gsap-scrolltrigger` skill).
 - **Headless CMS**: Content is managed via **Sanity Cloud**. Data is fetched using `next-sanity` and GROQ queries.
   - Documents are typed and accessed directly (e.g., `doc.title`, `doc.slug.current`).
   - Rich Text is rendered using the `<PortableText />` component from `@portabletext/react`.
@@ -65,7 +68,7 @@
 - **Hosting**: The project is deployed to **Cloudflare Workers** via OpenNext.
 - **CI/CD**: Automatic deployment via GitHub Actions on every push to `master`.
 - **Node.js**: Version 22 LTS required for CI/CD pipeline.
-- **GitHub Actions**: Uses `actions/checkout@v5`, `actions/setup-node@v5`, and `cloudflare/wrangler-action@v3`.
+- **GitHub Actions**: Uses `actions/checkout@v5`, `actions/setup-node@v5`, and `npx wrangler deploy`.
 - **Secrets Management**: 
   - GitHub Secrets (for CI/CD): `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`
   - Cloudflare Secrets (for runtime): `SANITY_API_TOKEN`

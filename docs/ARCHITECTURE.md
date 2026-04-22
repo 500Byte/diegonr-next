@@ -14,6 +14,8 @@ This project is a modern web application built on **Next.js (App Router)**. It s
 5. **i18n**: The system is prepared for a Spanish/English toggle. Currently, only Spanish fields (e.g., `description_es`) are populated in Sanity, but English fields are defined in types and schemas.
 6. **Animation**: Data is passed as props to Client Components (`_sections/*`) for rendering and high-end GSAP animations.
 
+See [SANITY.md](SANITY.md) for detailed CMS documentation.
+
 ## UI & Animation Architecture
 - **Tailwind CSS**: Used for all structural styling, responsive design, and base visual aesthetics. Configured with a "Swiss" monochrome design system (`swiss-black`, `swiss-white`).
 - **GSAP**: The primary animation engine. Integrated into React using `@gsap/react` to manage timelines and scroll-triggered animations safely within component lifecycles.

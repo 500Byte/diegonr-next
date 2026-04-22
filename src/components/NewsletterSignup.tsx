@@ -116,7 +116,7 @@ export function NewsletterSignup() {
               placeholder="Tu nombre"
             />
             {errors.name && (
-              <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+              <p className="text-error text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -132,7 +132,7 @@ export function NewsletterSignup() {
               placeholder="tu@email.com"
             />
             {errors.email && (
-              <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-error text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
         </div>
@@ -158,7 +158,7 @@ export function NewsletterSignup() {
             ))}
           </div>
           {errors.interests && (
-            <p className="text-red-400 text-sm mt-2">{errors.interests.message}</p>
+            <p className="text-error text-sm mt-2">{errors.interests.message}</p>
           )}
         </div>
 

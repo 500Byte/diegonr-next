@@ -37,9 +37,6 @@ on:
   push:
     branches: [master]
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -62,11 +59,10 @@ jobs:
           NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
 
       - name: Deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 ```
 
 ## Design Decisions
@@ -93,16 +89,16 @@ jobs:
 - Our stack (Next.js 16, OpenNext, Wrangler) works perfectly with Node 22
 - Balance between stability and modern features
 
-### FORCE_JAVASCRIPT_ACTIONS_TO_NODE24
+### Direct wrangler vs wrangler-action
 
-**Decision**: Add environment variable to force Node 24 for GitHub Actions.
+**Decision**: Use `npx wrangler deploy` directly instead of `cloudflare/wrangler-action@v3`.
 
 **Rationale**:
-- GitHub Actions themselves (checkout, setup-node, wrangler-action) run on Node 20 internally
-- This triggers deprecation warnings
-- The env variable forces these actions to use Node 24 runtime
-- Eliminates warnings without waiting for action updates
-- No impact on our actual build (which uses Node 22)
+- `wrangler-action@v3` runs on Node 20 internally, triggering deprecation warnings
+- Using `npx wrangler deploy` directly eliminates the warning completely
+- Wrangler is already in `devDependencies`, so it's available after `npm ci`
+- Wrangler automatically reads `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` from environment
+- Cleaner workflow with fewer external action dependencies
 
 ### Direct Deploy vs Version Upload
 
@@ -266,5 +262,5 @@ If we need more control in the future:
 
 - [DEPLOYMENT.md](DEPLOYMENT.md) - General deployment guide
 - [GitHub Actions Docs](https://docs.github.com/en/actions)
-- [Cloudflare Wrangler Action](https://github.com/cloudflare/wrangler-action)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
 - [OpenNext Cloudflare](https://opennext.js.org/cloudflare)

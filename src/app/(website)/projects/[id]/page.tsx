@@ -185,11 +185,11 @@ export default async function ProjectSingle({ params }: PageProps) {
                 <DocumentRenderer field={project.content} />
               </div>
 
-              {!!project.url?.url && (
+              {project.url && (
                 <div className="mt-24 pt-12 border-t border-white/10">
                   <Magnetic strength={0.2}>
                     <a
-                      href={project.url?.url || '#'}
+                      href={project.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group flex items-center gap-4 text-2xl font-medium tracking-tighter hover:text-white/60 transition-colors"

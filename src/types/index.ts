@@ -32,11 +32,7 @@ export interface ProjectDocument extends BaseSanityDocument {
   description_es?: PortableTextBlock[];
   description_en?: PortableTextBlock[];
   tech?: { item?: string }[];
-  url?: {
-    link_type?: string;
-    url?: string;
-    target?: string;
-  };
+  url?: string;
   featured?: boolean;
   image?: SanityImage;
   content?: PortableTextBlock[];

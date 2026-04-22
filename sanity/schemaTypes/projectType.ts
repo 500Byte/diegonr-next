@@ -12,11 +12,7 @@ export const projectType = defineType({
     defineField({ name: 'description_es', title: 'Description (ES)', type: 'array', of: [{ type: 'block' }] }),
     defineField({ name: 'description_en', title: 'Description (EN)', type: 'array', of: [{ type: 'block' }] }),
     defineField({ name: 'tech', title: 'Technologies', type: 'array', of: [{ type: 'object', fields: [{ name: 'item', type: 'string' }] }] }),
-    defineField({ name: 'url', title: 'URL', type: 'object', fields: [
-      { name: 'link_type', type: 'string' },
-      { name: 'url', type: 'url' },
-      { name: 'target', type: 'string' }
-    ]}),
+    defineField({ name: 'url', title: 'Project URL', type: 'url', description: 'External link to the live project' }),
     defineField({ name: 'featured', title: 'Featured', type: 'boolean' }),
     defineField({ name: 'image', title: 'Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'content', title: 'Content', type: 'array', of: [{ type: 'block' }] }),

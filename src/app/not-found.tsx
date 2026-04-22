@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { NavigationError } from '@/components/NavigationError';
-import { Footer } from '@/components/Footer';
+import { FooterError } from '@/components/FooterError';
 import { Magnetic } from '@/components/Magnetic';
 import { SwissContainer } from '@/components/Layout';
 import { MarqueeBanner } from '@/components/ui/marquee-banner';
@@ -109,7 +109,7 @@ export default function NotFound() {
           <Barcode />
         </div>
       </div>
-      <Footer />
+      <FooterError />
     </>
   );
 }

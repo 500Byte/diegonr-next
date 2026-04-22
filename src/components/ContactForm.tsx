@@ -5,6 +5,7 @@ import { z } from 'zod'
 import emailjs from '@emailjs/browser'
 import { Magnetic } from '@/components/Magnetic'
 import { Send, CheckCircle, AlertCircle, MessageSquare, User, Mail, Briefcase } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 const contactSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'El nombre es demasiado largo'),
@@ -50,6 +51,7 @@ const timelines = [
 ]
 
 export function ContactForm() {
+  const t = useTranslations('ContactForm')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const formRef = useRef<HTMLFormElement>(null)

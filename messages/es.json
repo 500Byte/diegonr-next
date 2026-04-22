@@ -134,6 +134,12 @@
     "brand": "DN",
     "tagline": "Solutions Architect & Full-Stack Developer",
     "copyright": "© {year} Diego NR. All rights reserved.",
+    "navigation_label": "Navegación",
+    "social_label": "Social",
+    "location_label": "Ubicación",
+    "location_city": "Madrid, España",
+    "location_remote": "Remoto • Global",
+    "back_to_top": "Back to top",
     "links": {
       "home": "Inicio",
       "about": "Sobre mí",

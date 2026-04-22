@@ -788,6 +788,139 @@ Dentro de 24 horas
 
 ---
 
+## NEWSLETTER SIGNUP
+
+**ID:** `newsletter.heading`  
+**Ubicación:** NewsletterSignup.tsx - form heading
+
+```
+Mantente Actualizado
+```
+
+**ID:** `newsletter.description`  
+**Ubicación:** NewsletterSignup.tsx - form description
+
+```
+Recibe las últimas actualizaciones sobre mis proyectos, artículos técnicos y oportunidades de colaboración.
+```
+
+**ID:** `newsletter.field.name.label`  
+**Ubicación:** NewsletterSignup.tsx - name label
+
+```
+Nombre
+```
+
+**ID:** `newsletter.field.name.placeholder`  
+**Ubicación:** NewsletterSignup.tsx - name placeholder
+
+```
+Tu nombre
+```
+
+**ID:** `newsletter.field.email.label`  
+**Ubicación:** NewsletterSignup.tsx - email label
+
+```
+Email
+```
+
+**ID:** `newsletter.field.email.placeholder`  
+**Ubicación:** NewsletterSignup.tsx - email placeholder
+
+```
+tu@email.com
+```
+
+**ID:** `newsletter.field.interests.label`  
+**Ubicación:** NewsletterSignup.tsx - interests label
+
+```
+Intereses
+```
+
+**ID:** `newsletter.interests.options`  
+**Ubicación:** NewsletterSignup.tsx - interest options array
+
+```
+- Desarrollo Web
+- Inteligencia Artificial
+- Diseño UX/UI
+- Consultoría
+```
+
+**ID:** `newsletter.button.subscribe`  
+**Ubicación:** NewsletterSignup.tsx - submit button default
+
+```
+Suscribirse
+```
+
+**ID:** `newsletter.button.submitting`  
+**Ubicación:** NewsletterSignup.tsx - submit button loading
+
+```
+Enviando...
+```
+
+**ID:** `newsletter.button.success`  
+**Ubicación:** NewsletterSignup.tsx - submit button success
+
+```
+¡Suscrito!
+```
+
+**ID:** `newsletter.button.error`  
+**Ubicación:** NewsletterSignup.tsx - submit button error
+
+```
+Error - Reintentar
+```
+
+**ID:** `newsletter.privacy.text`  
+**Ubicación:** NewsletterSignup.tsx - privacy disclaimer
+
+```
+Respetamos tu privacidad. Puedes darte de baja en cualquier momento.
+```
+
+**ID:** `newsletter.validation.name.error.min`  
+**Ubicación:** NewsletterSignup.tsx - Zod validation
+
+```
+El nombre debe tener al menos 2 caracteres
+```
+
+**ID:** `newsletter.validation.name.error.max`  
+**Ubicación:** NewsletterSignup.tsx - Zod validation
+
+```
+El nombre es demasiado largo
+```
+
+**ID:** `newsletter.validation.email.error`  
+**Ubicación:** NewsletterSignup.tsx - Zod validation
+
+```
+Email inválido
+```
+
+**ID:** `newsletter.validation.email.required`  
+**Ubicación:** NewsletterSignup.tsx - Zod validation
+
+```
+El email es requerido
+```
+
+**ID:** `newsletter.validation.interests.error`  
+**Ubicación:** NewsletterSignup.tsx - Zod validation
+
+```
+Selecciona al menos un interés
+```
+
+---
+
 ## COMPONENTES REUTILIZABLES
 
 ### PageHeader Component
@@ -1026,6 +1159,86 @@ hardcodeados en los componentes. Para internacionalizarse, considera:
 
 ---
 
+## 📋 VERIFICACIÓN DE COMPLETITUD
+
+### Componentes Documentados ✅
+
+- [x] Navigation - Completo
+- [x] Footer - Completo (Navegación, Social, Ubicación)
+- [x] Hero Section - Completo
+- [x] About Section - Completo
+- [x] Services Section - Completo
+- [x] Works Section - Completo
+- [x] Blog Section - Completo
+- [x] Vision Section - Completo (3 tabs)
+- [x] ContactForm - Completo (todos los campos y validaciones)
+- [x] **NewsletterSignup - Completo** (agregado)
+- [x] PageHeader - Referenciado
+- [x] Preloader - No requiere copy (solo animación numérica)
+- [x] GitHubStats/SocialActivityFeed - Datos dinámicos de API
+
+### Páginas Documentadas ✅
+
+- [x] Homepage (/)
+- [x] About (/about)
+- [x] Services (/services + /services/[id])
+- [x] Projects (/projects + /projects/[id])
+- [x] Blog (/blog + /blog/[id])
+- [x] Contact (/contact)
+- [x] Error Pages (404, offline)
+
+### SEO Metadata Documentado ✅
+
+- [x] Homepage
+- [x] About
+- [x] Services
+- [x] Projects
+- [x] Blog
+- [x] Dynamic patterns (Service, Project, Post)
+
+### Contenido de Sanity (Dinámico) 📝
+
+Marcado claramente como cargado desde CMS - no hardcodeado:
+- Services (title_es, description_es, items)
+- Projects (title, description_es, category, tech, content)
+- Blog Posts (title, excerpt, content, category)
+
+---
+
+## 📝 NOTAS PARA I18N
+
+### Copys Hardcodeados a Migrar
+
+Para la implementación de i18n (Opción B), estos son los archivos que necesitan usar `useTranslations`:
+
+**Alta prioridad (visibles en homepage):**
+1. Navigation.tsx - 5 nav items + language toggle
+2. Hero.tsx - Tag, headings, descriptions, CTAs
+3. About.tsx - Section label, headings, bio paragraphs
+4. Services.tsx - Labels, CTAs
+5. Works.tsx - Labels
+6. BlogSection.tsx - Label, heading, subtitle, CTA
+7. Vision.tsx - 3 tab titles + content + footer
+8. Footer.tsx - 3 column labels + copyright
+
+**Media prioridad (páginas internas):**
+9. about/page.tsx - Header + 2 section headings + paragraphs
+10. services/page.tsx - Header
+11. projects/page.tsx - Header
+12. blog/page.tsx - Header
+13. contact/page.tsx - Header
+
+**Forms (validaciones incluidas):**
+14. ContactForm.tsx - Todos los labels, placeholders, errores, botones
+15. NewsletterSignup.tsx - Todos los labels, placeholders, errores, botones, opciones
+
+**SEO (metadata):**
+16. Todos los page.tsx con generateMetadata
+
+**Estado:** 16 archivos identificados para migración
+
+---
+
 **Última actualización:** Abril 22, 2026  
 **Responsable:** Diego NR  
-**Versión:** 1.0
+**Versión:** 1.1 (NewsletterSignup agregado, checklist de completitud)

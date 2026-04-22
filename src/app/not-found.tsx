@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Navigation } from '@/components/Navigation';
+import { NavigationError } from '@/components/NavigationError';
 import { Footer } from '@/components/Footer';
 import { Magnetic } from '@/components/Magnetic';
 import { SwissContainer } from '@/components/Layout';
@@ -52,7 +52,7 @@ export default function NotFound() {
 
   return (
     <>
-      <Navigation />
+      <NavigationError />
       <div ref={containerRef} className="relative min-h-[90vh] flex flex-col justify-center bg-swiss-black overflow-hidden pt-20">
         {/* Background Grid */}
         <div 

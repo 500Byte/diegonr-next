@@ -9,6 +9,7 @@ import { Magnetic } from "@/components/Magnetic"
 import { ArrowDown } from "lucide-react"
 import { SwissContainer } from "@/components/Layout"
 import { scrollTo } from "@/lib/lenis";
+import { useTranslations } from "next-intl";
 
 const coreStack = [
   "React / Next.js",
@@ -22,6 +23,7 @@ const coreStack = [
 ];
 
 export function Hero() {
+  const t = useTranslations("Hero");
   const sectionRef = useRef<HTMLElement>(null)
   const nameRef = useRef<HTMLHeadingElement>(null)
   const tagRef = useRef<HTMLParagraphElement>(null)
@@ -224,7 +226,7 @@ export function Hero() {
       <SwissContainer className="relative flex-1 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12 mt-8">
         <div className="flex-1 max-w-3xl">
           <p ref={tagRef} className="font-mono text-white/60 mb-4 text-xs">
-            <TextScramble text="[ID: SOLUTIONS ARCHITECT]" delay={1500} />
+            <TextScramble text={t("tag")} delay={1500} />
           </p>
 
           <h1
@@ -237,12 +239,10 @@ export function Hero() {
 
           <div ref={descriptionRef} className="space-y-4 max-w-xl">
             <p className="text-base md:text-lg text-swiss-white/80 leading-relaxed">
-              Soy un Solutions Architect híbrido que fusiona una base nativa en UI/UX con ingeniería de software orientada a la eficiencia. Opero más allá del desarrollo web tradicional, especializándome en{" "}
-              <span className="text-swiss-white font-medium">AI-Augmented Development</span>{" "}
-              y orquestación de sistemas.
+              {t("description_1")}
             </p>
             <p className="text-base md:text-lg text-swiss-white/60 leading-relaxed">
-              Mi enfoque es agnóstico a la sintaxis pero estricto en la estructura de datos: domino la automatización de flujos de trabajo, pipelines ETL y la industrialización del SDLC.
+              {t("description_2")}
             </p>
           </div>
 
@@ -257,7 +257,7 @@ export function Hero() {
               }}
               className="group inline-flex items-center gap-3 px-6 py-3 border border-white/20 hover:border-white/60 transition-colors duration-300"
             >
-              <span className="font-mono text-xs uppercase tracking-widest">VER PROYECTOS</span>
+              <span className="font-mono text-xs uppercase tracking-widest">{t("cta")}</span>
               <span className="w-8 h-px bg-white/40 group-hover:w-12 transition-all duration-300" />
             </Magnetic>
           </div>
@@ -274,14 +274,14 @@ export function Hero() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
               </span>
               <span className="font-mono text-xs uppercase tracking-widest">
-                [STATUS: ACTIVE]
+                [{t("status")}: ACTIVE]
               </span>
             </div>
           </div>
 
           <div className="sidebar-item">
             <p className="font-mono text-xs text-white/50 mb-3 uppercase tracking-widest">
-              CORE STACK:
+              {t("core_stack")}:
             </p>
             <ul className="space-y-1.5">
               {coreStack.map((item, i) => (
@@ -300,10 +300,10 @@ export function Hero() {
 
           <div className="sidebar-item">
             <p className="font-mono text-xs text-white/50 mb-1 uppercase tracking-widest">
-              LOCATION:
+              {t("location")}:
             </p>
             <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
-              REMOTE / WORLDWIDE
+              {t("remote_worldwide")}
             </p>
           </div>
         </div>

@@ -1,0 +1,184 @@
+{
+  "Navigation": {
+    "brand": "DN",
+    "language_es": "ES",
+    "language_en": "EN",
+    "theme_light": "LIGHT",
+    "theme_dark": "DARK",
+    "menu_label": "MENU",
+    "menu_items": {
+      "projects": "PROYECTOS",
+      "services": "SERVICIOS",
+      "about": "SOBRE MÍ",
+      "blog": "BLOG",
+      "contact": "CONTACTO"
+    },
+    "aria": {
+      "menu_open": "Abrir menú de navegación",
+      "menu_close": "Cerrar menú",
+      "change_language": "Cambiar idioma",
+      "toggle_theme": "Cambiar tema"
+    }
+  },
+  "Hero": {
+    "tag": "[ID: SOLUTIONS ARCHITECT]",
+    "name": "DIEGO NR",
+    "role": "SOLUTIONS ARCHITECT",
+    "description_1": "Soy un Solutions Architect híbrido que fusiona una base nativa en UI/UX con ingeniería de software orientada a la eficiencia. Opero más allá del desarrollo web tradicional, especializándome en AI-Augmented Development y orquestación de sistemas.",
+    "description_2": "Mi enfoque es agnóstico a la sintaxis pero estricto en la estructura de datos: domino la automatización de flujos de trabajo, pipelines ETL y la industrialización del SDLC.",
+    "cta": "VER PROYECTOS",
+    "cta_aria": "Ir a la página de contacto",
+    "image_alt": "Retrato de Diego NR, Solutions Architect",
+    "status": "STATUS",
+    "core_stack": "CORE STACK",
+    "location": "LOCATION",
+    "remote_worldwide": "REMOTE / WORLDWIDE"
+  },
+  "About": {
+    "label": "[01 — ABOUT]",
+    "heading": "WHO AM I?",
+    "bio_1": "Soy un desarrollador full-stack con pasión por la arquitectura de software y el diseño de sistemas escalables.",
+    "bio_2": "Mi enfoque combina la creatividad técnica con la eficiencia del desarrollo asistido por IA.",
+    "skills_label": "SKILLS",
+    "experience_label": "EXPERIENCE",
+    "cta": "VER MÁS",
+    "image_alt": "Imagen de perfil profesional"
+  },
+  "Services": {
+    "label": "[02 — SERVICES]",
+    "heading": "WHAT I DO",
+    "description": "Soluciones digitales a medida para llevar tu negocio al siguiente nivel.",
+    "view_all": "VER TODOS",
+    "view_details": "VER DETALLES",
+    "image_alt": "Imagen del servicio {title}"
+  },
+  "Works": {
+    "label": "[03 — PROJECTS]",
+    "heading": "SELECTED WORKS",
+    "description": "Una selección de proyectos que demuestran mi experiencia en arquitectura de software.",
+    "view_all": "VER TODOS",
+    "view_project": "VER PROYECTO",
+    "view_details": "VER DETALLES",
+    "image_alt": "Captura del proyecto {title}"
+  },
+  "BlogSection": {
+    "label": "[04 — INSIGHTS]",
+    "heading": "LATEST POSTS",
+    "description": "Reflexiones sobre desarrollo, arquitectura y tecnología.",
+    "read_more": "LEER MÁS",
+    "view_all": "VER TODOS",
+    "image_alt": "Imagen del artículo {title}"
+  },
+  "Vision": {
+    "label": "[05 — VISION]",
+    "heading": "MY APPROACH",
+    "description": "Creo en el poder de la tecnología para transformar negocios y mejorar vidas.",
+    "principles": {
+      "title": "PRINCIPLES",
+      "items": [
+        "Arquitectura sobre código",
+        "Escalabilidad desde el día 1",
+        "AI como acelerador, no reemplazo",
+        "Calidad sobre velocidad"
+      ]
+    }
+  },
+  "ContactForm": {
+    "title": "LET'S TALK",
+    "subtitle": "¿Tienes un proyecto en mente? Hablemos.",
+    "fields": {
+      "name": {
+        "label": "Nombre",
+        "placeholder": "Tu nombre"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "tu@email.com"
+      },
+      "company": {
+        "label": "Empresa (opcional)",
+        "placeholder": "Tu empresa"
+      },
+      "service": {
+        "label": "Servicio de interés",
+        "placeholder": "Selecciona un servicio"
+      },
+      "message": {
+        "label": "Mensaje",
+        "placeholder": "Cuéntame sobre tu proyecto..."
+      }
+    },
+    "submit": "ENVIAR MENSAJE",
+    "submit_sending": "ENVIANDO...",
+    "success": {
+      "title": "¡Mensaje enviado!",
+      "message": "Gracias por contactarme. Te responderé pronto."
+    },
+    "error": {
+      "title": "Error al enviar",
+      "message": "Hubo un problema. Por favor intenta de nuevo."
+    }
+  },
+  "NewsletterSignup": {
+    "title": "NEWSLETTER",
+    "heading": "STAY UPDATED",
+    "description": "Recibe insights sobre desarrollo, arquitectura y tecnología directamente en tu inbox.",
+    "email_placeholder": "tu@email.com",
+    "submit": "SUSCRIBIRSE",
+    "submit_sending": "...",
+    "success": "¡Gracias por suscribirte!",
+    "error": "Error al suscribir. Intenta de nuevo.",
+    "privacy": "No compartimos tu email. Unsubscribe anytime."
+  },
+  "Footer": {
+    "brand": "DN",
+    "tagline": "Solutions Architect & Full-Stack Developer",
+    "copyright": "© {year} Diego NR. All rights reserved.",
+    "links": {
+      "home": "Inicio",
+      "about": "Sobre mí",
+      "projects": "Proyectos",
+      "services": "Servicios",
+      "blog": "Blog",
+      "contact": "Contacto"
+    },
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    },
+    "legal": {
+      "privacy": "Política de privacidad",
+      "terms": "Términos de uso"
+    }
+  },
+  "Preloader": {
+    "loading": "Cargando...",
+    "welcome": "BIENVENIDO"
+  },
+  "NotFound": {
+    "title": "404",
+    "heading": "PAGE NOT FOUND",
+    "description": "La página que buscas no existe o fue movida.",
+    "cta": "VOLVER AL INICIO"
+  },
+  "Offline": {
+    "title": "SIN CONEXIÓN",
+    "description": "Parece que estás sin conexión. Algunas funciones pueden no estar disponibles.",
+    "cta": "REINTENTAR"
+  },
+  "Metadata": {
+    "home_title": "Diego NR | Solutions Architect & Full-Stack Developer",
+    "home_description": "Arquitecto de soluciones especializado en AI-Augmented Development. Transformo ideas complejas en sistemas digitales escalables.",
+    "about_title": "Sobre mí | Diego NR",
+    "about_description": "Conoce mi trayectoria como desarrollador full-stack y arquitecto de soluciones.",
+    "projects_title": "Proyectos | Diego NR",
+    "projects_description": "Portafolio de proyectos de arquitectura de software y desarrollo full-stack.",
+    "services_title": "Servicios | Diego NR",
+    "services_description": "Soluciones digitales a medida: arquitectura, desarrollo, consultoría.",
+    "blog_title": "Blog | Diego NR",
+    "blog_description": "Reflexiones sobre desarrollo, arquitectura de software y tecnología.",
+    "contact_title": "Contacto | Diego NR",
+    "contact_description": "¿Tienes un proyecto en mente? Contactemos y hagámoslo realidad."
+  }
+}

@@ -1,23 +1,25 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { SwissContainer } from './Layout';
 import { Magnetic } from './Magnetic';
 import { cn } from '../lib/utils';
 import { useTheme } from 'next-themes';
 import { scrollTo } from '@/lib/lenis';
+import { useTranslations, useLocale } from 'next-intl';
+import { Link, useRouter } from '@/i18n/routing';
 
 export const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [language, setLanguage] = useState<'ES' | 'EN'>('ES');
   const [mounted, setMounted] = useState(false);
   const lastScrollY = useRef(0);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations('Navigation');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +48,7 @@ export const Navigation: React.FC = () => {
   }, []);
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string, path: string) => {
-    if (pathname === '/' && path === '/') {
+    if (pathname === `/${locale}` && path === '/') {
       e.preventDefault();
       scrollTo(`#${id}`);
     } else if (path !== '/') {
@@ -56,7 +58,7 @@ export const Navigation: React.FC = () => {
       router.push('/');
       setTimeout(() => {
         scrollTo(`#${id}`);
-      }, 500); // Give it more time for Next.js navigation
+      }, 500);
     }
   };
 
@@ -64,12 +66,21 @@ export const Navigation: React.FC = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  const toggleLanguage = () => {
+    const newLocale = locale === 'es' ? 'en' : 'es';
+    // Persist preference in localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('preferred-locale', newLocale);
+    }
+    router.replace('/', { locale: newLocale });
+  };
+
   const navItems = [
-    { label: 'Sobre mí', id: 'about', path: '/about' },
-    { label: 'Proyectos', id: 'works', path: '/projects' },
-    { label: 'Servicios', id: 'services', path: '/services' },
-    { label: 'Blog', id: 'blog', path: '/blog' },
-    { label: 'Contacto', id: 'contact', path: '/contact' }
+    { label: t('menu_items.about'), id: 'about', path: '/about' as const },
+    { label: t('menu_items.projects'), id: 'works', path: '/projects' as const },
+    { label: t('menu_items.services'), id: 'services', path: '/services' as const },
+    { label: t('menu_items.blog'), id: 'blog', path: '/blog' as const },
+    { label: t('menu_items.contact'), id: 'contact', path: '/contact' as const }
   ];
 
   return (
@@ -88,52 +99,52 @@ export const Navigation: React.FC = () => {
                 href="/"
                 className="w-10 h-10 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
                 onClick={(e) => {
-                  if (pathname === '/') {
+                  if (pathname === `/${locale}`) {
                     e.preventDefault();
                     scrollTo('#home');
                   }
                 }}
               >
-                DN
+                {t('brand')}
               </Link>
             </Magnetic>
             <div className="hidden lg:flex gap-4 text-[10px] tracking-widest uppercase">
               <button
                 type="button"
-                aria-label="Cambiar a español"
-                aria-pressed={language === 'ES'}
+                aria-label={t('aria.change_language')}
+                aria-pressed={locale === 'es'}
                 className={cn(
                   "cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
-                  language === 'ES' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
+                  locale === 'es' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
                 )}
-                onClick={() => setLanguage('ES')}
+                onClick={() => locale !== 'es' && toggleLanguage()}
               >
-                ES
+                {t('language_es')}
               </button>
               <span className="opacity-20" aria-hidden="true">/</span>
               <button
                 type="button"
-                aria-label="Change to English"
-                aria-pressed={language === 'EN'}
+                aria-label={t('aria.change_language')}
+                aria-pressed={locale === 'en'}
                 className={cn(
                   "cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
-                  language === 'EN' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
+                  locale === 'en' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
                 )}
-                onClick={() => setLanguage('EN')}
+                onClick={() => locale !== 'en' && toggleLanguage()}
               >
-                EN
+                {t('language_en')}
               </button>
             </div>
           </div>
 
           <button
             type="button"
-            aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+            aria-label={t('aria.toggle_theme')}
             className="hidden md:flex items-center gap-2 text-[10px] tracking-widest uppercase cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm"
             onClick={toggleTheme}
           >
             <span className="opacity-60 group-hover:opacity-100 transition-opacity">
-              {!mounted ? 'THEME' : (theme === 'dark' ? 'LIGHT' : 'DARK')}
+              {!mounted ? t('theme_dark') : (theme === 'dark' ? t('theme_light') : t('theme_dark'))}
             </span>
             <div className={cn(
               "w-2 h-2 border border-swiss-white rounded-full transition-colors",
@@ -149,7 +160,7 @@ export const Navigation: React.FC = () => {
                   onClick={(e) => handleLinkClick(e, item.id, item.path)}
                   className={cn(
                     "text-xs font-medium uppercase tracking-[0.15em] sm:tracking-[0.2em] swiss-underline opacity-80 hover:opacity-100 transition-opacity py-3",
-                    pathname === item.path && "opacity-100 after:w-full"
+                    pathname.includes(item.path) && "opacity-100 after:w-full"
                   )}
                 >
                   {item.label}

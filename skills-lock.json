@@ -6,6 +6,11 @@
       "sourceType": "github",
       "computedHash": "65085998d643c3b64ff323ca74d76496b47484046b030730c00c03a0208bf410"
     },
+    "agent-browser": {
+      "source": "vercel-labs/agent-browser",
+      "sourceType": "github",
+      "computedHash": "c19a532a3777698b80b35270939a1dc559da451381971b3e1e78174d1ab54863"
+    },
     "animate": {
       "source": "pbakaus/impeccable",
       "sourceType": "github",
@@ -35,6 +40,11 @@
       "source": "vercel-labs/skills",
       "sourceType": "github",
       "computedHash": "9e1c8b3103f92fa8092568a44fe64858de7c5c9dc65ce4bea8f168080e889cfd"
+    },
+    "i18n-localization": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "computedHash": "ea5d6d0faa9fabd6a8a3165dca69dac9ab7c622dc130bdce3f1dfa88e02ba948"
     },
     "optimize": {
       "source": "pbakaus/impeccable",

@@ -28,6 +28,10 @@ export function urlFor(source: Parameters<typeof builder.image>[0]) {
   return builder.image(source);
 }
 
+// ============================================================================
+// PROJECTS
+// ============================================================================
+
 // For list views - lightweight projection
 export async function getAllProjects(): Promise<ProjectDocument[]> {
   const projects = await client.fetch<ProjectDocument[]>(
@@ -57,19 +61,16 @@ export async function getProject(slug: string): Promise<ProjectDocument | null> 
   );
 }
 
-// For list views - lightweight projection
-export async function getAllPosts(): Promise<BlogPostDocument[]> {
-  return await client.fetch<BlogPostDocument[]>(
-    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc) {
-      _id, _type, title, slug, date, category, read_time, excerpt, image
-    }`
-  );
-}
+// ============================================================================
+// SERVICES
+// ============================================================================
 
-// For detail views - full document (includes content)
-export async function getAllPostsFull(): Promise<BlogPostDocument[]> {
-  return await client.fetch<BlogPostDocument[]>(
-    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc)`
+// For list views - lightweight projection
+export async function getAllServices(): Promise<ServiceDocument[]> {
+  return await client.fetch<ServiceDocument[]>(
+    `*[_type == "service" && !(_id in path("drafts.**"))] | order(order asc) {
+      _id, _type, title, title_es, slug, description_es, items, order
+    }`
   );
 }
 
@@ -87,7 +88,21 @@ export async function getService(slug: string): Promise<ServiceDocument | null> 
   );
 }
 
+// ============================================================================
+// BLOG POSTS
+// ============================================================================
+
+// For list views - lightweight projection
 export async function getAllPosts(): Promise<BlogPostDocument[]> {
+  return await client.fetch<BlogPostDocument[]>(
+    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc) {
+      _id, _type, title, slug, date, category, read_time, excerpt, image
+    }`
+  );
+}
+
+// For detail views - full document (includes content)
+export async function getAllPostsFull(): Promise<BlogPostDocument[]> {
   return await client.fetch<BlogPostDocument[]>(
     `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc)`
   );

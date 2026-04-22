@@ -117,7 +117,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
         <div className="hidden lg:grid lg:grid-cols-12 gap-12">
           {/* Left - Tab list as vertical accordion */}
           <div className="lg:col-span-5 space-y-6">
-            {services.map((service, index) => (
+            {safeServices.map((service, index) => (
               <button
                 key={service.slug?.current}
                 onClick={() => setActiveTab(service.slug?.current as string)}
@@ -220,7 +220,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
 
         {/* Mobile - Expandable cards */}
         <div className="lg:hidden space-y-4">
-          {services.map((service, index) => (
+          {safeServices.map((service, index) => (
             <div
               key={service.slug?.current}
               className="service-card border border-white/10 overflow-hidden"

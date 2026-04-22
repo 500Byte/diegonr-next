@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useRef, type ReactNode } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { gsap, ScrollTrigger } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
-import { cn } from "../../lib/utils"
-
-gsap.registerPlugin(ScrollTrigger)
+import { cn } from "@/lib/utils"
 
 interface TextRevealProps {
   children: ReactNode

@@ -1,12 +1,9 @@
 "use client";
 
 import { useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { gsap, ScrollTrigger } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
-import { cn } from "../../lib/utils"
-
-gsap.registerPlugin(ScrollTrigger)
+import { cn } from "@/lib/utils"
 
 interface MarqueeBannerProps {
   text: string

@@ -108,11 +108,19 @@ export function TextScramble({
       scramble()
     }
   }
-  
+
+  const handleFocus = () => {
+    if (scrambleOnHover && !isScrambling) {
+      scramble()
+    }
+  }
+
   return (
     <span
-      className={cn("inline-block", className)}
+      className={cn("inline-block focus:outline-none focus:ring-1 focus:ring-white/30 focus:ring-offset-1 rounded-sm", className)}
       onMouseEnter={handleMouseEnter}
+      onFocus={handleFocus}
+      tabIndex={scrambleOnHover ? 0 : -1}
     >
       {displayText || text}
     </span>

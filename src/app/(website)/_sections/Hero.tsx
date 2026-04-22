@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react"
 import { useGSAP } from "@gsap/react"
-import gsap from "gsap"
+import { gsap } from "@/lib/gsap"
 import { Barcode } from "@/components/ui/barcode"
 import { TextScramble } from "@/components/animations/text-scramble"
 import { Magnetic } from "@/components/Magnetic"
@@ -31,7 +31,7 @@ export function Hero() {
   const gridRef = useRef<HTMLDivElement>(null)
   const bottomBarRef = useRef<HTMLDivElement>(null)
   const mousePositionRef = useRef({ x: 0, y: 0 })
-  const rawMousePositionRef = useRef({ x: 0, y: 0 })
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isLoaded, setIsLoaded] = useState(false)
 
   // Track mouse for parallax effect and coordinates
@@ -42,7 +42,7 @@ export function Hero() {
       
       // Update refs
       mousePositionRef.current = { x, y }
-      rawMousePositionRef.current = { x: e.clientX, y: e.clientY }
+      setMousePos({ x: e.clientX, y: e.clientY })
       
       // Animate parallax elements with GSAP
       if (gridRef.current) {
@@ -324,7 +324,7 @@ export function Hero() {
 
       <div className="absolute bottom-8 right-6 md:right-12 lg:right-20 hidden sm:block">
         <p className="font-mono text-[10px] text-white/40 hover:opacity-100 transition-opacity uppercase tracking-widest">
-          [X: {Math.round(rawMousePositionRef.current.x)} Y: {Math.round(rawMousePositionRef.current.y)}]
+          [X: {Math.round(mousePos.x)} Y: {Math.round(mousePos.y)}]
         </p>
       </div>
 

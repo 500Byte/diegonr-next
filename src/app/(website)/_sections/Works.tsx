@@ -5,7 +5,7 @@ import { toPlainText } from '@portabletext/react';
 
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
-import gsap from "gsap"
+import { gsap } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
@@ -93,7 +93,7 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
     >
       {/* Background number */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.05] pointer-events-none overflow-hidden">
-        <div className="absolute -top-20 -left-20 text-[25rem] font-medium text-white leading-none tracking-tighter">
+        <div className="absolute -top-20 -left-20 text-[15vw] md:text-[25rem] font-medium text-white leading-none tracking-tighter max-lg:text-[10rem]">
           02
         </div>
       </div>

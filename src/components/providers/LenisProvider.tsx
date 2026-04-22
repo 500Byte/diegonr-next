@@ -2,10 +2,7 @@
 
 import { useEffect, ReactNode } from 'react';
 import Lenis from 'lenis';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 export const LenisProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
@@ -19,8 +16,6 @@ export const LenisProvider = ({ children }: { children: ReactNode }) => {
       touchMultiplier: 2,
     });
 
-    (window as any).lenis = lenis;
-
     lenis.on('scroll', ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
@@ -31,7 +26,6 @@ export const LenisProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       lenis.destroy();
-      (window as any).lenis = undefined;
     };
   }, []);
 

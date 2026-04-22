@@ -4,7 +4,7 @@ import { toPlainText } from '@portabletext/react';
 
 
 import { useRef, useState } from "react"
-import gsap from "gsap"
+import { gsap } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
@@ -76,7 +76,7 @@ export function Services({ services }: { services: ServiceDocument[] }) {
     >
       {/* Background decoration */}
       <div className="absolute bottom-0 right-0 w-full h-full opacity-[0.05] pointer-events-none">
-        <div className="absolute -bottom-20 -right-20 text-[25rem] font-medium text-white leading-none tracking-tighter">
+        <div className="absolute -bottom-20 -right-20 text-[15vw] md:text-[25rem] font-medium text-white leading-none tracking-tighter max-lg:text-[10rem]">
           03
         </div>
       </div>

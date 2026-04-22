@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useRef, type ElementType, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import gsap from 'gsap';
+import { gsap } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
+import { cn } from '@/lib/utils';
 
 type MagneticProps<T extends ElementType = "div"> = {
   as?: T
@@ -28,7 +29,6 @@ export function Magnetic<T extends ElementType = "div">({
     if (!element) return
 
     const onMouseMove = (e: MouseEvent) => {
-      // Disable on touch devices and respect motion preferences
       if (window.matchMedia("(hover: none)").matches) return
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
@@ -67,7 +67,10 @@ export function Magnetic<T extends ElementType = "div">({
     <Tag
       {...props}
       ref={magneticRef as any}
-      className={className}
+      className={cn(
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
+        className
+      )}
       data-cursor-text={cursorText}
     >
       {children}

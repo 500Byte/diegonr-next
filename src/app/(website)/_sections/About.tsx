@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react"
-import gsap from "gsap"
+import { gsap } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
@@ -139,7 +139,7 @@ export function About() {
     >
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-full opacity-[0.05] pointer-events-none">
-        <div className="absolute top-1/4 right-1/4 text-[20rem] font-medium text-white leading-none tracking-tighter">
+        <div className="absolute top-1/4 right-1/4 text-[15vw] md:text-[20rem] font-medium text-white leading-none tracking-tighter max-lg:text-[10rem]">
           01
         </div>
       </div>

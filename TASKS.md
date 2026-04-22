@@ -47,3 +47,4 @@
 - [x] ~~AGENTS.md: Commands~~ - Added type-check, lint:fix, preview commands (2026-04-22)
 - [x] ~~DEPLOYMENT.md: compatibility_date~~ - Added quarterly update comment (2026-04-22)
 - [x] ~~DEPLOYMENT.md: wrangler types~~ - Added wrangler types and .dev.vars sections (2026-04-22)
+- [x] ~~AGENTS.md + CONTRIBUTING.md~~ - Added atomic commit policy (conventional commits) (2026-04-22)

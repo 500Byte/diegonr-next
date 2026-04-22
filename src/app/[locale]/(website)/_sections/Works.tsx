@@ -1,8 +1,6 @@
 "use client";
 
 import { toPlainText } from '@portabletext/react';
-
-
 import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import { gsap } from "@/lib/gsap"
@@ -10,15 +8,17 @@ import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
 import { ProjectDocument } from "@/types"
-
 import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SwissContainer } from "@/components/Layout"
+import { useTranslations, useLocale } from "next-intl"
 
 export function Works({ projects }: { projects?: ProjectDocument[] }) {
+  const t = useTranslations("Works");
+  const locale = useLocale();
   // Handle undefined/null gracefully
   const safeProjects = projects || []
-  
+
   if (safeProjects.length === 0) {
     return null // Don't render section if no projects
   }
@@ -147,7 +147,7 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
           <div>
             <FadeIn>
               <p className="font-mono text-xs text-white/60 mb-4 uppercase tracking-widest">
-                [02 — WORKS]
+                {t("label")}
               </p>
             </FadeIn>
             <TextReveal
@@ -156,13 +156,13 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
               splitBy="chars"
               stagger={0.03}
             >
-              SELECTED PROJECTS
+              {t("heading")}
             </TextReveal>
           </div>
-          
+
           <FadeIn delay={0.3}>
             <p className="text-white/60 max-w-sm md:text-right text-sm uppercase tracking-wider">
-              Una selección de proyectos que representan mi enfoque en arquitectura de software y experiencia de usuario.
+              {t("description")}
             </p>
           </FadeIn>
         </div>
@@ -250,7 +250,7 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
               >
                 <div className="flex items-start gap-8 md:ml-20">
                   <p className="text-swiss-gray-light max-w-xl leading-relaxed text-sm">
-                    {toPlainText(project.description_es || [])}
+                    {toPlainText(locale === 'en' ? project.description_en || [] : project.description_es || [])}
                   </p>
                   <div className="hidden md:flex flex-wrap gap-2">
                     {project.tech?.slice(0, 4).map((techField) => (
@@ -278,13 +278,13 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
               className="group inline-flex items-center gap-4"
             >
               <span className="font-mono text-swiss-gray-light group-hover:text-white transition-colors uppercase tracking-widest">
-                [VER TODOS LOS PROYECTOS]
+                [{t("view_all")}]
               </span>
               <ArrowUpRight className="w-4 h-4 text-swiss-gray-light group-hover:text-white transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Magnetic>
-            
+
             <span className="font-mono text-swiss-gray-light hidden md:block uppercase tracking-widest text-[10px]">
-              {featuredProjects.length} / {safeProjects.length} PROJECTS
+              {featuredProjects.length} / {safeProjects.length} {t("projects_count")}
             </span>
           </div>
         </FadeIn>

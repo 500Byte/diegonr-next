@@ -7,11 +7,12 @@ import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
 import { cn } from "@/lib/utils"
 import { SwissContainer } from "@/components/Layout"
+import { useTranslations } from "next-intl"
 
-const stats = [
-  { value: "5+", label: "Años de experiencia" },
-  { value: "50+", label: "Proyectos completados" },
-  { value: "20+", label: "Clientes satisfechos" },
+const getStats = (t: (key: string) => string) => [
+  { value: "5+", label: t("stats_experience") },
+  { value: "50+", label: t("stats_projects") },
+  { value: "20+", label: t("stats_clients") },
 ]
 
 const skills = [
@@ -37,6 +38,7 @@ const experiences = [
 ]
 
 export function About() {
+  const t = useTranslations("About");
   const sectionRef = useRef<HTMLElement>(null)
   const experienceRef = useRef<HTMLDivElement>(null)
 
@@ -99,7 +101,7 @@ export function About() {
         <div className="mb-20">
           <FadeIn>
             <p className="font-mono text-xs text-white/60 mb-4 uppercase tracking-widest">
-              [01 — ABOUT]
+              {t("label")}
             </p>
           </FadeIn>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -109,11 +111,11 @@ export function About() {
               splitBy="chars"
               stagger={0.03}
             >
-              WHO AM I?
+              {t("heading")}
             </TextReveal>
             <FadeIn delay={0.4}>
               <p className="text-swiss-gray-light max-w-sm text-right hidden md:block text-sm uppercase tracking-wider">
-                Arquitecto de soluciones con pasión por crear experiencias digitales excepcionales.
+                {t("subtitle")}
               </p>
             </FadeIn>
           </div>
@@ -125,21 +127,19 @@ export function About() {
           <div className="lg:col-span-5 space-y-8">
             <FadeIn delay={0.2}>
               <p className="text-xl md:text-2xl text-white leading-relaxed font-light">
-                Soy un desarrollador full-stack con más de{" "}
-                <span className="text-white font-medium">5 años de experiencia</span>{" "}
-                construyendo productos digitales que combinan diseño excepcional con arquitectura robusta.
+                {t("bio_1")}
               </p>
             </FadeIn>
-            
+
             <FadeIn delay={0.3}>
               <p className="text-lg text-white/70 leading-relaxed">
-                Actualmente me especializo en AI-Augmented Development, donde utilizo modelos de lenguaje para automatizar flujos de trabajo y acelerar el ciclo de desarrollo de software.
+                {t("bio_2")}
               </p>
             </FadeIn>
 
             <FadeIn delay={0.4}>
               <p className="text-lg text-white/70 leading-relaxed">
-                Creo en escribir código limpio, documentado y mantenible. Cada proyecto es una oportunidad para crear algo elegante en su simplicidad.
+                {t("bio_3")}
               </p>
             </FadeIn>
 
@@ -150,7 +150,7 @@ export function About() {
                   as="a"
                   href="mailto:hola@diegonr.com"
                   strength={0.3}
-                  cursorText="HOLA"
+                  cursorText={t("cta_cursor")}
                   className="group inline-flex items-center gap-4"
                 >
                   <span className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white/60 group-hover:bg-white group-hover:text-black transition-all duration-300">
@@ -164,7 +164,7 @@ export function About() {
                     </svg>
                   </span>
                   <span className="font-mono text-xs text-swiss-gray-light group-hover:text-white transition-colors uppercase tracking-widest">
-                    CONTACTAR
+                    {t("cta")}
                   </span>
                 </Magnetic>
               </div>
@@ -176,7 +176,7 @@ export function About() {
             {/* Stats - Static values */}
             <FadeIn>
               <div className="grid grid-cols-3 gap-6 md:gap-12 border-b border-white/10 pb-12 md:pb-16">
-                {stats.map((stat) => (
+                {getStats(t).map((stat) => (
                   <div key={stat.label} className="stat-item">
                     <div className="flex items-baseline gap-1">
                       <span className="stat-value text-4xl md:text-6xl lg:text-8xl font-medium tracking-tighter">
@@ -213,7 +213,7 @@ export function About() {
             {/* Experience Timeline */}
             <div ref={experienceRef}>
               <p className="font-mono text-xs text-white/60 mb-6 uppercase tracking-widest">
-                [EXPERIENCE]
+                {t("experience_label")}
               </p>
               <div className="space-y-6">
                 {experiences.map((exp) => (
@@ -231,7 +231,7 @@ export function About() {
                         </span>
                         {exp.type === "current" && (
                           <span className="px-2 py-0.5 bg-white/20 text-white text-[10px] font-mono rounded-sm uppercase tracking-widest">
-                            CURRENT
+                            {t("current_badge")}
                           </span>
                         )}
                       </div>

@@ -1,27 +1,27 @@
 "use client";
 
 import { toPlainText } from '@portabletext/react';
-
-
 import { useRef, useState } from "react"
 import { gsap } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
 import { Magnetic } from "@/components/Magnetic"
 import { ServiceDocument } from "@/types"
-
 import { cn } from "@/lib/utils"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { SwissContainer } from "@/components/Layout"
+import { useTranslations, useLocale } from "next-intl"
 
 export function Services({ services }: { services?: ServiceDocument[] }) {
+  const t = useTranslations("Services");
+  const locale = useLocale();
   const safeServices = services || []
-  
+
   // Handle empty services gracefully
   if (safeServices.length === 0) {
     return null
   }
-  
+
   const sectionRef = useRef<HTMLElement>(null)
   const [activeTab, setActiveTab] = useState(safeServices[0]?.slug?.current || '')
   const [hoveredTab, setHoveredTab] = useState<string | null>(null)
@@ -94,7 +94,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
           <div>
             <FadeIn>
               <p className="font-mono text-xs text-white/60 mb-4 uppercase tracking-widest">
-                [03 — SERVICES]
+                {t("label")}
               </p>
             </FadeIn>
             <TextReveal
@@ -103,12 +103,12 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
               splitBy="chars"
               stagger={0.03}
             >
-              WHAT I DO
+              {t("heading")}
             </TextReveal>
           </div>
           <FadeIn delay={0.3}>
             <p className="text-white/60 max-w-sm md:text-right text-sm uppercase tracking-wider">
-              Servicios especializados para transformar ideas en productos digitales excepcionales.
+              {t("description")}
             </p>
           </FadeIn>
         </div>
@@ -156,7 +156,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
                     "text-3xl font-medium transition-colors duration-300 tracking-tight",
                     activeTab === service.slug?.current ? "text-black" : "text-white"
                   )}>
-                    {service.title_es}
+                    {locale === 'en' ? service.title_en : service.title_es}
                   </h3>
                 </div>
               </button>
@@ -175,7 +175,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
                     </p>
                   </div>
                   <p className="text-2xl md:text-3xl text-white/90 leading-tight font-light">
-                    {toPlainText(activeService.description_es || [])}
+                    {toPlainText(locale === 'en' ? activeService.description_en || [] : activeService.description_es || [])}
                   </p>
                 </div>
 
@@ -185,7 +185,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
                 {/* Capabilities grid */}
                 <div className="content-item">
                   <p className="font-mono text-[10px] text-white/40 mb-6 uppercase tracking-widest">
-                    [CAPABILITIES]
+                    {t("capabilities_label")}
                   </p>
                   <div className="grid grid-cols-2 gap-4">
                     {activeService.items?.map((itemField, index) => (
@@ -194,7 +194,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
                         className="flex items-start gap-3 p-3 border border-white/5 hover:border-white/10 transition-colors group"
                       >
                         <span className="w-1.5 h-1.5 bg-white rounded-full mt-2 flex-shrink-0 group-hover:scale-150 transition-transform" />
-                        <span className="text-sm text-white/80 font-light">{itemField.es}</span>
+                        <span className="text-sm text-white/80 font-light">{locale === 'en' ? itemField.en : itemField.es}</span>
                       </div>
                     ))}
                   </div>
@@ -209,7 +209,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
                     cursorText="GO"
                     className="group inline-flex items-center gap-3 px-6 py-3 bg-white text-black hover:bg-white/90 transition-colors"
                   >
-                    <span className="font-mono text-xs uppercase tracking-widest">SOLICITAR CONSULTA</span>
+                    <span className="font-mono text-xs uppercase tracking-widest">{t("cta")}</span>
                     <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </Magnetic>
                 </div>
@@ -234,7 +234,7 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
                     0{index + 1}
                   </span>
                   <h3 className="text-xl font-medium tracking-tight">
-                    {service.title_es}
+                    {locale === 'en' ? service.title_en : service.title_es}
                   </h3>
                 </div>
                 <div className={cn(
@@ -251,13 +251,13 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
               )}>
                 <div className="px-6 pb-6 space-y-6 border-t border-white/10 pt-6">
                   <p className="text-white/80 leading-relaxed font-light">
-                    {toPlainText(service.description_es || [])}
+                    {toPlainText(locale === 'en' ? service.description_en || [] : service.description_es || [])}
                   </p>
                   <div className="space-y-2">
                     {service.items?.map((itemField, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-swiss-gray-light font-light">
                         <span className="w-1 h-1 bg-white rounded-full" />
-                        {itemField.es}
+                        {locale === 'en' ? itemField.en : itemField.es}
                       </div>
                     ))}
                   </div>

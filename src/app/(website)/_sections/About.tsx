@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import { gsap } from "@/lib/gsap"
 import { useGSAP } from "@gsap/react"
 import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
@@ -9,20 +9,24 @@ import { cn } from "@/lib/utils"
 import { SwissContainer } from "@/components/Layout"
 
 const stats = [
-  { value: "5+", label: "Años de experiencia", suffix: "" },
-  { value: "50", label: "Proyectos completados", suffix: "+" },
-  { value: "20", label: "Clientes satisfechos", suffix: "+" },
+  { value: "5+", label: "Años de experiencia" },
+  { value: "50+", label: "Proyectos completados" },
+  { value: "20+", label: "Clientes satisfechos" },
 ]
 
 const skills = [
-  { name: "React / Next.js", level: 95 },
-  { name: "TypeScript", level: 90 },
-  { name: "Node.js", level: 88 },
-  { name: "Python", level: 82 },
-  { name: "PostgreSQL", level: 85 },
-  { name: "AWS / GCP", level: 78 },
-  { name: "Docker", level: 80 },
-  { name: "LLMs / AI", level: 92 },
+  "React / Next.js",
+  "TypeScript",
+  "Node.js",
+  "Python",
+  "PostgreSQL",
+  "AWS / GCP",
+  "Docker",
+  "LLMs / AI",
+  "Tailwind CSS",
+  "GSAP",
+  "Sanity",
+  "GraphQL",
 ]
 
 const experiences = [
@@ -34,10 +38,7 @@ const experiences = [
 
 export function About() {
   const sectionRef = useRef<HTMLElement>(null)
-  const statsRef = useRef<HTMLDivElement>(null)
-  const skillsRef = useRef<HTMLDivElement>(null)
   const experienceRef = useRef<HTMLDivElement>(null)
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null)
 
   useGSAP(() => {
     if (!sectionRef.current) return
@@ -45,73 +46,22 @@ export function About() {
     // Respect user's motion preferences
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    // Animate stats with counter effect
-    if (statsRef.current) {
-      const statItems = statsRef.current.querySelectorAll(".stat-item")
-      const statValues = statsRef.current.querySelectorAll(".stat-value")
-      
-      gsap.from(statItems, {
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: statsRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      })
-      
-      // Counter animation
-      statValues.forEach((el) => {
-        const target = parseInt(el.getAttribute("data-value") || "0")
-        gsap.to(el, {
-          textContent: target,
-          duration: 2,
-          ease: "power2.out",
-          snap: { textContent: 1 },
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        })
-      })
-    }
+    // Stats are animated via FadeIn component
 
-    // Animate skills with reveal bars
-    if (skillsRef.current) {
-      const skillItems = skillsRef.current.querySelectorAll(".skill-item")
-      const skillBars = skillsRef.current.querySelectorAll(".skill-bar-fill")
-      
-      gsap.from(skillItems, {
-        x: -30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: skillsRef.current,
-          start: "top 80%",
-          toggleActions: "play none none reverse",
-        },
-      })
-      
-      skillBars.forEach((bar) => {
-        const width = bar.getAttribute("data-width")
-        gsap.to(bar, {
-          width: `${width}%`,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: bar,
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        })
-      })
-    }
+    // Animate skill badges
+    const skillBadges = sectionRef.current.querySelectorAll(".skill-badge")
+    gsap.from(skillBadges, {
+      y: 20,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.05,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top 70%",
+        toggleActions: "play none none reverse",
+      },
+    })
 
     // Animate experience timeline
     if (experienceRef.current) {
@@ -223,63 +173,42 @@ export function About() {
 
           {/* Right column - Stats, Skills, Experience */}
           <div className="lg:col-span-7 space-y-16">
-            {/* Stats */}
-            <div ref={statsRef} className="grid grid-cols-3 gap-6 md:gap-12 border-b border-white/10 pb-12 md:pb-16">
-              {stats.map((stat) => (
-                <div key={stat.label} className="stat-item">
-                  <div className="flex items-baseline gap-1">
-                    <span
-                      className="stat-value text-4xl md:text-6xl lg:text-8xl font-medium tracking-tighter"
-                      data-value={stat.value.replace("+", "")}
-                    >
-                      0
-                    </span>
-                    {stat.suffix && (
-                      <span className="text-xl md:text-3xl lg:text-4xl text-swiss-gray-light">
-                        {stat.suffix}
-                      </span>
-                    )}
-                  </div>
-                  <p className="font-mono text-white/60 text-[8px] md:text-[10px] mt-2 md:mt-4 leading-tight uppercase tracking-[0.2em]">
-                    {stat.label.toUpperCase()}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Skills */}
-            <div ref={skillsRef}>
-              <p className="font-mono text-xs text-white/60 mb-6 uppercase tracking-widest">
-                [TECH STACK]
-              </p>
-              <div className="space-y-4">
-                {skills.map((skill) => (
-                  <div
-                    key={skill.name}
-                    className={cn(
-                      "skill-item group relative",
-                      hoveredSkill && hoveredSkill !== skill.name && "opacity-30"
-                    )}
-                    onMouseEnter={() => setHoveredSkill(skill.name)}
-                    onMouseLeave={() => setHoveredSkill(null)}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-mono text-[10px] uppercase tracking-widest">{skill.name}</span>
-                      <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
-                        {skill.level}%
+            {/* Stats - Static values */}
+            <FadeIn>
+              <div className="grid grid-cols-3 gap-6 md:gap-12 border-b border-white/10 pb-12 md:pb-16">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="stat-item">
+                    <div className="flex items-baseline gap-1">
+                      <span className="stat-value text-4xl md:text-6xl lg:text-8xl font-medium tracking-tighter">
+                        {stat.value}
                       </span>
                     </div>
-                    <div className="h-px bg-white/10 relative overflow-hidden">
-                      <div
-                        className="skill-bar-fill absolute inset-y-0 left-0 bg-white"
-                        data-width={skill.level}
-                        style={{ width: 0 }}
-                      />
-                    </div>
+                    <p className="font-mono text-white/60 text-[8px] md:text-[10px] mt-2 md:mt-4 leading-tight uppercase tracking-[0.2em]">
+                      {stat.label.toUpperCase()}
+                    </p>
                   </div>
                 ))}
               </div>
-            </div>
+            </FadeIn>
+
+            {/* Skills - Badge Grid */}
+            <FadeIn>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill, i) => (
+                  <span
+                    key={skill}
+                    className={cn(
+                      "skill-badge px-3 py-2 border border-white/10 font-mono text-[10px] uppercase tracking-widest",
+                      "text-white/80 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all duration-300",
+                      "reveal-on-scroll"
+                    )}
+                    style={{ animationDelay: `${i * 50}ms` }}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </FadeIn>
 
             {/* Experience Timeline */}
             <div ref={experienceRef}>

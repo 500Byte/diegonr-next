@@ -28,31 +28,77 @@
 - [ ] **PWA Complete** - Service worker with Workbox, full manifest
 - [ ] **Social Preview Testing** - Verify OG images on Twitter/Facebook/LinkedIn
 
-### i18n Implementation (Post-Audit)
-*See `docs/I18N_AUDIT.md` for full report*
+### i18n Implementation (Option B - Selected)
+*Proper i18n with next-intl, ~12-16 hours, 1.5-2 days*
 
-**Decision Required:** Choose approach:
-- **Option A**: Quick fix (2-3h) - Context + dynamic field selection
-- **Option B**: Proper i18n (1-2d) - next-intl, translation files, /en routes
-- **Option C**: Remove toggle (30min) - Avoid confusion until ready
+**Status**: DECIDED - Implementing Option B (full next-intl with /en routes)
 
-Once decided, specific tasks will be:
-- [ ] Implement chosen i18n architecture
-- [ ] Update all components to use dynamic language selection
-- [ ] Create translation files for static UI content
-- [ ] Add language persistence (localStorage)
-- [ ] Populate English content in Sanity (if Option A or B)
+#### Day 1 - Setup & UI Translations
+
+- [ ] **i18n: Install & Configure** - Install next-intl, create config files
+  - Install: `npm install next-intl`
+  - Create: `src/i18n/config.ts`, `src/i18n/routing.ts`
+  - Create: `src/middleware.ts` for locale routing
+  - Est: 30 min
+
+- [ ] **i18n: Create Translation Files** - Set up messages/es.json and messages/en.json
+  - Navigation, Hero, Footer, Contact translations
+  - Metadata translations
+  - Est: 2-3 hours
+
+- [ ] **i18n: Update Root Layout** - Integrate NextIntlClientProvider
+  - Modify `src/app/layout.tsx`
+  - Add generateStaticParams for locales
+  - Est: 1 hour
+
+- [ ] **i18n: Migrate Navigation & Footer** - Use useTranslations hook
+  - Update Navigation with next-intl Link and toggle
+  - Update Footer with translated strings
+  - Est: 1-2 hours
+
+#### Day 2 - Content & Testing
+
+- [ ] **i18n: Dynamic Sanity Content** - Create locale-aware field selection
+  - Create: `src/lib/i18n.ts` helper for field selection
+  - Update services/[id]/page.tsx
+  - Update projects/[id]/page.tsx
+  - Est: 2-3 hours
+
+- [ ] **i18n: Migrate All Sections** - Update _sections/* components
+  - Hero, Works, Services, BlogSection, About, Vision
+  - Use useTranslations for all static text
+  - Est: 2-3 hours
+
+- [ ] **i18n: Dynamic Metadata** - Update generateMetadata for all pages
+  - Home, About, Projects, Services, Blog, Contact
+  - Use getTranslations from next-intl/server
+  - Est: 1 hour
+
+- [ ] **i18n: Folder Restructure** - Move to [locale]/(website) structure
+  - Create: `src/app/[locale]/(website)/`
+  - Move all pages to new structure
+  - Update imports and paths
+  - Est: 30 min
+
+- [ ] **i18n: Testing & Validation** - Full test suite
+  - Toggle switches language correctly
+  - URLs show /en for English
+  - No hydration mismatches
+  - Sanity content changes per locale
+  - All links work in both languages
+  - Est: 1-2 hours
 
 ### In Progress (Assigned)
 
 - [ ] **Copy Refactoring** - User is currently refactoring all copy text
-  - **Note**: Work in progress by user
+  - **Note**: Work in progress by user - coordinate with i18n implementation
   - **Scope**: All copy across the site
+  - **Suggestion**: Perfect timing to combine with i18n translation file creation
 
 - [x] **Multi-language Audit** - ✅ COMPLETED - See `docs/I18N_AUDIT.md`
-  - **Status**: Partial implementation - toggle UI exists but non-functional
-  - **Critical Issue**: All components hardcoded to `*_es` fields
-  - **Decision needed**: Choose implementation approach (see audit report)
+  - **Status**: Audit complete, Option B selected for implementation
+  - **Decision**: Full next-intl implementation with /en routes
+  - **Timeline**: 1.5-2 days (12-16 hours estimated)
 
 ---
 
@@ -93,4 +139,4 @@ Once decided, specific tasks will be:
 | SEO | 8/10 | ✅ Complete |
 | Documentation | 10/10 | ✅ Exceptional |
 
-**Ready for Production**: All critical items completed. 9 post-launch improvements in Active.
+**Ready for Production**: All critical items completed. 18 total improvements tracked (9 quick wins + 9 i18n implementation tasks).

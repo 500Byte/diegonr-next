@@ -28,9 +28,12 @@ export function urlFor(source: Parameters<typeof builder.image>[0]) {
   return builder.image(source);
 }
 
+// For list views - lightweight projection
 export async function getAllProjects(): Promise<ProjectDocument[]> {
   const projects = await client.fetch<ProjectDocument[]>(
-    `*[_type == "project" && !(_id in path("drafts.**"))] | order(year desc)`
+    `*[_type == "project" && !(_id in path("drafts.**"))] | order(year desc) {
+      _id, _type, title, slug, category, year, featured, image, description_es
+    }`
   );
 
   return projects.sort((a, b) => {
@@ -40,6 +43,13 @@ export async function getAllProjects(): Promise<ProjectDocument[]> {
   });
 }
 
+// For detail views - full document
+export async function getAllProjectsFull(): Promise<ProjectDocument[]> {
+  return await client.fetch<ProjectDocument[]>(
+    `*[_type == "project" && !(_id in path("drafts.**"))] | order(year desc)`
+  );
+}
+
 export async function getProject(slug: string): Promise<ProjectDocument | null> {
   return await client.fetch<ProjectDocument | null>(
     `*[_type == "project" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
@@ -47,7 +57,24 @@ export async function getProject(slug: string): Promise<ProjectDocument | null> 
   );
 }
 
-export async function getAllServices(): Promise<ServiceDocument[]> {
+// For list views - lightweight projection
+export async function getAllPosts(): Promise<BlogPostDocument[]> {
+  return await client.fetch<BlogPostDocument[]>(
+    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc) {
+      _id, _type, title, slug, date, category, read_time, excerpt, image
+    }`
+  );
+}
+
+// For detail views - full document (includes content)
+export async function getAllPostsFull(): Promise<BlogPostDocument[]> {
+  return await client.fetch<BlogPostDocument[]>(
+    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc)`
+  );
+}
+
+// For detail views - full document
+export async function getAllServicesFull(): Promise<ServiceDocument[]> {
   return await client.fetch<ServiceDocument[]>(
     `*[_type == "service" && !(_id in path("drafts.**"))] | order(order asc)`
   );

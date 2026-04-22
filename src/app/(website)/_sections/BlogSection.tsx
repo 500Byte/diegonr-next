@@ -9,7 +9,14 @@ import Link from 'next/link';
 import { BlogPostDocument } from '@/types';
 
 
-export const BlogSection: React.FC<{ blogPosts: BlogPostDocument[] }> = ({ blogPosts }) => {
+export const BlogSection: React.FC<{ blogPosts?: BlogPostDocument[] }> = ({ blogPosts }) => {
+  const safePosts = blogPosts || []
+  
+  // Handle empty blog posts gracefully
+  if (safePosts.length === 0) {
+    return null
+  }
+  
   return (
     <section id="blog" className="py-24 md:py-48 border-t border-white/5 bg-swiss-black overflow-hidden">
       <SwissContainer>
@@ -32,7 +39,7 @@ export const BlogSection: React.FC<{ blogPosts: BlogPostDocument[] }> = ({ blogP
         </div>
 
         <div className="space-y-0">
-          {blogPosts.slice(0, 3).map((post, index) => (
+          {safePosts.slice(0, 3).map((post, index) => (
             <FadeIn key={post.slug?.current} delay={index * 0.1}>
               <Link 
                 href={`/blog/${post.slug?.current}`}

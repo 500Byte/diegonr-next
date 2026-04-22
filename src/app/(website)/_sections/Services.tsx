@@ -14,9 +14,16 @@ import { cn } from "@/lib/utils"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { SwissContainer } from "@/components/Layout"
 
-export function Services({ services }: { services: ServiceDocument[] }) {
+export function Services({ services }: { services?: ServiceDocument[] }) {
+  const safeServices = services || []
+  
+  // Handle empty services gracefully
+  if (safeServices.length === 0) {
+    return null
+  }
+  
   const sectionRef = useRef<HTMLElement>(null)
-  const [activeTab, setActiveTab] = useState(services?.[0]?.slug?.current || '')
+  const [activeTab, setActiveTab] = useState(safeServices[0]?.slug?.current || '')
   const [hoveredTab, setHoveredTab] = useState<string | null>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
@@ -66,7 +73,7 @@ export function Services({ services }: { services: ServiceDocument[] }) {
     )
   }, { scope: contentRef, dependencies: [activeTab] })
 
-  const activeService = services.find((s) => s.slug?.current === activeTab)
+  const activeService = safeServices.find((s) => s.slug?.current === activeTab)
 
   return (
     <section

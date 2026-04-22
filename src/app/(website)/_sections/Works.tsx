@@ -15,7 +15,13 @@ import { ArrowUpRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { SwissContainer } from "@/components/Layout"
 
-export function Works({ projects }: { projects: ProjectDocument[] }) {
+export function Works({ projects }: { projects?: ProjectDocument[] }) {
+  // Handle undefined/null gracefully
+  const safeProjects = projects || []
+  
+  if (safeProjects.length === 0) {
+    return null // Don't render section if no projects
+  }
   const sectionRef = useRef<HTMLElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -82,7 +88,7 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
     }
   }, { scope: previewRef, dependencies: [hoveredProject] })
 
-  const featuredProjects = projects.filter((p) => p.featured)
+  const featuredProjects = safeProjects.filter((p) => p.featured)
   const currentProject = hoveredProject ? featuredProjects.find((p) => p.slug?.current === hoveredProject) : null
 
   return (
@@ -278,7 +284,7 @@ export function Works({ projects }: { projects: ProjectDocument[] }) {
             </Magnetic>
             
             <span className="font-mono text-swiss-gray-light hidden md:block uppercase tracking-widest text-[10px]">
-              {featuredProjects.length} / {projects.length} PROJECTS
+              {featuredProjects.length} / {safeProjects.length} PROJECTS
             </span>
           </div>
         </FadeIn>

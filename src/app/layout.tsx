@@ -9,6 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://diegonr.com"),
   title: "Diego NR | Portafolio",
   description: "Desarrollador Full-Stack, IA & Diseño",
 };

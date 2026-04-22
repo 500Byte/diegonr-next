@@ -63,18 +63,18 @@ export function Hero() {
           x: x * 10,
           y: y * 10,
           duration: 0.5,
-          ease: "power2.out",
+          ease: "expo.out",
         })
       }
-      
+
       if (bottomBarRef.current) {
         gsap.to(bottomBarRef.current, {
           scaleX: 0.3 + x * 0.1,
           duration: 0.3,
-          ease: "power2.out",
+          ease: "expo.out",
         })
       }
-      
+
       // Animate name characters
       if (nameRef.current) {
         const chars = nameRef.current.querySelectorAll(".name-char")
@@ -83,7 +83,7 @@ export function Hero() {
             x: x * (i - 6) * 0.5,
             y: y * 2,
             duration: 0.3,
-            ease: "power2.out",
+            ease: "expo.out",
           })
         })
       }

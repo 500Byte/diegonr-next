@@ -22,7 +22,7 @@ export default function NotFound() {
     tl.from(".not-found-grid", {
       opacity: 0,
       duration: 1.5,
-      ease: "power2.out",
+      ease: "expo.out",
     });
 
     tl.from(".not-found-chars span", {

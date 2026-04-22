@@ -33,7 +33,7 @@ export const CustomCursor: React.FC = () => {
         x: e.clientX,
         y: e.clientY,
         duration: 0.4,
-        ease: 'power2.out',
+        ease: 'expo.out',
       });
     };
 

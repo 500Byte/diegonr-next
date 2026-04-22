@@ -17,7 +17,19 @@
 
 ## CMS & Content
 - **Sanity (`next-sanity`)**: Headless CMS client for fetching content from Sanity Cloud using GROQ.
-- **Portable Text (`@portabletext/react`)**: Renders Sanity's Portable Text rich text content as React components.
+- **Portable Text (`@portabletext/react`, `@portabletext/types`)**: Renders Sanity's Portable Text rich text content as React components.
 - **Sanity Image Utility (`@sanity/image-url`)**: Helper to generate and transform URLs for images hosted on Sanity.
 
 See [SANITY.md](SANITY.md) for detailed CMS integration documentation.
+
+## Forms & Validation
+- **React Hook Form (`react-hook-form`)**: Performant form handling with minimal re-renders.
+- **Zod (`zod`)**: TypeScript-first schema validation for forms.
+- **Resolvers (`@hookform/resolvers`)**: Bridge between Zod and React Hook Form.
+- **EmailJS (`@emailjs/browser`)**: Client-side email sending for contact form.
+
+## Analytics & SEO
+- **Google Analytics (`nextjs-google-analytics`)**: Analytics integration for Next.js.
+
+## TypeScript
+- **React Types (`@types/react`, `@types/react-dom`)**: TypeScript definitions for React.

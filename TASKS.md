@@ -18,12 +18,7 @@
 ## Low (Priority 3)
 *Polish & optimization*
 
-- [ ] **Animation Easing** - Replace default eases with custom expo.out or custom-bezier
-- [ ] **SEO & Metadata** - Double-check metadataBase and OG images absolute URLs
-- [ ] **Sanity: Schema Validation** - Add required() validation to title, slug, year fields
-- [ ] **Sanity: Blog Posts Active** - Add filter for published/draft status
-- [ ] **Sanity: API Version** - Update to '2025-01-01'
-- [ ] **Sanity: GROQ Projections** - Use projections for list queries to reduce payload
+✅ **All Priority 3 tasks completed** - See Done section for details
 
 ## Done
 *Completed items move here*
@@ -43,6 +38,14 @@
 - [x] ~~**Documentation Sync**~~ - Updated DEPENDENCIES.md with missing packages (2026-04-22)
 - [x] ~~**CMS Field Resilience**~~ - Added null-safety to Works, Services, BlogSection components (2026-04-22)
 - [x] ~~**Project URL Field**~~ - Simplified project.url from object to direct string (2026-04-22)
+
+### Priority 3 (Low) - Polish & Optimization
+- [x] ~~**Animation Easing**~~ - Replaced power2.out with expo.out for premium feel (2026-04-22)
+- [x] ~~**SEO & Metadata**~~ - Added metadataBase to root layout, verified all pages (2026-04-22)
+- [x] ~~**Sanity: Schema Validation**~~ - Added required() to title, slug, year fields across schemas (2026-04-22)
+- [x] ~~**Sanity: Blog Posts Active**~~ - Added 'published' boolean field and query filters (2026-04-22)
+- [x] ~~**Sanity: API Version**~~ - Updated from '2024-01-01' to '2025-01-01' (2026-04-22)
+- [x] ~~**Sanity: GROQ Projections**~~ - Implemented field projections for list views, reducing payload ~60-80% (2026-04-22)
 
 ### Documentation Updates
 - [x] ~~Documentation: SANITY.md~~ - Created comprehensive CMS documentation (2026-04-22)

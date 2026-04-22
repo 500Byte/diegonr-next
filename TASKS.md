@@ -13,9 +13,7 @@
 ## Medium (Priority 2)
 *System integrity & maintenance*
 
-- [ ] **Documentation Sync** - Update docs/DEPENDENCIES.md to match package.json
-- [ ] **CMS Field Resilience** - Handle null/undefined fields from Sanity gracefully
-- [ ] **Project URL Field** - Simplify project.url object to direct URL field
+✅ **All Priority 2 tasks completed** - See Done section for details
 
 ## Low (Priority 3)
 *Polish & optimization*
@@ -40,6 +38,11 @@
 - [x] ~~**Typography Readability**~~ - Changed text-[9px] to text-xs (12px) in Navigation links (2026-04-22)
 - [x] ~~**Mobile Touch Targets**~~ - Increased padding from py-2 to py-3 (12px) for 44px+ hit area (2026-04-22)
 - [x] ~~**Theming Consistency**~~ - Added --color-error CSS variable, replaced text-red-400 (10 files) (2026-04-22)
+
+### Priority 2 (Medium) - System Integrity
+- [x] ~~**Documentation Sync**~~ - Updated DEPENDENCIES.md with missing packages (2026-04-22)
+- [x] ~~**CMS Field Resilience**~~ - Added null-safety to Works, Services, BlogSection components (2026-04-22)
+- [x] ~~**Project URL Field**~~ - Simplified project.url from object to direct string (2026-04-22)
 
 ### Documentation Updates
 - [x] ~~Documentation: SANITY.md~~ - Created comprehensive CMS documentation (2026-04-22)

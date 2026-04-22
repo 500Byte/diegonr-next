@@ -20,7 +20,8 @@ Thank you for your interest in contributing! This document provides guidelines a
 - `test/` - Testing related changes
 
 ### Commit Messages
-We use conventional commits:
+We use [Conventional Commits](https://www.conventionalcommits.org/) with **atomic commits per feature**:
+
 ```
 type(scope): description
 
@@ -35,12 +36,35 @@ Types:
 - `docs` - Documentation
 - `style` - Code style changes
 - `refactor` - Code refactoring
+- `perf` - Performance improvements
 - `test` - Testing
 - `chore` - Maintenance
 
+**Atomic Commits (One feature = One commit):**
+
+✅ **Correct:**
+```bash
+feat(nav): add keyboard navigation and focus-visible states
+perf(hero): implement mouse tracking throttling with RAF
+style(typography): increase minimum font size to 12px
+feat(sanity): add required validation to title and slug fields
+```
+
+❌ **Incorrect (DO NOT):**
+```bash
+feat: various updates          # Too vague
+fix: everything               # Multiple unrelated changes
+docs: update                  # Missing scope and detail
+```
+
+Scope Guidelines:
+- Use component/feature name: `(nav)`, `(hero)`, `(sanity)`, `(forms)`, `(contact)`
+- For docs: `(docs)`, `(agents)`, `(deployment)`
+- For multiple files in same feature: single commit with descriptive scope
+
 Examples:
 ```
-feat: add dark mode toggle
+feat(nav): add keyboard navigation and focus-visible states
 fix: resolve mobile navigation bug
 docs: update installation guide
 ```

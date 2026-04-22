@@ -63,6 +63,50 @@
 - **DO NOT** create barrel files (`index.ts` re-exports) except in `src/types/`.
 - **DO NOT** add `"use client"` to components that only render static content. Encapsulate interactivity in minimal client wrappers.
 - **DO NOT** create route groups `(group)` unless there is a real layout conflict between routes.
+- **DO NOT** make large "catch-all" commits. Keep commits atomic per feature/logical change.
+
+## Git Commits (Conventional Commits)
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/) with **atomic commits per feature** (Option B):
+
+### Commit Structure
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style (formatting, no logic change)
+- `refactor`: Code refactoring
+- `perf`: Performance improvements
+- `test`: Tests
+- `chore`: Maintenance tasks
+
+### Atomic Commits (One feature = One commit)
+
+**Correct:**
+```bash
+git commit -m "feat(nav): add keyboard navigation and focus-visible states"
+git commit -m "perf(hero): implement mouse tracking throttling with RAF"
+git commit -m "style(typography): increase minimum font size to 12px"
+```
+
+**Incorrect (DO NOT):**
+```bash
+git commit -m "various updates"  # Too vague
+git commit -m "fix everything"   # Multiple unrelated changes
+```
+
+### Scope Guidelines
+- Use component/feature name as scope: `(nav)`, `(hero)`, `(sanity)`, `(forms)`
+- For docs: `(docs)`, `(agents)`, `(deployment)`
+- For multiple files in same feature: single commit with descriptive scope
 
 ## Deployment & Secrets
 - **Hosting**: The project is deployed to **Cloudflare Workers** via OpenNext.

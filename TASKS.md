@@ -15,6 +15,58 @@
 
 ✅ **All Priority 2 tasks completed** - See Done section for details
 
+## Post-Launch Improvements (Audit Findings)
+*Based on comprehensive audit - 85% score, ready for production*
+
+### P1 - Important (Fix before major sharing)
+
+- [ ] **Image Alt Text** - Add descriptive alt attributes to project and blog images
+  - **Files**: `projects/[id]/page.tsx:150`, `blog/[id]/page.tsx:144`, `blog/page.tsx:78`
+  - **Impact**: Accessibility - screen readers can't describe images
+  - **Fix**: Add meaningful alt text or aria-label on parent container
+
+- [ ] **Minimum Typography Size** - Review and increase very small text (8-10px)
+  - **Files**: Multiple (BlogSection, Works, About, etc.)
+  - **Impact**: Mobile readability, WCAG AAA compliance
+  - **Fix**: Consider 12px minimum for body text, keep 10px only for decorative labels
+
+- [ ] **Blog Schema Consistency** - Clarify or unify category (string) vs tags (array)
+  - **File**: `sanity/schemaTypes/blogPostType.ts`
+  - **Impact**: Content model confusion
+  - **Fix**: Either make both arrays or document the distinction clearly
+
+### P2 - Enhancement (Nice to have)
+
+- [ ] **Test Suite** - Add basic smoke tests
+  - **Impact**: Confidence in future changes
+  - **Suggestion**: Vitest for unit tests, Playwright for e2e
+
+- [ ] **Cursor Motion Preference** - Respect prefers-reduced-motion in CustomCursor
+  - **File**: `CustomCursor.tsx`
+  - **Impact**: Accessibility for users who prefer reduced motion
+  - **Fix**: Hide custom cursor when prefers-reduced-motion is set
+
+- [ ] **Dynamic Robots.txt** - Add sitemap reference to robots.ts
+  - **File**: `app/robots.ts`
+  - **Impact**: SEO - help crawlers find sitemap
+  - **Fix**: Add sitemap: 'https://diegonr.com/sitemap.xml'
+
+### P3 - Future Polish
+
+- [ ] **Bundle Analysis** - Verify bundle size and optimization opportunities
+  - **Command**: `npm run analyze` (already configured)
+  - **Check**: GSAP tree-shaking, unused dependencies
+
+- [ ] **PWA Complete** - Implement full Progressive Web App
+  - **Missing**: Service worker with Workbox, full manifest
+  - **Note**: Currently unregistering SW - intentional for now?
+
+- [ ] **Social Preview Testing** - Verify OG images on Twitter/Facebook/LinkedIn
+  - **Tool**: https://cards-dev.twitter.com/validator
+  - **Check**: Dynamic OG route already implemented, just verify
+
+---
+
 ## Low (Priority 3)
 *Polish & optimization*
 
@@ -54,3 +106,22 @@
 - [x] ~~DEPLOYMENT.md: compatibility_date~~ - Added quarterly update comment (2026-04-22)
 - [x] ~~DEPLOYMENT.md: wrangler types~~ - Added wrangler types and .dev.vars sections (2026-04-22)
 - [x] ~~AGENTS.md + CONTRIBUTING.md~~ - Added atomic commit policy (conventional commits) (2026-04-22)
+
+---
+
+## 📊 Audit Summary (2026-04-22)
+
+**Overall Score: 85% (51/60) - Very Good**
+
+| Dimension | Score | Status |
+|-----------|-------|--------|
+| Code/Architecture | 9/10 | ✅ Excellent |
+| Performance | 8/10 | ✅ Optimized |
+| Design/UI | 9/10 | ✅ Distinctive |
+| Accessibility | 7/10 | ⚠️ Good, minor fixes needed |
+| SEO | 8/10 | ✅ Complete |
+| Documentation | 10/10 | ✅ Exceptional |
+
+**Verdict: NOT AI SLOP** - This portfolio shows clear design intentionality with a distinctive Swiss style, custom animations, and premium attention to detail.
+
+**Ready for Production**: All critical and high-priority items completed. Post-launch improvements documented above.

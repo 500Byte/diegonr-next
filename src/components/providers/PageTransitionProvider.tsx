@@ -10,6 +10,7 @@ import {
 } from "react";
 import { gsap } from "@/lib/gsap";
 import { ScrollTrigger } from "@/lib/gsap";
+import { getTransition } from "@/components/transitions/registry";
 
 interface PageTransitionContextType {
   isTransitioning: boolean;
@@ -30,7 +31,6 @@ export function PageTransitionProvider({
 }: PageTransitionProviderProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const isFirstRender = useRef(true);
 
   // Handle link clicks for custom transition
   useEffect(() => {
@@ -96,6 +96,8 @@ export function PageTransitionProvider({
         return;
       }
 
+      const currentPath = window.location.pathname;
+
       try {
         // Fetch new page
         const response = await fetch(href);
@@ -116,73 +118,31 @@ export function PageTransitionProvider({
         const nextContainer = currentContainer.cloneNode(false) as HTMLElement;
         nextContainer.innerHTML = newContent.innerHTML;
 
-        // Set initial state for new container (hidden below)
-        gsap.set(nextContainer, {
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          minHeight: "100vh",
-          clipPath: "inset(100% 0% 0% 0%)",
-          opacity: 1,
-          zIndex: 10,
-        });
-
-        // Add new container to DOM
+        // Add new container to DOM (initial styling handled by transition)
         wrapperRef.current.appendChild(nextContainer);
 
         // Update URL
         window.history.pushState({}, "", href);
 
+        // Get transition from registry
+        const transitionFn = getTransition(currentPath, href);
+
         // Run transition animation
-        const tl = gsap.timeline({
-          onComplete: () => {
-            // Remove old container
-            currentContainer.remove();
+        const tl = transitionFn({ current: currentContainer, next: nextContainer });
 
-            // Reset new container styles
-            gsap.set(nextContainer, {
-              clearProps: "all",
-            });
+        // Wait for animation to complete
+        await tl.then();
 
-            // Refresh ScrollTrigger
-            ScrollTrigger.refresh();
+        // Cleanup
+        currentContainer.remove();
+        gsap.set(nextContainer, { clearProps: "all" });
+        ScrollTrigger.refresh();
+        setIsTransitioning(false);
 
-            setIsTransitioning(false);
-
-            // Dispatch event for page components
-            window.dispatchEvent(new Event("page-transition-complete"));
-          },
-        });
-
-        // Animate current page out (slide up + fade)
-        tl.to(
-          currentContainer,
-          {
-            y: "-30vh",
-            opacity: 0.6,
-            duration: 0.8,
-            ease: "power2.inOut",
-          },
-          0
-        );
-
-        // Animate new page in (clip-path reveal from bottom)
-        tl.fromTo(
-          nextContainer,
-          {
-            clipPath: "inset(100% 0% 0% 0%)",
-          },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: 0.8,
-            ease: "power2.inOut",
-          },
-          0
-        );
+        // Dispatch event for page components
+        window.dispatchEvent(new Event("page-transition-complete"));
       } catch (error) {
         console.error("Page transition failed:", error);
-        // Fallback to normal navigation
         window.location.href = href;
       }
     },

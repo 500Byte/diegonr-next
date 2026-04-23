@@ -129,3 +129,14 @@ git commit -m "fix everything"   # Multiple unrelated changes
 
 ## Documentation
 - Refer to `/docs` directory for architectural and coding standards.
+
+## Agent Skills Usage
+
+When performing tasks that match available skills, **ALWAYS use the appropriate skill** instead of manual implementation:
+
+- **TASKS.md Operations**: Use the `task-management` skill for all task management operations (add, complete, update, query tasks). Never edit TASKS.md directly without loading the skill first.
+- **Git Commits**: Use the `git-commit` skill for creating conventional commits.
+- **Sanity Development**: Use the `sanity-best-practices` skill for schema design, GROQ queries, and CMS operations.
+- **Cloudflare Workers**: Use the `wrangler` or `workers-best-practices` skills for deployment and configuration.
+
+Skills provide specialized workflows, safety checks, and best practices. Always prefer skill-assisted operations over raw commands.

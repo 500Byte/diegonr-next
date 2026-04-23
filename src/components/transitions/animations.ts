@@ -10,6 +10,14 @@ import { gsap } from "@/lib/gsap";
  * 
  * Duration: 0.8s total
  * Easing: steps(6) for digital/mechanical feel + expo.out for final settle
+ * 
+ * Timeline:
+ * - 0-600ms: Current page scales down and slides left
+ * - 100-800ms: Next page clip-path diagonal reveal
+ * - 400-600ms: White flash overlay (15% opacity)
+ * 
+ * @param containers - Object containing current and next page containers
+ * @returns GSAP timeline for the transition
  */
 
 export interface TransitionContainers {
@@ -17,12 +25,34 @@ export interface TransitionContainers {
   next: HTMLElement;
 }
 
+/** Z-index layers for transitions */
+const Z_INDEX = {
+  CURRENT: 10,
+  NEXT: 20,
+  OVERLAY: 25,
+  FLASH: 30,
+} as const;
+
 /**
  * Default Swiss-Brutalist Transition
  * Geometric clip-path reveal with block elements
  */
 export function swissBrutalistTransition({ current, next }: TransitionContainers): gsap.core.Timeline {
   const tl = gsap.timeline();
+  let flash: HTMLDivElement | null = null;
+
+  // Check for reduced motion preference
+  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return tl; // Return empty timeline
+  }
+
+  // Cleanup function to ensure flash is always removed
+  const cleanup = () => {
+    if (flash && flash.parentNode) {
+      flash.remove();
+      flash = null;
+    }
+  };
 
   // Setup next container - hidden behind blocks
   gsap.set(next, {
@@ -30,8 +60,8 @@ export function swissBrutalistTransition({ current, next }: TransitionContainers
     top: 0,
     left: 0,
     width: "100%",
-    height: "100vh",
-    zIndex: 20,
+    height: "100dvh",
+    zIndex: Z_INDEX.NEXT,
     clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)", // Hidden from left
     opacity: 1,
     willChange: "clip-path, transform",
@@ -55,15 +85,15 @@ export function swissBrutalistTransition({ current, next }: TransitionContainers
   }, 0.1);
 
   // PHASE 3: Subtle flash effect (white overlay)
-  const flash = document.createElement("div");
+  flash = document.createElement("div");
   flash.style.cssText = `
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: white;
-    z-index: 30;
+    height: 100dvh;
+    background: var(--text-primary, #ffffff);
+    z-index: ${Z_INDEX.FLASH};
     pointer-events: none;
     opacity: 0;
   `;
@@ -79,15 +109,30 @@ export function swissBrutalistTransition({ current, next }: TransitionContainers
     opacity: 0,
     duration: 0.15,
     ease: "power2.out",
-    onComplete: () => { flash.remove(); },
+    onComplete: cleanup,
   }, 0.45);
+
+  // Ensure cleanup on timeline completion or interruption
+  tl.eventCallback("onComplete", cleanup);
+  tl.eventCallback("onInterrupt", cleanup);
 
   return tl;
 }
 
 /**
  * Alternative: Hard Block Grid Reveal
- * Divides screen into blocks that reveal sequentially
+ * Divides screen into 4x4 grid blocks that reveal in random sequence
+ * 
+ * Duration: 800ms total
+ * 
+ * Timeline:
+ * - 0-400ms: Current page fades to grayscale
+ * - 200-700ms: 16 blocks scale from 0 to 1 (staggered 80ms, random order)
+ * - 600ms: Next page becomes visible
+ * - 700-800ms: Blocks fade out and cleanup
+ * 
+ * @param containers - Object containing current and next page containers
+ * @returns GSAP timeline for the transition
  */
 export function blockGridTransition({ current, next }: TransitionContainers): gsap.core.Timeline {
   const tl = gsap.timeline();
@@ -95,15 +140,20 @@ export function blockGridTransition({ current, next }: TransitionContainers): gs
   
   if (!wrapper) return tl;
 
+  // Check for reduced motion preference
+  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return tl; // Return empty timeline
+  }
+
   // Create block overlay
   const blockOverlay = document.createElement("div");
   blockOverlay.style.cssText = `
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 25;
+    width: 100%;
+    height: 100dvh;
+    z-index: ${Z_INDEX.OVERLAY};
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -115,7 +165,7 @@ export function blockGridTransition({ current, next }: TransitionContainers): gs
   for (let i = 0; i < 16; i++) {
     const block = document.createElement("div");
     block.style.cssText = `
-      background: #ffffff;
+      background: var(--text-primary, #ffffff);
       transform: scale(0);
       transform-origin: center;
     `;
@@ -125,14 +175,21 @@ export function blockGridTransition({ current, next }: TransitionContainers): gs
 
   wrapper.appendChild(blockOverlay);
 
+  // Cleanup function
+  const cleanup = () => {
+    if (blockOverlay.parentNode) {
+      blockOverlay.remove();
+    }
+  };
+
   // Setup next container
   gsap.set(next, {
     position: "fixed",
     top: 0,
     left: 0,
     width: "100%",
-    height: "100vh",
-    zIndex: 20,
+    height: "100dvh",
+    zIndex: Z_INDEX.NEXT,
     opacity: 0,
   });
 
@@ -149,7 +206,7 @@ export function blockGridTransition({ current, next }: TransitionContainers): gs
     scale: 1,
     duration: 0.15,
     stagger: {
-      each: 0.03,
+      each: 0.08,
       from: "random",
     },
     ease: "steps(2)",
@@ -162,18 +219,36 @@ export function blockGridTransition({ current, next }: TransitionContainers): gs
   tl.to(blockOverlay, {
     opacity: 0,
     duration: 0.1,
-    onComplete: () => { blockOverlay.remove(); },
+    onComplete: cleanup,
   }, 0.7);
+
+  // Ensure cleanup on timeline completion or interruption
+  tl.eventCallback("onComplete", cleanup);
+  tl.eventCallback("onInterrupt", cleanup);
 
   return tl;
 }
 
 /**
  * Scan Line Transition
- * Horizontal scan line reveals content
+ * Horizontal scan line reveals content from bottom to top
+ *
+ * Duration: 650ms total
+ *
+ * Timeline:
+ * - 0-600ms: Current page slides up with slight skew distortion
+ * - 150-650ms: Next page clip-path reveal from bottom
+ *
+ * @param containers - Object containing current and next page containers
+ * @returns GSAP timeline for the transition
  */
 export function scanLineTransition({ current, next }: TransitionContainers): gsap.core.Timeline {
   const tl = gsap.timeline();
+
+  // Check for reduced motion preference
+  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return tl; // Return empty timeline
+  }
 
   // Setup next with scan mask
   gsap.set(next, {
@@ -181,8 +256,8 @@ export function scanLineTransition({ current, next }: TransitionContainers): gsa
     top: 0,
     left: 0,
     width: "100%",
-    height: "100vh",
-    zIndex: 20,
+    height: "100dvh",
+    zIndex: Z_INDEX.NEXT,
     clipPath: "inset(100% 0 0 0)",
     willChange: "clip-path",
   });

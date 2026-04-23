@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProjectsPage() {
   const projects = await getAllProjects();
   return (
-    <div data-barba-namespace="projects" className="page-content">
+    <div className="page-content">
       <PageHeader 
         title="PROYECTOS" 
         subtitle="Trabajos Seleccionados"

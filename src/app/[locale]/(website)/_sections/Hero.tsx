@@ -39,31 +39,18 @@ export function Hero() {
   const rafIdRef = useRef<number | undefined>(undefined)
   const lastUpdateRef = useRef(0)
 
-  // Listen for page-reveal event from Preloader or barba-enter-complete
+  // Listen for page-reveal event from Preloader
   useEffect(() => {
     // Check if preloader was already shown in this session
     const hasSeenPreloader = sessionStorage.getItem('hasSeenPreloader');
     
     if (hasSeenPreloader) {
-      // If returning via Barba navigation, wait for barba-enter-complete event
-      const handleBarbaEnter = (e: CustomEvent) => {
-        if (e.detail?.namespace === "home") {
-          setIsReady(true);
-        }
-      };
-      
-      window.addEventListener("barba-enter-complete", handleBarbaEnter as EventListener);
-      
-      // Fallback: if event doesn't fire within 1s, animate anyway
-      const fallback = setTimeout(() => setIsReady(true), 1000);
-      
-      return () => {
-        window.removeEventListener("barba-enter-complete", handleBarbaEnter as EventListener);
-        clearTimeout(fallback);
-      };
+      // If preloader already shown, animate immediately
+      setIsReady(true);
+      return;
     }
     
-    // First visit: wait for preloader
+    // First visit: wait for preloader event
     const handleReveal = (e: CustomEvent) => {
       if (e.detail?.phase === "hero") {
         setIsReady(true);

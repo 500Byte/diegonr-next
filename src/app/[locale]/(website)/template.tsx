@@ -1,67 +1,53 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { ScrollTrigger } from "@/lib/gsap";
 import { usePathname } from "next/navigation";
 
+/**
+ * Template component that remounts on every navigation
+ * Used for page transition animations
+ */
 export default function Template({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const [isAnimating, setIsAnimating] = useState(false);
-  const prevPathRef = useRef(pathname);
 
   useEffect(() => {
-    // Skip animation on initial load (preloader handles that)
-    if (prevPathRef.current === pathname) {
-      prevPathRef.current = pathname;
-      return;
-    }
+    if (!containerRef.current) return;
 
-    // Check for reduced motion preference
+    // Skip if reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      prevPathRef.current = pathname;
       return;
     }
 
     const ctx = gsap.context(() => {
-      setIsAnimating(true);
-
-      // Page enter animation
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setIsAnimating(false);
-          ScrollTrigger.refresh();
+      // Page enter animation - fade and slide up
+      gsap.fromTo(
+        containerRef.current,
+        { 
+          opacity: 0, 
+          y: 30,
         },
-      });
-
-      // Start from invisible and slightly down
-      gsap.set(containerRef.current, {
-        opacity: 0,
-        y: 20,
-      });
-
-      // Animate in
-      tl.to(containerRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power3.out",
-      });
-    });
-
-    prevPathRef.current = pathname;
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power2.out",
+          onComplete: () => {
+            ScrollTrigger.refresh();
+          },
+        }
+      );
+    }, containerRef);
 
     return () => ctx.revert();
   }, [pathname]);
 
   return (
-    <div
+    <div 
       ref={containerRef}
-      style={{
-        opacity: isAnimating ? 0 : 1,
-        willChange: isAnimating ? "transform, opacity" : "auto",
-      }}
+      style={{ opacity: 0 }} // Start hidden, GSAP will animate in
     >
       {children}
     </div>

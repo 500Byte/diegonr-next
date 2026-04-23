@@ -1,5 +1,5 @@
 import type { TransitionContainers } from "./animations";
-import { swissBrutalistTransition, blockGridTransition, scanLineTransition } from "./animations";
+import { simpleTransition, diagonalWipeTransition, blockRevealTransition } from "./animations";
 
 /**
  * Transition Registry
@@ -52,11 +52,11 @@ export function getTransition(
 function getTransitionByType(type: TransitionType) {
   switch (type) {
     case "blocks":
-      return blockGridTransition;
+      return blockRevealTransition;
     case "scan":
-      return scanLineTransition;
+      return diagonalWipeTransition;
     case "default":
     default:
-      return swissBrutalistTransition;
+      return simpleTransition;
   }
 }

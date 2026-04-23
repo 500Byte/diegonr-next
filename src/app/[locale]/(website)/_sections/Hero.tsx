@@ -39,39 +39,14 @@ export function Hero() {
   const rafIdRef = useRef<number | undefined>(undefined)
   const lastUpdateRef = useRef(0)
 
-  // Listen for page-reveal event from Preloader or page-transition-complete
+  // Animate immediately on mount (template.tsx handles page transition)
   useEffect(() => {
-    // Check if this is first load or a navigation
-    const hasSeenPreloader = sessionStorage.getItem('hasSeenPreloader');
-    
-    const handleReveal = () => {
+    // Small delay to ensure template.tsx fade-in has started
+    const timer = setTimeout(() => {
       setIsReady(true);
-    };
+    }, 100);
     
-    if (hasSeenPreloader) {
-      // This is a navigation (not first load)
-      // Wait for page transition to complete
-      window.addEventListener("page-transition-complete", handleReveal);
-      
-      // Fallback: animate anyway after short delay
-      const fallback = setTimeout(() => setIsReady(true), 100);
-      
-      return () => {
-        window.removeEventListener("page-transition-complete", handleReveal);
-        clearTimeout(fallback);
-      };
-    }
-    
-    // First visit: wait for preloader
-    window.addEventListener("page-reveal", handleReveal as EventListener);
-    
-    // Fallback: if preloader doesn't fire within 3s, show anyway
-    const fallback = setTimeout(() => setIsReady(true), 3000);
-    
-    return () => {
-      window.removeEventListener("page-reveal", handleReveal as EventListener);
-      clearTimeout(fallback);
-    };
+    return () => clearTimeout(timer);
   }, [])
 
   // Track mouse for parallax effect and coordinates

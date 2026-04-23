@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
 import { gsap } from "@/lib/gsap";
-import { useTranslations, useLocale } from "next-intl";
 import { scrollTo } from "@/lib/lenis";
+import { cn } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import { Magnetic } from "./Magnetic";
 
 
@@ -69,20 +68,21 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const ctx = gsap.context(() => {
+      // Set initial states immediately (before any animation)
+      gsap.set(panelRef.current, { scaleX: 0, transformOrigin: "right" });
+      gsap.set(numbersRef.current.filter(Boolean), { x: -50, opacity: 0 });
+      gsap.set(linksRef.current.filter(Boolean), { y: 100, opacity: 0 });
+      gsap.set(footerRef.current, { y: 30, opacity: 0 });
+      gsap.set(closeBtnRef.current, { rotate: -90, opacity: 0, scale: 0.8 });
+
       // If user prefers reduced motion, show immediately without animations
       if (prefersReducedMotion) {
         if (isOpen) {
-          gsap.set(panelRef.current, { scaleX: 1, opacity: 1 });
-          gsap.set(numbersRef.current.filter(Boolean), { x: 0, opacity: 1 });
-          gsap.set(linksRef.current.filter(Boolean), { y: 0, opacity: 1 });
-          gsap.set(footerRef.current, { y: 0, opacity: 1 });
-          gsap.set(closeBtnRef.current, { rotate: 0, opacity: 1, scale: 1 });
-        } else {
-          gsap.set(panelRef.current, { scaleX: 0, opacity: 0 });
-          gsap.set(numbersRef.current.filter(Boolean), { opacity: 0 });
-          gsap.set(linksRef.current.filter(Boolean), { opacity: 0 });
-          gsap.set(footerRef.current, { opacity: 0 });
-          gsap.set(closeBtnRef.current, { opacity: 0 });
+          gsap.to(panelRef.current, { scaleX: 1, opacity: 1, duration: 0.01 });
+          gsap.to(numbersRef.current.filter(Boolean), { x: 0, opacity: 1, duration: 0.01 });
+          gsap.to(linksRef.current.filter(Boolean), { y: 0, opacity: 1, duration: 0.01 });
+          gsap.to(footerRef.current, { y: 0, opacity: 1, duration: 0.01 });
+          gsap.to(closeBtnRef.current, { rotate: 0, opacity: 1, scale: 1, duration: 0.01 });
         }
         return;
       }
@@ -211,13 +211,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
         <span className="w-4 h-[2px] bg-swiss-white transition-all duration-300 origin-left" />
       </button>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Overlay - Hidden by default to prevent flash */}
       <div
         ref={menuRef}
         id="mobile-menu"
         className={cn(
-          "fixed inset-0 z-[200] pointer-events-none",
-          isOpen && "pointer-events-auto"
+          "fixed inset-0 z-[200] pointer-events-none opacity-0 invisible",
+          isOpen && "pointer-events-auto opacity-100 visible"
         )}
         aria-hidden={!isOpen}
       >
@@ -370,7 +370,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
                 >
                   HELLO@DIEGONR.COM
                 </a>
-                <span>MADRID, ES</span>
+                <span>SANTA MARTA, CO</span>
               </div>
 
               {/* Social Links */}

@@ -1,10 +1,10 @@
 "use client";
 
-import React from 'react';
+import { scrollTo } from '@/lib/lenis';
 import Link from 'next/link';
+import React from 'react';
 import { SwissContainer } from './Layout';
 import { Magnetic } from './Magnetic';
-import { scrollTo } from '@/lib/lenis';
 
 /**
  * FooterError Component
@@ -35,7 +35,7 @@ export const FooterError: React.FC = () => {
           </div>
           <div className="md:col-span-4 md:text-right">
             <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">Location</p>
-            <p className="text-lg font-light">Madrid, Spain</p>
+            <p className="text-lg font-light">Santa Marta, Colombia</p>
             <p className="text-lg font-light opacity-60">Remote • Global</p>
           </div>
         </div>

@@ -1,15 +1,15 @@
 "use client";
 
-import { useRef, useState, useEffect, useLayoutEffect } from "react"
-import { useGSAP } from "@gsap/react"
-import { gsap } from "@/lib/gsap"
-import { Barcode } from "@/components/ui/barcode"
-import { TextScramble } from "@/components/animations/text-scramble"
-import { Magnetic } from "@/components/Magnetic"
-import { ArrowDown } from "lucide-react"
-import { SwissContainer } from "@/components/Layout"
+import { TextScramble } from "@/components/animations/text-scramble";
+import { SwissContainer } from "@/components/Layout";
+import { Magnetic } from "@/components/Magnetic";
+import { Barcode } from "@/components/ui/barcode";
+import { gsap } from "@/lib/gsap";
 import { scrollTo } from "@/lib/lenis";
+import { useGSAP } from "@gsap/react";
+import { ArrowDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const coreStack = [
   "React / Next.js",
@@ -39,11 +39,23 @@ export function Hero() {
   const rafIdRef = useRef<number | undefined>(undefined)
   const lastUpdateRef = useRef(0)
 
-  // Start entrance animations after short delay to avoid jank
-  useLayoutEffect(() => {
-    // Small delay to ensure DOM is fully painted
-    const timeout = setTimeout(() => setIsReady(true), 300)
-    return () => clearTimeout(timeout)
+  // Listen for page-reveal event from Preloader
+  useEffect(() => {
+    const handleReveal = (e: CustomEvent) => {
+      if (e.detail?.phase === "hero") {
+        setIsReady(true);
+      }
+    };
+    
+    window.addEventListener("page-reveal", handleReveal as EventListener);
+    
+    // Fallback: if preloader doesn't fire within 5s, show anyway
+    const fallback = setTimeout(() => setIsReady(true), 5000);
+    
+    return () => {
+      window.removeEventListener("page-reveal", handleReveal as EventListener);
+      clearTimeout(fallback);
+    };
   }, [])
 
   // Track mouse for parallax effect and coordinates
@@ -112,8 +124,39 @@ export function Hero() {
   useGSAP(() => {
     if (!sectionRef.current || !isReady) return
 
+    // Make section visible immediately (but content still animates)
+    sectionRef.current.style.opacity = "1"
+    sectionRef.current.style.visibility = "visible"
+
     // Respect user's motion preferences
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      // Show everything immediately without animation
+      if (sectionRef.current) {
+        sectionRef.current.style.opacity = "1"
+        sectionRef.current.style.visibility = "visible"
+      }
+      if (tagRef.current) tagRef.current.style.opacity = "1"
+      if (nameRef.current) {
+        nameRef.current.querySelectorAll(".name-char").forEach(char => {
+          ;(char as HTMLElement).style.opacity = "1"
+          ;(char as HTMLElement).style.transform = "none"
+        })
+      }
+      if (descriptionRef.current) {
+        descriptionRef.current.querySelectorAll("p").forEach(p => {
+          ;(p as HTMLElement).style.opacity = "1"
+          ;(p as HTMLElement).style.transform = "none"
+        })
+      }
+      if (sidebarRef.current) {
+        sidebarRef.current.querySelectorAll(".sidebar-item").forEach(item => {
+          ;(item as HTMLElement).style.opacity = "1"
+          ;(item as HTMLElement).style.transform = "none"
+        })
+      }
+      if (scrollIndicatorRef.current) scrollIndicatorRef.current.style.opacity = "1"
+      return
+    }
 
     const tl = gsap.timeline()
 
@@ -215,6 +258,7 @@ export function Hero() {
     <section
       ref={sectionRef}
       id="home"
+      data-reveal="hero"
       className="relative min-h-screen flex flex-col justify-between px-6 pt-24 pb-8 md:px-12 lg:px-20 overflow-hidden"
     >
       <div 
@@ -336,17 +380,11 @@ export function Hero() {
           <Barcode />
           <div className="text-right">
             <p className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
-              VER: 2.0.5
+              [X: {Math.round(mousePos.x)} Y: {Math.round(mousePos.y)}]
             </p>
           </div>
         </div>
       </SwissContainer>
-
-      <div className="absolute bottom-8 right-6 md:right-12 lg:right-20 hidden sm:block">
-        <p className="font-mono text-[10px] text-white/40 hover:opacity-100 transition-opacity uppercase tracking-widest">
-          [X: {Math.round(mousePos.x)} Y: {Math.round(mousePos.y)}]
-        </p>
-      </div>
 
       <div
         ref={bottomBarRef}

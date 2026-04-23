@@ -3,6 +3,7 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Preloader } from "@/components/Preloader";
+import { TVStaticOverlay } from "@/components/TVStaticOverlay";
 import { StructuredData, generatePersonStructuredData, generateWebSiteStructuredData, generateOrganizationStructuredData } from "@/components/StructuredData";
 
 export default function WebsiteLayout({
@@ -13,6 +14,15 @@ export default function WebsiteLayout({
   return (
     <LenisProvider>
       <Preloader />
+      <TVStaticOverlay 
+        config={{
+          opacity: 0.05,
+          fps: 20,
+          grainSize: 1,
+          mode: "bw",
+          scanlines: true,
+        }}
+      />
       <div className="page-wrapper min-h-screen bg-swiss-black text-swiss-white">
         <CustomCursor />
         <Navigation />

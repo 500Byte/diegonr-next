@@ -1,14 +1,14 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  
+
   --color-swiss-white: var(--text-primary);
   --color-swiss-black: var(--bg-primary);
   --color-swiss-gray-dark: #666666;
   --color-swiss-gray-light: #999999;
   --color-error: var(--color-error);
-  
+
   /* Redefine base colors to be dynamic */
   --color-white: var(--text-primary);
   --color-black: var(--bg-primary);
@@ -16,20 +16,20 @@
 
 :root {
   --bg-primary: #000000;
-  --text-primary: #FFFFFF;
+  --text-primary: #ffffff;
   --border-primary: rgba(255, 255, 255, 0.1);
   --color-error: #f87171;
 }
 
 .light {
-  --bg-primary: #FFFFFF;
+  --bg-primary: #ffffff;
   --text-primary: #000000;
   --border-primary: rgba(0, 0, 0, 0.1);
   --color-error: #dc2626;
 }
 
 .light {
-  --bg-primary: #FFFFFF;
+  --bg-primary: #ffffff;
   --text-primary: #000000;
   --border-primary: rgba(0, 0, 0, 0.1);
 }
@@ -39,19 +39,17 @@
     scroll-padding-top: 80px;
     @apply transition-colors duration-500;
   }
-  
+
   body {
     @apply bg-swiss-black text-swiss-white font-sans antialiased selection:bg-swiss-white selection:text-swiss-black overflow-x-hidden transition-colors duration-500;
   }
 
-  /* Noise Texture Overlay - Targeted to site only */
-  .page-wrapper::after {
-    content: "";
-    @apply fixed inset-0 pointer-events-none z-[9999] opacity-[0.03];
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  }
-
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-medium tracking-tighter uppercase;
   }
 
@@ -77,7 +75,8 @@
   }
 
   /* Lenis smooth scroll requirements */
-  html.lenis, html.lenis body {
+  html.lenis,
+  html.lenis body {
     height: auto;
   }
 
@@ -100,8 +99,12 @@
 
 /* Marquee Animation */
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -133,7 +136,9 @@
 
 /* Accessibility: Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -150,7 +155,7 @@
   visibility: hidden;
 }
 
-[data-reveal="ready"] {
+[data-reveal='ready'] {
   opacity: 1;
   visibility: visible;
 }

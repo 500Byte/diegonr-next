@@ -16,6 +16,8 @@
     "aria": {
       "menu_open": "Abrir menú de navegación",
       "menu_close": "Cerrar menú",
+      "open_menu": "Abrir menú",
+      "close_menu": "Cerrar menú",
       "change_language": "Cambiar idioma",
       "toggle_theme": "Cambiar tema"
     }

@@ -9,6 +9,7 @@ import { useTheme } from 'next-themes';
 import { scrollTo } from '@/lib/lenis';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link, useRouter } from '@/i18n/routing';
+import { MobileMenu } from './MobileMenu';
 
 export const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -152,7 +153,8 @@ export const Navigation: React.FC = () => {
             )} />
           </button>
 
-          <div className="flex gap-4 sm:gap-6 md:gap-8 lg:gap-12">
+          {/* Desktop Navigation Links - Hidden on mobile */}
+          <div className="hidden md:flex gap-4 sm:gap-6 md:gap-8 lg:gap-12">
             {navItems.map((item) => (
               <Magnetic key={item.id} strength={0.2}>
                 <Link
@@ -167,6 +169,11 @@ export const Navigation: React.FC = () => {
                 </Link>
               </Magnetic>
             ))}
+          </div>
+
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <MobileMenu navItems={navItems} />
           </div>
         </div>
       </SwissContainer>

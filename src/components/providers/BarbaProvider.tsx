@@ -27,10 +27,11 @@ export const BarbaProvider: React.FC<BarbaProviderProps> = ({ children }) => {
 
     // Dynamically import barba only on client side
     import("@barba/core").then((barbaModule) => {
-      const barbaInstance = barbaModule.default();
+      // Barba exports an object with init method, not a factory function
+      const barba = barbaModule.default || barbaModule;
 
       // Initialize Barba
-      barbaInstance.init({
+      barba.init({
       // Prevent on external links
       prevent: ({ href }: { href: string }) => {
         if (
@@ -104,7 +105,7 @@ export const BarbaProvider: React.FC<BarbaProviderProps> = ({ children }) => {
 
       // Cleanup
       return () => {
-        barbaInstance.destroy();
+        barba.destroy();
       };
     });
   }, []);

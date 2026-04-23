@@ -51,5 +51,7 @@ declare module '@barba/core' {
     };
   }
 
-  export default function barba(): BarbaInstance;
+  // Barba exports the instance directly, not a factory function
+  const barba: BarbaInstance;
+  export default barba;
 }

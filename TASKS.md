@@ -18,7 +18,7 @@
 
 - [ ] **Test Suite** - Add basic smoke tests with Vitest/Playwright
 
-- [ ] **Cursor Motion Preference** - Respect prefers-reduced-motion in CustomCursor
+- [x] ~~**Cursor Motion Preference**~~ (2026-04-22) - Already implemented in CustomCursor
 
 - [ ] **Dynamic Robots.txt** - Add sitemap reference to robots.ts
 
@@ -77,3 +77,10 @@
   - Panel reveal, staggered links, text scramble hover effect
   - Theme toggle, language switcher, contact info in footer
   - Commit: ab3a0df
+
+- [x] ~~**Animation Timing & Motion Preferences**~~ (2026-04-22)
+  - Fixed Hero delay: 2000ms → 300ms (no more waiting for removed preloader)
+  - Added prefers-reduced-motion checks to all GSAP components
+  - ScrollTrigger animations now use once: true (play once, not reverse)
+  - MobileMenu skips animations when reduced motion preferred
+  - Commit: 6f2c75d

@@ -2,11 +2,6 @@
 
 ## Active
 
-- [ ] **[P0] Mobile Navigation** - Implement hamburger menu for viewports < 640px
-  - Location: `src/components/Navigation.tsx`, lines 155-170
-  - Issue: Navigation links overflow horizontally on mobile
-  - Suggested: `/adapt`
-
 - [ ] **[P2] Touch Targets** - Increase interactive element hit areas to 44x44px
   - Location: Navigation and Footer components
   - Standard: WCAG Target Size (Minimum) 2.5.8
@@ -77,3 +72,8 @@
 - [x] ~~**Theme Toggle ARIA**~~ (2026-04-22)
 - [x] ~~**Transfer Audit Report**~~ (2026-04-22)
 - [x] ~~**Agent Skills Guidelines**~~ (2026-04-22)
+- [x] ~~**P0 Mobile Navigation**~~ (2026-04-22)
+  - Fullscreen mobile menu with GSAP animations
+  - Panel reveal, staggered links, text scramble hover effect
+  - Theme toggle, language switcher, contact info in footer
+  - Commit: ab3a0df

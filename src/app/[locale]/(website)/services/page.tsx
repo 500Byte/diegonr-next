@@ -108,7 +108,7 @@ function ServicesList({ services }: { services: Awaited<ReturnType<typeof getAll
 export default async function ServicesPage() {
   const services = await getAllServices();
   return (
-    <div className="page-content">
+    <div data-barba-namespace="services" className="page-content">
       <PageHeader 
         title="SERVICIOS" 
         subtitle="Capacidades & Soluciones"

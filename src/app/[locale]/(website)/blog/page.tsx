@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 export default async function BlogPage() {
   const blogPosts = await getAllPosts();
   return (
-    <div className="page-content">
+    <div data-barba-namespace="blog" className="page-content">
       <PageHeader 
         title="BLOG" 
         subtitle="Pensamientos & Artículos"

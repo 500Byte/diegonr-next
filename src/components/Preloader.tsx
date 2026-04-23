@@ -8,11 +8,29 @@ export const Preloader: React.FC = () => {
   const progressRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [shouldSkip, setShouldSkip] = useState(false);
   const startTimeRef = useRef<number>(0);
   const minDuration = 800; // Minimum 800ms
   const maxDuration = 3000; // Maximum 3s
 
   useEffect(() => {
+    // Check if user has seen preloader this session
+    const hasSeenPreloader = sessionStorage.getItem('hasSeenPreloader');
+    
+    if (hasSeenPreloader) {
+      // Skip preloader for returning users in same session
+      setShouldSkip(true);
+      setIsComplete(true);
+      setProgress(100);
+      // Dispatch event immediately so Hero can animate
+      window.dispatchEvent(
+        new CustomEvent("page-reveal", {
+          detail: { phase: "hero" },
+        })
+      );
+      return;
+    }
+
     startTimeRef.current = Date.now();
     
     // Track loading progress
@@ -42,6 +60,8 @@ export const Preloader: React.FC = () => {
       if ((imagesComplete && timeComplete) || maxTimeReached) {
         setProgress(100);
         setIsComplete(true);
+        // Mark as seen for this session
+        sessionStorage.setItem('hasSeenPreloader', 'true');
         clearTimeout(loadTimeout);
       } else {
         loadTimeout = setTimeout(updateProgress, 50);
@@ -89,7 +109,17 @@ export const Preloader: React.FC = () => {
 
   // Exit animation when complete
   useEffect(() => {
-    if (!isComplete || !containerRef.current) return;
+    if (!isComplete) return;
+
+    // If skipping, don't animate just remove
+    if (shouldSkip) {
+      if (containerRef.current) {
+        containerRef.current.style.display = "none";
+      }
+      return;
+    }
+
+    if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -128,7 +158,7 @@ export const Preloader: React.FC = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, [isComplete]);
+  }, [isComplete, shouldSkip]);
 
   // Respect reduced motion
   useEffect(() => {

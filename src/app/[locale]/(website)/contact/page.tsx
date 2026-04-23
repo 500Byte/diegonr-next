@@ -9,7 +9,7 @@ import { NewsletterSignup } from '@/components/NewsletterSignup';
 
 export default function ContactPage() {
   return (
-    <div className="page-content">
+    <div data-barba-namespace="contact" className="page-content">
       <PageHeader
         title="CONTACTO"
         subtitle="Hablemos de tu proyecto"

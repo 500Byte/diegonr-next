@@ -45,6 +45,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
+    "@barba/core": "^2.10.3",
     "@emailjs/browser": "^4.4.1",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",

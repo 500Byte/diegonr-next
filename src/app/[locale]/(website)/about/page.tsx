@@ -73,7 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default function AboutPage() {
   return (
-    <div className="page-content">
+    <div data-barba-namespace="about" className="page-content">
       <PageHeader 
         title="SOBRE MÍ" 
         subtitle="Mi Historia & Filosofía"

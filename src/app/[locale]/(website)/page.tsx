@@ -37,7 +37,7 @@ export default async function Home({ params }: Props) {
   const blogPosts = await getAllPosts();
 
   return (
-    <>
+    <div data-barba-namespace="home">
       <Hero />
       <MarqueeBanner text="SOLUTIONS ARCHITECT • FULL-STACK DEVELOPER • AI SPECIALIST •" speed={60} />
       <About />
@@ -46,6 +46,6 @@ export default async function Home({ params }: Props) {
       <Services services={services} />
       <BlogSection blogPosts={blogPosts} />
       <Vision />
-    </>
+    </div>
   );
 }

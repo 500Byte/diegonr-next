@@ -65,7 +65,28 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
   useEffect(() => {
     if (!menuRef.current || !panelRef.current) return;
 
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const ctx = gsap.context(() => {
+      // If user prefers reduced motion, show immediately without animations
+      if (prefersReducedMotion) {
+        if (isOpen) {
+          gsap.set(panelRef.current, { scaleX: 1, opacity: 1 });
+          gsap.set(numbersRef.current.filter(Boolean), { x: 0, opacity: 1 });
+          gsap.set(linksRef.current.filter(Boolean), { y: 0, opacity: 1 });
+          gsap.set(footerRef.current, { y: 0, opacity: 1 });
+          gsap.set(closeBtnRef.current, { rotate: 0, opacity: 1, scale: 1 });
+        } else {
+          gsap.set(panelRef.current, { scaleX: 0, opacity: 0 });
+          gsap.set(numbersRef.current.filter(Boolean), { opacity: 0 });
+          gsap.set(linksRef.current.filter(Boolean), { opacity: 0 });
+          gsap.set(footerRef.current, { opacity: 0 });
+          gsap.set(closeBtnRef.current, { opacity: 0 });
+        }
+        return;
+      }
+
       const tl = gsap.timeline({ paused: true });
 
       // Fase 1: Panel background reveal

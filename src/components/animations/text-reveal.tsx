@@ -32,6 +32,9 @@ export const TextReveal: React.FC<TextRevealProps> = ({
   useGSAP(() => {
     if (!textRef.current || !containerRef.current) return
 
+    // Respect user's motion preferences
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const text = textRef.current.textContent || ""
     let elements: string[] = []
 
@@ -122,6 +125,9 @@ export const FadeIn: React.FC<FadeInProps> = ({
   useGSAP(() => {
     if (!ref.current) return
 
+    // Respect user's motion preferences - show immediately without animation
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     const directionMap = {
       up: { y: distance },
       down: { y: -distance },
@@ -139,7 +145,7 @@ export const FadeIn: React.FC<FadeInProps> = ({
       scrollTrigger: {
         trigger: ref.current,
         start: "top 85%",
-        toggleActions: "play none none reverse",
+        once: true,
       },
     })
   }, { scope: ref })

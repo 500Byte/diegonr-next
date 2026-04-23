@@ -38,8 +38,8 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
         ease: "power3.out",
         scrollTrigger: {
           trigger: card,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
+          start: "top 90%",
+          once: true,
         },
       })
     })

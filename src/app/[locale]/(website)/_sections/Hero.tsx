@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useLayoutEffect } from "react"
 import { useGSAP } from "@gsap/react"
 import { gsap } from "@/lib/gsap"
 import { Barcode } from "@/components/ui/barcode"
@@ -35,9 +35,16 @@ export function Hero() {
   const mousePositionRef = useRef({ x: 0, y: 0 })
   const mousePosRef = useRef({ x: 0, y: 0 })
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isReady, setIsReady] = useState(false)
   const rafIdRef = useRef<number | undefined>(undefined)
   const lastUpdateRef = useRef(0)
+
+  // Start entrance animations after short delay to avoid jank
+  useLayoutEffect(() => {
+    // Small delay to ensure DOM is fully painted
+    const timeout = setTimeout(() => setIsReady(true), 300)
+    return () => clearTimeout(timeout)
+  }, [])
 
   // Track mouse for parallax effect and coordinates
   useEffect(() => {
@@ -60,6 +67,9 @@ export function Hero() {
       }
       
       // Animate parallax elements with GSAP (direct DOM manipulation, no React re-render)
+      // Skip if user prefers reduced motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+      
       if (gridRef.current) {
         gsap.to(gridRef.current, {
           x: x * 10,
@@ -93,23 +103,19 @@ export function Hero() {
     
     window.addEventListener("mousemove", handleMouseMove)
     
-    // Delay to sync with preloader
-    const timeout = setTimeout(() => setIsLoaded(true), 2000)
-    
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
-      clearTimeout(timeout)
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current)
     }
   }, [])
 
   useGSAP(() => {
-    if (!sectionRef.current || !isLoaded) return
+    if (!sectionRef.current || !isReady) return
 
     // Respect user's motion preferences
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
-    const tl = gsap.timeline({ delay: 0.2 })
+    const tl = gsap.timeline()
 
     // Animate tag with glitch effect
     if (tagRef.current) {
@@ -193,7 +199,7 @@ export function Hero() {
         ease: "power2.inOut",
       })
     }
-  }, { scope: sectionRef, dependencies: [isLoaded] })
+  }, { scope: sectionRef, dependencies: [isReady] })
 
   // Split name into characters for animation with perspective
   const name = "DIEGO NAVARRO"

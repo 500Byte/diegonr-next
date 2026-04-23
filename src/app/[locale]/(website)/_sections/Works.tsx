@@ -53,8 +53,8 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
         ease: "power3.out",
         scrollTrigger: {
           trigger: item,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
+          start: "top 90%",
+          once: true,
         },
       })
     })

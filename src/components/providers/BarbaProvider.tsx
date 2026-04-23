@@ -87,6 +87,12 @@ export const BarbaProvider: React.FC<BarbaProviderProps> = ({ children }) => {
             window.scrollTo(0, 0);
           },
           afterEnter() {
+            // Dispatch event for Hero to start animating after Barba transition
+            window.dispatchEvent(
+              new CustomEvent("barba-enter-complete", {
+                detail: { namespace: "home" },
+              })
+            );
             // Refresh ScrollTrigger
             ScrollTrigger.refresh();
           },
@@ -97,6 +103,11 @@ export const BarbaProvider: React.FC<BarbaProviderProps> = ({ children }) => {
             window.scrollTo(0, 0);
           },
           afterEnter() {
+            window.dispatchEvent(
+              new CustomEvent("barba-enter-complete", {
+                detail: { namespace: "default" },
+              })
+            );
             ScrollTrigger.refresh();
           },
         },

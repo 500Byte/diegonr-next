@@ -41,6 +41,16 @@ export function Hero() {
 
   // Listen for page-reveal event from Preloader
   useEffect(() => {
+    // Check if preloader was already shown in this session
+    const hasSeenPreloader = sessionStorage.getItem('hasSeenPreloader');
+    
+    if (hasSeenPreloader) {
+      // If returning via Barba navigation, animate immediately
+      setIsReady(true);
+      return;
+    }
+    
+    // First visit: wait for preloader
     const handleReveal = (e: CustomEvent) => {
       if (e.detail?.phase === "hero") {
         setIsReady(true);
@@ -49,8 +59,8 @@ export function Hero() {
     
     window.addEventListener("page-reveal", handleReveal as EventListener);
     
-    // Fallback: if preloader doesn't fire within 5s, show anyway
-    const fallback = setTimeout(() => setIsReady(true), 5000);
+    // Fallback: if preloader doesn't fire within 3s, show anyway
+    const fallback = setTimeout(() => setIsReady(true), 3000);
     
     return () => {
       window.removeEventListener("page-reveal", handleReveal as EventListener);

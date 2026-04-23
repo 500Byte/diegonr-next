@@ -18,10 +18,6 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
   const locale = useLocale();
   // Handle undefined/null gracefully
   const safeProjects = projects || []
-
-  if (safeProjects.length === 0) {
-    return null // Don't render section if no projects
-  }
   const sectionRef = useRef<HTMLElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const previewRef = useRef<HTMLDivElement>(null)
@@ -87,6 +83,10 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
       })
     }
   }, { scope: previewRef, dependencies: [hoveredProject] })
+
+  if (safeProjects.length === 0) {
+    return null // Don't render section if no projects
+  }
 
   const featuredProjects = safeProjects.filter((p) => p.featured)
   const currentProject = hoveredProject ? featuredProjects.find((p) => p.slug?.current === hoveredProject) : null

@@ -16,12 +16,6 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
   const t = useTranslations("Services");
   const locale = useLocale();
   const safeServices = services || []
-
-  // Handle empty services gracefully
-  if (safeServices.length === 0) {
-    return null
-  }
-
   const sectionRef = useRef<HTMLElement>(null)
   const [activeTab, setActiveTab] = useState(safeServices[0]?.slug?.current || '')
   const [hoveredTab, setHoveredTab] = useState<string | null>(null)
@@ -72,6 +66,11 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
       }
     )
   }, { scope: contentRef, dependencies: [activeTab] })
+
+  // Handle empty services gracefully
+  if (safeServices.length === 0) {
+    return null
+  }
 
   const activeService = safeServices.find((s) => s.slug?.current === activeTab)
 

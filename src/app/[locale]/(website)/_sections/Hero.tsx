@@ -39,24 +39,30 @@ export function Hero() {
   const rafIdRef = useRef<number | undefined>(undefined)
   const lastUpdateRef = useRef(0)
 
-  // Listen for page-reveal event from Preloader
+  // Listen for page-reveal event from Preloader or page-transition-complete
   useEffect(() => {
-    // Check if preloader was already shown in this session
+    // Check if this is first load or a navigation
     const hasSeenPreloader = sessionStorage.getItem('hasSeenPreloader');
     
-    if (hasSeenPreloader) {
-      // If preloader already shown, animate immediately
+    const handleReveal = () => {
       setIsReady(true);
-      return;
-    }
-    
-    // First visit: wait for preloader event
-    const handleReveal = (e: CustomEvent) => {
-      if (e.detail?.phase === "hero") {
-        setIsReady(true);
-      }
     };
     
+    if (hasSeenPreloader) {
+      // This is a navigation (not first load)
+      // Wait for page transition to complete
+      window.addEventListener("page-transition-complete", handleReveal);
+      
+      // Fallback: animate anyway after short delay
+      const fallback = setTimeout(() => setIsReady(true), 100);
+      
+      return () => {
+        window.removeEventListener("page-transition-complete", handleReveal);
+        clearTimeout(fallback);
+      };
+    }
+    
+    // First visit: wait for preloader
     window.addEventListener("page-reveal", handleReveal as EventListener);
     
     // Fallback: if preloader doesn't fire within 3s, show anyway

@@ -90,17 +90,23 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/) with **at
 
 ### Atomic Commits (One feature = One commit)
 
+**CRITICAL:** Each commit must represent a single logical change. Mixing unrelated changes makes rollback difficult and code review impossible.
+
 **Correct:**
 ```bash
 git commit -m "feat(nav): add keyboard navigation and focus-visible states"
 git commit -m "perf(hero): implement mouse tracking throttling with RAF"
 git commit -m "style(typography): increase minimum font size to 12px"
+git commit -m "feat(page-transitions): create PageTransitionProvider component"
+git commit -m "feat(layout): integrate PageTransitionProvider in website layout"
+git commit -m "feat(hero): listen for page-transition-complete event"
 ```
 
 **Incorrect (DO NOT):**
 ```bash
 git commit -m "various updates"  # Too vague
 git commit -m "fix everything"   # Multiple unrelated changes
+git commit -m "feat(transitions): implement async page transitions"  # 4 files, 4 different concerns
 ```
 
 ### Scope Guidelines

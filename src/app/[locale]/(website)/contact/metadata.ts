@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
       images: [
         {
-          url: `/og?title=Contact&type=Contact&subtitle=Let\'s Talk&lang=${locale}`,
+          url: `/og?title=Contact&type=Contact&subtitle=Let's Talk&lang=${locale}`,
           width: 1200,
           height: 630,
           alt: t('contact_title'),
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: t('contact_title'),
       description: t('contact_description'),
       creator: '@diegonr',
-      images: [`/og?title=Contact&type=Contact&subtitle=Let\'s Talk&lang=${locale}`],
+      images: [`/og?title=Contact&type=Contact&subtitle=Let's Talk&lang=${locale}`],
     },
     robots: {
       index: true,

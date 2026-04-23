@@ -26,6 +26,19 @@
 
 ---
 
+### Audit Report Issues (from audit_report.md)
+
+- [ ] **[P0] Mobile Navigation** - Implement hamburger menu for viewports < 640px
+  - Location: `src/components/Navigation.tsx`, lines 155-170
+  - Issue: Navigation links overflow horizontally on mobile, breaking layout
+  - Suggested command: `/adapt`
+  - **Critical** - Must fix before production
+
+- [ ] **[P2] Touch Targets** - Increase interactive element hit areas to 44x44px
+  - Location: Navigation and Footer components
+  - Standard: WCAG Target Size (Minimum) 2.5.8
+  - Suggested command: `/polish`
+
 ### P1 - Important (Fix before major sharing)
 
 - [ ] **Image Alt Text** - Add descriptive alt to project and blog images

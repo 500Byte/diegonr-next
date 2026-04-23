@@ -58,7 +58,7 @@ export const NavigationError: React.FC = () => {
 
           <button
             type="button"
-            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label="Toggle theme"
             className="hidden md:flex items-center gap-2 text-[10px] tracking-widest uppercase cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm"
             onClick={toggleTheme}
           >

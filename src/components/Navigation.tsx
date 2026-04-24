@@ -95,20 +95,23 @@ export const Navigation: React.FC = () => {
       <SwissContainer>
         <div className="flex justify-between items-center h-12">
           <div className="flex items-center gap-12">
-            <Magnetic strength={0.3}>
-              <Link 
-                href="/"
-                className="min-w-11 min-h-11 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
-                onClick={(e) => {
-                  if (pathname === `/${locale}`) {
-                    e.preventDefault();
-                    scrollTo('#home');
-                  }
-                }}
-              >
-                {t('brand')}
-              </Link>
-            </Magnetic>
+<Magnetic strength={0.3}>
+                <Link 
+                  href="/"
+                  className="min-w-11 min-h-11 rounded-full flex items-center justify-center cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
+                  onClick={(e) => {
+                    if (pathname === `/${locale}`) {
+                      e.preventDefault();
+                      scrollTo('#home');
+                    }
+                  }}
+                  aria-label={t('brand')}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 488 488" fill="currentColor">
+                    <path d="M138.423 178.122v139.286a121.312 121.312 0 0 0 100.897-69.659c-18.512-39.774-57.179-66.357-100.897-69.627ZM379.435 339.96h-9.123c-51.16 0-96.989-27.535-121.368-71.533A139.528 139.528 0 0 1 129.3 335.991h-9.121V159.539h9.121a139.562 139.562 0 0 1 128.389 84.63c17.314 44.323 57.289 73.765 103.502 77.208V168.675h18.244V339.96ZM244 18.244C119.519 18.244 18.244 119.52 18.244 244S119.52 469.756 244 469.756 469.756 368.481 469.756 244 368.481 18.244 244 18.244ZM244 488C109.458 488 0 378.543 0 244S109.458 0 244 0c134.543 0 244 109.457 244 244S378.543 488 244 488Z"/>
+                  </svg>
+                </Link>
+              </Magnetic>
             <div className="hidden lg:flex gap-4 text-[10px] tracking-widest uppercase">
               <button
                 type="button"

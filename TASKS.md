@@ -2,42 +2,30 @@
 
 ## Active
 
-- [ ] **[P2] Touch Targets** - Increase interactive element hit areas to 44x44px
-  - Location: Navigation and Footer components
-  - Standard: WCAG Target Size (Minimum) 2.5.8
-  - Run: `npm run dev` → inspect touch areas
-
-- [ ] **[P2] Image Alt Text** - Add descriptive alt to project and blog images
-  - Files: `projects/[id]/page.tsx:150`, `blog/[id]/page.tsx:144`, `blog/page.tsx:78`
-  - Improves accessibility score
-
-- [ ] **[P2] Minimum Typography Size** - Review 8-10px text sizes for mobile readability
-  - Files: BlogSection, Works, About sections
-  - Some elements may be hard to read on mobile
-
-- [ ] **[P3] Blog Schema Consistency** - Clarify category (string) vs tags (array)
-  - File: `sanity/schemaTypes/blogPostType.ts`
-  - Technical debt: current implementation is confusing
-
-- [ ] **[P3] Dynamic Robots.txt** - Add sitemap reference to robots.ts
-  - Improves SEO crawling
-
-- [ ] **[P3] Bundle Analysis** - Run `npm run analyze` to check bundle size
-  - Identify opportunities for code splitting
-
 ## Waiting On
-
-## Someday
-
-- [ ] **PWA Complete** - Service worker with Workbox, full manifest
-  - Nice-to-have feature for offline access
-
-- [ ] **Social Preview Testing** - Verify OG images on Twitter/Facebook/LinkedIn
-  - Manual testing when content changes
 
 ## Done
 
 ### April 2026
+
+- [x] ~~**Establecer logo**~~ (2026-04-24)
+  - Replaced text "{t('brand')}" with inline SVG in Navigation
+  - Added favicon.svg with prefers-color-scheme support
+  - Removed border from circular navigation button
+  - Files: Navigation.tsx, public/favicon.svg, public/logo.svg, src/app/layout.tsx
+
+- [x] ~~**[P2] Minimum Typography Size**~~ (2026-04-24)
+  - Increased text sizes from 8-9px to 10px minimum
+  - Files: BlogSection.tsx, About.tsx, Works.tsx
+  - WCAG readability compliance
+
+- [x] ~~**[P2] Image Alt Text**~~ (2026-04-24)
+  - Added descriptive alt text to project and blog images
+  - Files: `projects/[id]/page.tsx`, `blog/[id]/page.tsx`, `blog/page.tsx`
+  - Pattern: `Cover image for ${title}`
+
+- [x] ~~**[P2] Touch Targets**~~ (2026-04-24)
+  - Previously completed with Navigation and Footer components
 
 - [x] ~~**Playwright Test Suite**~~ (2026-04-24)
   - 11 smoke tests covering all critical pages in ES/EN
@@ -116,7 +104,45 @@
 
 ### Disabled / Not Needed
 
+- [x] ~~**PWA Complete**~~ (2026-04-24) - No interest in PWA/offline access
+- [x] ~~**Social Preview Testing**~~ (2026-04-24) - Manual testing, no active work needed
 - [x] ~~**NewsletterSignup**~~ (2026-04-24) - Disabled, not needed for current strategy
   - Commented out in `contact/page.tsx`
   - Component deleted from codebase
   - Can be re-enabled if strategy changes
+
+---
+
+## April 2026 - Audit Findings
+
+> ⚠️ **Depurado**: Descartados falsos positivos (i18n EN intencional, GROQ filter decisión de diseño)
+
+- [ ] **[P1] Skip Link for Main Content**
+  - Add skip link as first focusable element
+  - Improves keyboard navigation WCAG compliance
+
+- [ ] **[P2] Button Types Missing**
+  - Add `type="button"` to non-submit buttons
+  - Files: `Footer.tsx:77`, `Vision.tsx:52`, `offline/page.tsx:38`
+
+- [ ] **[P2] Dead Links in Footer**
+  - Fix `href="#"` to real URLs or remove
+  - Files: `Footer.tsx:46-47` (Twitter, Instagram placeholder links)
+
+- [ ] **[P2] CSS Duplicate Selector**
+  - Fix duplicate `.light` selector in `src/index.css:24-35`
+  - Remove redundant lines 31-35
+
+- [ ] **[P2] GROQ Fields (revisar uso real)**
+  - Add `description_en` to projects query if used in UI
+  - Add `excerpt` to blog posts query if used in UI
+  - File: `src/lib/sanity.ts`
+  - ⚠️ Only if these fields are actually used in the frontend
+
+- [ ] **[P3] Update Outdated Dependencies**
+  - Optional: `npm update` for patch versions
+  - Priority: lucide-react (major), typescript, @types/node
+
+- [ ] **[P3] Scroll-margin-top on Anchor Links**
+  - Add `scroll-margin-top` to headings with id attributes
+  - Improves anchor navigation UX

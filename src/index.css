@@ -57,6 +57,9 @@
   .custom-cursor {
     @apply fixed w-4 h-4 rounded-full pointer-events-none;
     z-index: 2147483647;
+    /* Must have explicit position to be visible before JS initializes */
+    top: 0;
+    left: 0;
     /* Start visible - no scale(0) */
     transform: translate(-50%, -50%);
     /* White for dark backgrounds */
@@ -65,6 +68,8 @@
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
     will-change: transform;
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    /* Debug: Uncomment to see cursor position */
+    /* outline: 2px solid red !important; */
   }
 
   /* Light mode - black cursor */

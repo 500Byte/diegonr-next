@@ -5,7 +5,9 @@ import gsap from 'gsap';
 
 export const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const cursor = cursorRef.current;
@@ -18,8 +20,17 @@ export const CustomCursor = () => {
       return;
     }
 
+    // Set initial position to center
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    setPosition({ x: centerX, y: centerY });
+    gsap.set(cursor, { x: centerX, y: centerY });
+
     // Position tracking
     const onMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
+      
       gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
@@ -35,16 +46,21 @@ export const CustomCursor = () => {
       setIsHovering(!!isInteractive);
     };
 
+    // Hide when leaving window
+    const onMouseLeave = () => setIsVisible(false);
+    const onMouseEnter = () => setIsVisible(true);
+
     // Add listeners
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseover', onMouseOver);
-
-    // Initial position
-    gsap.set(cursor, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+    document.addEventListener('mouseleave', onMouseLeave);
+    document.addEventListener('mouseenter', onMouseEnter);
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseover', onMouseOver);
+      document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('mouseenter', onMouseEnter);
     };
   }, []);
 
@@ -52,6 +68,11 @@ export const CustomCursor = () => {
     <div
       ref={cursorRef}
       className={`custom-cursor ${isHovering ? 'hovering' : ''}`}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        // Fallback position if GSAP fails
+        transform: `translate(${position.x - 8}px, ${position.y - 8}px)`,
+      }}
       aria-hidden="true"
     />
   );

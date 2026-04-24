@@ -24,14 +24,14 @@ export default function WebsiteLayout({
         }}
       />
       <div className="page-wrapper min-h-screen bg-swiss-black text-swiss-white">
+        {/* CustomCursor inside page-wrapper to share stacking context */}
+        <CustomCursor />
         <Navigation />
         <main className="relative min-h-screen">
           {children}
         </main>
         <Footer />
       </div>
-      {/* CustomCursor rendered last to ensure it's on top of everything */}
-      <CustomCursor />
       <StructuredData data={generatePersonStructuredData()} />
       <StructuredData data={generateWebSiteStructuredData()} />
       <StructuredData data={generateOrganizationStructuredData()} />

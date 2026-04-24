@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 
 export async function generateStaticParams() {
@@ -26,19 +27,20 @@ export async function generateStaticParams() {
 }
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id, locale } = await params;
   const projectDoc = await getProject(id);
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   if (!projectDoc) {
     return {
-      title: 'Proyecto no encontrado | Diego NR',
-      description: 'El proyecto que buscas no existe.',
+      title: `${locale === 'es' ? 'Proyecto no encontrado' : 'Project not found'} | Diego NR`,
+      description: locale === 'es' ? 'El proyecto que buscas no existe.' : 'The project you are looking for does not exist.',
     };
   }
 
@@ -59,30 +61,34 @@ export async function generateMetadata({
     keywords: [
       ...cats,
       ...techs,
-      'proyecto',
+      locale === 'es' ? 'proyecto' : 'project',
       'portfolio',
-      'desarrollo',
+      locale === 'es' ? 'desarrollo' : 'development',
     ],
     authors: [{ name: 'Diego NR' }],
     creator: 'Diego NR',
     publisher: 'Diego NR',
     metadataBase: new URL('https://diegonr.com'),
     alternates: {
-      canonical: `/projects/${id}`,
+      canonical: `/${locale}/projects/${id}`,
+      languages: {
+        'es': `/es/projects/${id}`,
+        'en': `/en/projects/${id}`,
+      },
     },
     openGraph: {
       title,
       description,
-      url: `/projects/${id}`,
+      url: `/${locale}/projects/${id}`,
       siteName: 'Diego NR Portfolio',
-      locale: 'es_ES',
+      locale: locale === 'en' ? 'en_US' : 'es_ES',
       type: 'article',
       images: [
         {
-          url: `/og?title=${encodeURIComponent(project.title as string || '')}&type=Proyecto&subtitle=${encodeURIComponent(cats.join(' • '))}`,
+          url: `/og?title=${encodeURIComponent(project.title as string || '')}&type=Proyecto&subtitle=${encodeURIComponent(cats.join(' • '))}&lang=${locale}`,
           width: 1200,
           height: 630,
-          alt: `${project.title} - Proyecto de Diego NR`,
+          alt: `${project.title} - ${locale === 'es' ? 'Proyecto de' : 'Project by'} Diego NR`,
         },
       ],
     },
@@ -92,7 +98,7 @@ export async function generateMetadata({
       description,
       creator: '@diegonr',
       images: [
-        `/og?title=${encodeURIComponent(project.title as string || '')}&type=Proyecto&subtitle=${encodeURIComponent(cats.join(' • '))}`,
+        `/og?title=${encodeURIComponent(project.title as string || '')}&type=Proyecto&subtitle=${encodeURIComponent(cats.join(' • '))}&lang=${locale}`,
       ],
     },
     robots: {
@@ -110,8 +116,10 @@ export async function generateMetadata({
 }
 
 export default async function ProjectSingle({ params }: PageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const projectDoc = await getProject(id);
+  const t = await getTranslations({ locale, namespace: 'ProjectDetail' });
+  const tMeta = await getTranslations({ locale, namespace: 'Metadata' });
 
   if (!projectDoc) {
     notFound();
@@ -126,12 +134,12 @@ export default async function ProjectSingle({ params }: PageProps) {
       <div className="pt-32 pb-12">
         <SwissContainer>
           <Link
-            href="/projects"
+            href={`/${locale}/projects`}
             className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors w-fit mb-12"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span className="font-mono text-[10px] uppercase tracking-widest">
-              Volver a proyectos
+              {t('back_link')}
             </span>
           </Link>
         </SwissContainer>
@@ -157,13 +165,13 @@ export default async function ProjectSingle({ params }: PageProps) {
             <div className="md:col-span-4 space-y-12">
               <div>
                 <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">
-                  Año
+                  {t('year_label')}
                 </p>
                 <p className="text-xl font-light">{project.year as string}</p>
               </div>
               <div>
                 <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-4">
-                  Tecnologías
+                  {t('tech_label')}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   {techs.map(tag => (
@@ -179,7 +187,7 @@ export default async function ProjectSingle({ params }: PageProps) {
             </div>
             <div className="md:col-span-8">
               <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">
-                Sobre el proyecto
+                {t('about_label')}
               </p>
               <div className="text-2xl md:text-3xl font-light leading-relaxed text-white/80 portable-text-content">
                 <DocumentRenderer field={project.content} />
@@ -194,7 +202,7 @@ export default async function ProjectSingle({ params }: PageProps) {
                       rel="noopener noreferrer"
                       className="group flex items-center gap-4 text-2xl font-medium tracking-tighter hover:text-white/60 transition-colors"
                     >
-                      Ver sitio en vivo{' '}
+                      {t('view_site')}{' '}
                       <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </a>
                   </Magnetic>
@@ -217,9 +225,9 @@ export default async function ProjectSingle({ params }: PageProps) {
       />
       <StructuredData
         data={generateBreadcrumbStructuredData([
-          { name: 'Inicio', url: '/' },
-          { name: 'Proyectos', url: '/projects' },
-          { name: project.title as string, url: `/projects/${id}` },
+          { name: locale === 'es' ? 'Inicio' : 'Home', url: `/${locale}` },
+          { name: tMeta('projects_title').split(' | ')[0], url: `/${locale}/projects` },
+          { name: project.title as string, url: `/${locale}/projects/${id}` },
         ])}
       />
     </div>

@@ -234,5 +234,30 @@
     "title": "PROYECTOS",
     "subtitle": "Trabajos Seleccionados",
     "description": "Colección de proyectos representativos en arquitectura de software, sistemas de diseño y aplicaciones escalables."
+  },
+  "BlogDetail": {
+    "back_link": "Volver al blog",
+    "reading_time_suffix": "min de lectura",
+    "share_label": "Compartir",
+    "related_label": "Artículos relacionados"
+  },
+  "ProjectDetail": {
+    "back_link": "Volver a proyectos",
+    "year_label": "Año",
+    "tech_label": "Tecnologías",
+    "about_label": "Sobre el proyecto",
+    "view_site": "Ver sitio en vivo",
+    "view_code": "Ver código",
+    "challenges_label": "Desafíos",
+    "solution_label": "Solución"
+  },
+  "ServiceDetail": {
+    "back_link": "Volver a servicios",
+    "offerings_label": "Lo que incluye",
+    "cta_title": "¿Interesado en este servicio?",
+    "cta_description": "Consulta disponibilidad y discute los requerimientos específicos del proyecto.",
+    "cta_button": "Iniciar consulta",
+    "process_label": "Proceso",
+    "deliverables_label": "Entregables"
   }
 }

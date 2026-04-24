@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 
 export async function generateStaticParams() {
@@ -25,25 +26,26 @@ export async function generateStaticParams() {
 }
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id, locale } = await params;
   const postDoc = await getPost(id);
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
 
   if (!postDoc) {
     return {
-      title: 'Artículo no encontrado | Diego NR',
-      description: 'El artículo que buscas no existe.',
+      title: `${locale === 'es' ? 'Artículo no encontrado' : 'Article not found'} | Diego NR`,
+      description: locale === 'es' ? 'El artículo que buscas no existe.' : 'The article you are looking for does not exist.',
     };
   }
 
   const post = postDoc;
   const title = `${post.title} | Blog - Diego NR`;
-  const descText = toPlainText(post.excerpt || []) || 'Artículo del blog de Diego NR';
+  const descText = toPlainText(post.excerpt || []) || (locale === 'es' ? 'Artículo del blog de Diego NR' : 'Article from Diego NR blog');
 
   return {
     title,
@@ -51,33 +53,37 @@ export async function generateMetadata({
     keywords: [
       (post.category as string) || '',
       'blog',
-      'desarrollo',
-      'tecnología',
-      'IA',
-      'programación',
+      locale === 'es' ? 'desarrollo' : 'development',
+      locale === 'es' ? 'tecnología' : 'technology',
+      'AI',
+      locale === 'es' ? 'programación' : 'programming',
     ],
     authors: [{ name: 'Diego NR' }],
     creator: 'Diego NR',
     publisher: 'Diego NR',
     metadataBase: new URL('https://diegonr.com'),
     alternates: {
-      canonical: `/blog/${id}`,
+      canonical: `/${locale}/blog/${id}`,
+      languages: {
+        'es': `/es/blog/${id}`,
+        'en': `/en/blog/${id}`,
+      },
     },
     openGraph: {
       title,
       description: descText,
-      url: `/blog/${id}`,
+      url: `/${locale}/blog/${id}`,
       siteName: 'Diego NR Blog',
-      locale: 'es_ES',
+      locale: locale === 'en' ? 'en_US' : 'es_ES',
       type: 'article',
       publishedTime: post.date as string || undefined,
       authors: ['Diego NR'],
       images: [
         {
-          url: `/og?title=${encodeURIComponent((post.title as string) || '')}&type=Blog&subtitle=${encodeURIComponent((post.category as string) || '')}`,
+          url: `/og?title=${encodeURIComponent((post.title as string) || '')}&type=Blog&subtitle=${encodeURIComponent((post.category as string) || '')}&lang=${locale}`,
           width: 1200,
           height: 630,
-          alt: `${post.title} - Blog de Diego NR`,
+          alt: `${post.title} - Blog ${locale === 'es' ? 'de' : 'by'} Diego NR`,
         },
       ],
     },
@@ -87,7 +93,7 @@ export async function generateMetadata({
       description: descText,
       creator: '@diegonr',
       images: [
-        `/og?title=${encodeURIComponent((post.title as string) || '')}&type=Blog&subtitle=${encodeURIComponent((post.category as string) || '')}`,
+        `/og?title=${encodeURIComponent((post.title as string) || '')}&type=Blog&subtitle=${encodeURIComponent((post.category as string) || '')}&lang=${locale}`,
       ],
     },
     robots: {
@@ -105,8 +111,10 @@ export async function generateMetadata({
 }
 
 export default async function PostSingle({ params }: PageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const postDoc = await getPost(id);
+  const t = await getTranslations({ locale, namespace: 'BlogDetail' });
+  const tMeta = await getTranslations({ locale, namespace: 'Metadata' });
 
   if (!postDoc) {
     notFound();
@@ -119,12 +127,12 @@ export default async function PostSingle({ params }: PageProps) {
       <div className="pt-32 pb-12">
         <SwissContainer>
           <Link
-            href="/blog"
+            href={`/${locale}/blog`}
             className="group flex items-center gap-2 text-white/40 hover:text-white transition-colors w-fit mb-12"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             <span className="font-mono text-[10px] uppercase tracking-widest">
-              Volver al blog
+              {t('back_link')}
             </span>
           </Link>
         </SwissContainer>
@@ -150,7 +158,7 @@ export default async function PostSingle({ params }: PageProps) {
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-white/40" />
                   <span className="font-mono text-[10px] text-white/60 uppercase tracking-widest">
-                    {post.read_time as string} de lectura
+                    {post.read_time as string} {t('reading_time_suffix')}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -186,9 +194,9 @@ export default async function PostSingle({ params }: PageProps) {
       />
       <StructuredData
         data={generateBreadcrumbStructuredData([
-          { name: 'Inicio', url: '/' },
-          { name: 'Blog', url: '/blog' },
-          { name: post.title as string, url: `/blog/${id}` },
+          { name: locale === 'es' ? 'Inicio' : 'Home', url: `/${locale}` },
+          { name: tMeta('blog_title').split(' | ')[0], url: `/${locale}/blog` },
+          { name: post.title as string, url: `/${locale}/blog/${id}` },
         ])}
       />
     </div>

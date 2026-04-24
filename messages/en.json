@@ -234,5 +234,30 @@
     "title": "PROJECTS",
     "subtitle": "Selected Work",
     "description": "Collection of representative projects in software architecture, design systems and scalable applications."
+  },
+  "BlogDetail": {
+    "back_link": "Back to blog",
+    "reading_time_suffix": "min read",
+    "share_label": "Share",
+    "related_label": "Related articles"
+  },
+  "ProjectDetail": {
+    "back_link": "Back to projects",
+    "year_label": "Year",
+    "tech_label": "Technologies",
+    "about_label": "About the project",
+    "view_site": "View live site",
+    "view_code": "View code",
+    "challenges_label": "Challenges",
+    "solution_label": "Solution"
+  },
+  "ServiceDetail": {
+    "back_link": "Back to services",
+    "offerings_label": "What's included",
+    "cta_title": "Interested in this service?",
+    "cta_description": "Check availability and discuss specific project requirements.",
+    "cta_button": "Start consultation",
+    "process_label": "Process",
+    "deliverables_label": "Deliverables"
   }
 }

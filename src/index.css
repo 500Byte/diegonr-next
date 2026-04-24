@@ -53,39 +53,52 @@
     @apply font-medium tracking-tighter uppercase;
   }
 
-  /* Custom Cursor */
+  /* Custom Cursor - Fixed position at viewport level */
   .custom-cursor {
-    @apply fixed w-4 h-4 rounded-full pointer-events-none z-[10001] transition-all duration-300 ease-out;
-    /* Use backdrop-filter for visibility on any background */
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
+    @apply fixed w-4 h-4 rounded-full pointer-events-none transition-transform duration-300 ease-out;
+    /* High z-index to stay above all content including TV static */
+    z-index: 2147483647;
+    /* Solid white for dark mode with glow effect */
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%) scale(0);
     will-change: transform;
   }
 
-  /* Light mode adjustments */
+  /* Light mode - inverted colors */
+  html.light .custom-cursor,
+  body.light .custom-cursor,
   .light .custom-cursor {
-    background: rgba(0, 0, 0, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 
+      0 0 10px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(0, 0, 0, 0.1) !important;
   }
 
-  @media (hover: none) {
+  /* Hide on touch devices */
+  @media (hover: none), (pointer: coarse) {
     .custom-cursor {
       display: none !important;
     }
   }
 
+  /* Hover state - expand cursor */
   .custom-cursor.hovering {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(2.5) !important;
+    opacity: 0.6 !important;
   }
 
-  /* Ensure cursor is hidden by default and only shows on mouse move */
-  .custom-cursor:not(.opacity-100) {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
+  /* Always hide native cursor when custom cursor is active */
+  @media (hover: hover) and (pointer: fine) {
+    * {
+      cursor: none !important;
+    }
   }
 
   /* Custom underline for Swiss style */

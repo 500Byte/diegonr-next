@@ -55,18 +55,37 @@
 
   /* Custom Cursor */
   .custom-cursor {
-    @apply fixed top-0 left-0 w-4 h-4 bg-white rounded-full pointer-events-none z-[10000] mix-blend-difference transition-all duration-300 ease-out;
+    @apply fixed w-4 h-4 rounded-full pointer-events-none z-[10001] transition-all duration-300 ease-out;
+    /* Use backdrop-filter for visibility on any background */
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%);
+    will-change: transform;
+  }
+
+  /* Light mode adjustments */
+  .light .custom-cursor {
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   }
 
   @media (hover: none) {
     .custom-cursor {
-      display: none;
+      display: none !important;
     }
   }
 
   .custom-cursor.hovering {
-    @apply scale-[4] opacity-50;
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0.7;
+  }
+
+  /* Ensure cursor is hidden by default and only shows on mouse move */
+  .custom-cursor:not(.opacity-100) {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
   }
 
   /* Custom underline for Swiss style */

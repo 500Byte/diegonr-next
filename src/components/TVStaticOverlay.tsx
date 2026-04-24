@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useCallback } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from 'next-themes';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface TVStaticConfig {
   /** Opacity in dark mode (0.0 - 1.0) */
@@ -30,11 +30,11 @@ const defaultConfig: Required<TVStaticConfig> = {
 
 /**
  * TV Static Noise Overlay - THEME AWARE
- * 
+ *
  * Adapts noise color and opacity based on light/dark mode:
  * - Dark mode: White noise at higher opacity
  * - Light mode: Black noise at lower opacity
- * 
+ *
  * Low-resolution rendering for performance:
  * - Renders at 1/4 resolution (or custom scale)
  * - Scales up with CSS pixelated rendering
@@ -48,15 +48,27 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
   const animationRef = useRef<number>(0);
   const lastFrameRef = useRef<number>(0);
   const isActiveRef = useRef<boolean>(true);
-  
+  const isDarkRef = useRef<boolean>(true);
+
   const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const [mounted, setMounted] = useState(false);
 
   const mergedConfig = { ...defaultConfig, ...config };
-  const { opacityDark, opacityLight, fps, renderScale, scanlines } = mergedConfig;
-  
-  // Use appropriate opacity based on theme
-  const opacity = isDark ? opacityDark : opacityLight;
+  const { opacityDark, opacityLight, fps, renderScale, scanlines } =
+    mergedConfig;
+
+  // Determine current theme - default to dark if not resolved yet
+  const isDark = resolvedTheme === 'dark' || resolvedTheme === undefined;
+
+  // Sync theme to ref for use in animation loop
+  useEffect(() => {
+    isDarkRef.current = isDark;
+  }, [isDark]);
+
+  // Mark as mounted to avoid hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const renderNoise = useCallback(() => {
     const canvas = canvasRef.current;
@@ -70,39 +82,44 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
     const height = canvas.height;
     const len = width * height;
 
+    // Use ref to get current theme without re-triggering effect
+    const currentIsDark = isDarkRef.current;
+
     // Generate noise - white for dark mode, black for light mode
     for (let i = 0; i < len; i++) {
       const v = Math.random();
       const idx = i * 4;
-      
-      // Invert noise based on theme
-      // Dark mode: white noise (255 * v)
-      // Light mode: black noise (255 * (1 - v))
-      const noiseVal = isDark 
-        ? (v * 255) | 0           // White noise
-        : ((1 - v) * 255) | 0;    // Black noise (inverted)
 
-      buffer[idx] = noiseVal;     // R
+      // Invert noise based on theme
+      const noiseVal = currentIsDark
+        ? (v * 255) | 0 // White noise
+        : ((1 - v) * 255) | 0; // Black noise (inverted)
+
+      buffer[idx] = noiseVal; // R
       buffer[idx + 1] = noiseVal; // G
       buffer[idx + 2] = noiseVal; // B
-      buffer[idx + 3] = 255;      // A (full alpha, opacity handled by CSS)
+      buffer[idx + 3] = 255; // A
     }
 
     // Copy buffer to image data
     imgData.data.set(buffer);
     ctx.putImageData(imgData, 0, 0);
-  }, [isDark]);
+  }, []);
 
+  // Initialize and run animation
   useEffect(() => {
+    // Wait for mount to avoid hydration issues
+    if (!mounted) return;
+
     // Respect reduced motion preference
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d", { alpha: false });
+    const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return;
 
     ctxRef.current = ctx;
@@ -111,18 +128,23 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
     const handleResize = () => {
       const displayWidth = window.innerWidth;
       const displayHeight = window.innerHeight;
-      
+
       // Render at reduced resolution
       canvas.width = Math.ceil(displayWidth / renderScale);
       canvas.height = Math.ceil(displayHeight / renderScale);
 
       // Create reusable buffers
       imgDataRef.current = ctx.createImageData(canvas.width, canvas.height);
-      bufferRef.current = new Uint8ClampedArray(canvas.width * canvas.height * 4);
+      bufferRef.current = new Uint8ClampedArray(
+        canvas.width * canvas.height * 4
+      );
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
+
+    // Reset active flag
+    isActiveRef.current = true;
 
     // Animation loop
     const interval = 1000 / fps;
@@ -144,20 +166,27 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
     // Cleanup
     return () => {
       isActiveRef.current = false;
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationRef.current);
     };
-  }, [fps, renderScale, renderNoise]);
+    // Only re-run when mounted changes, NOT when theme changes
+  }, [mounted, fps, renderScale, renderNoise]);
+
+  // Don't render during SSR to avoid hydration mismatch
+  if (!mounted) return null;
 
   // Don't render if reduced motion is preferred
-  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return null;
   }
 
+  // Calculate opacity based on current theme
+  const opacity = isDark ? opacityDark : opacityLight;
+
   // Scanlines color: darker for light mode, lighter for dark mode
-  const scanlineColor = isDark 
-    ? "rgba(0, 0, 0, 0.08)" 
-    : "rgba(255, 255, 255, 0.04)";
+  const scanlineColor = isDark
+    ? 'rgba(0, 0, 0, 0.08)'
+    : 'rgba(255, 255, 255, 0.04)';
 
   return (
     <>
@@ -168,8 +197,8 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
         style={{
           zIndex: 9999,
           opacity,
-          imageRendering: "pixelated",
-          transform: "scale(1.01)",
+          imageRendering: 'pixelated',
+          transform: 'scale(1.01)',
         }}
       />
 

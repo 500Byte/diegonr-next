@@ -26,12 +26,12 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-24">
           <div className="md:col-span-4">
             <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">{t('navigation_label')}</p>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <Link 
                   key={link.path} 
                   href={link.path}
-                  className="text-lg font-light hover:text-white/60 transition-colors w-fit"
+                  className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2"
                 >
                   {link.label}
                 </Link>
@@ -40,11 +40,11 @@ export const Footer: React.FC = () => {
           </div>
           <div className="md:col-span-4">
             <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">{t('social_label')}</p>
-            <div className="flex flex-col gap-4">
-              <a href="https://github.com/500Byte/" target="_blank" rel="noopener noreferrer" className="text-lg font-light hover:text-white/60 transition-colors w-fit">GitHub</a>
-              <a href="https://www.linkedin.com/in/diego-lnr/" target="_blank" rel="noopener noreferrer" className="text-lg font-light hover:text-white/60 transition-colors w-fit">LinkedIn</a>
-              <a href="#" className="text-lg font-light hover:text-white/60 transition-colors w-fit">Twitter</a>
-              <a href="#" className="text-lg font-light hover:text-white/60 transition-colors w-fit">Instagram</a>
+            <div className="flex flex-col gap-2">
+              <a href="https://github.com/500Byte/" target="_blank" rel="noopener noreferrer" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">GitHub</a>
+              <a href="https://www.linkedin.com/in/diego-lnr/" target="_blank" rel="noopener noreferrer" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">LinkedIn</a>
+              <a href="#" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">Twitter</a>
+              <a href="#" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">Instagram</a>
             </div>
           </div>
           <div className="md:col-span-4 md:text-right">
@@ -78,7 +78,7 @@ export const Footer: React.FC = () => {
                 onClick={() => {
                   scrollTo(0);
                 }}
-                className="swiss-underline opacity-60 hover:opacity-100 transition-opacity"
+                className="swiss-underline opacity-60 hover:opacity-100 transition-opacity p-2 -m-2 min-h-[44px] flex items-center"
               >
                 {t('back_to_top')}
               </button>

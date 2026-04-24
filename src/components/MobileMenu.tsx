@@ -16,9 +16,10 @@ interface MobileMenuProps {
     id: string;
     path: string;
   }>;
+  isMenuOpen?: boolean;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -56,86 +57,26 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
     };
   }, [isOpen]);
 
+// Sync with Navigation visibility
+  useEffect(() => {
+    if (isMenuOpen === false && isOpen === true) {
+      setIsOpen(false);
+    }
+  }, [isMenuOpen, isOpen]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // GSAP Animation - Open Menu
   useEffect(() => {
-    if (!menuRef.current || !panelRef.current) return;
-
-    // Check for reduced motion preference
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const ctx = gsap.context(() => {
-      // Set initial states immediately (before any animation)
-      gsap.set(panelRef.current, { scaleX: 0, transformOrigin: "right" });
-      gsap.set(numbersRef.current.filter(Boolean), { x: -50, opacity: 0 });
-      gsap.set(linksRef.current.filter(Boolean), { y: 100, opacity: 0 });
-      gsap.set(footerRef.current, { y: 30, opacity: 0 });
-      gsap.set(closeBtnRef.current, { rotate: -90, opacity: 0, scale: 0.8 });
-
-      // If user prefers reduced motion, show immediately without animations
-      if (prefersReducedMotion) {
-        if (isOpen) {
-          gsap.to(panelRef.current, { scaleX: 1, opacity: 1, duration: 0.01 });
-          gsap.to(numbersRef.current.filter(Boolean), { x: 0, opacity: 1, duration: 0.01 });
-          gsap.to(linksRef.current.filter(Boolean), { y: 0, opacity: 1, duration: 0.01 });
-          gsap.to(footerRef.current, { y: 0, opacity: 1, duration: 0.01 });
-          gsap.to(closeBtnRef.current, { rotate: 0, opacity: 1, scale: 1, duration: 0.01 });
-        }
-        return;
-      }
-
-      const tl = gsap.timeline({ paused: true });
-
-      // Fase 1: Panel background reveal
-      tl.fromTo(
-        panelRef.current,
-        { scaleX: 0, transformOrigin: "right" },
-        { scaleX: 1, duration: 0.4, ease: "expo.inOut" }
-      );
-
-      // Fase 2: Números entran desde izquierda
-      tl.fromTo(
-        numbersRef.current.filter(Boolean),
-        { x: -50, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: "expo.out" },
-        "-=0.2"
-      );
-
-      // Fase 3: Links desde abajo con stagger
-      tl.fromTo(
-        linksRef.current.filter(Boolean),
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, stagger: 0.12, ease: "expo.out" },
-        "-=0.4"
-      );
-
-      // Fase 4: Footer aparece
-      tl.fromTo(
-        footerRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.4, ease: "expo.out" },
-        "-=0.3"
-      );
-
-      // Fase 5: Close button
-      tl.fromTo(
-        closeBtnRef.current,
-        { rotate: -90, opacity: 0, scale: 0.8 },
-        { rotate: 0, opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.7)" },
-        "-=0.5"
-      );
-
-      if (isOpen) {
-        tl.play();
-      } else {
-        tl.reverse();
-      }
-    }, menuRef);
-
-    return () => ctx.revert();
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   // Keyboard navigation: Escape to close
@@ -201,7 +142,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="md:hidden flex flex-col gap-[6px] p-3 -mr-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm"
+        className="min-w-[44px] min-h-[44px] flex flex-col gap-[6px] p-3 -m-3 items-center justify-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm"
         aria-label={t("aria.open_menu")}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
@@ -235,7 +176,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
               <a
                 href={`/${locale}`}
                 onClick={() => setIsOpen(false)}
-                className="w-10 h-10 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
+                className="min-w-11 min-h-11 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
               >
                 {t("brand")}
               </a>
@@ -328,7 +269,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
                   type="button"
                   onClick={toggleLanguage}
                   aria-label={t("aria.change_language")}
-                  className="flex items-center gap-2 text-xs font-mono tracking-widest uppercase"
+                  className="flex items-center gap-2 p-3 min-h-[44px] -m-3 text-xs font-mono tracking-widest uppercase"
                 >
                   <span className={cn(
                     "transition-opacity cursor-pointer",
@@ -351,7 +292,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
                 type="button"
                 onClick={toggleTheme}
                 aria-label={t("aria.toggle_theme")}
-                className="flex items-center gap-3 text-xs font-mono tracking-widest uppercase group"
+                className="flex items-center gap-3 p-3 min-h-[44px] -m-3 text-xs font-mono tracking-widest uppercase group"
               >
                 <span className="text-swiss-white/60 group-hover:text-swiss-white transition-colors">
                   {!mounted ? t("theme_dark") : theme === "dark" ? t("theme_light") : t("theme_dark")}
@@ -379,7 +320,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
                   href="https://github.com/500byte"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
+                  className="p-3 -m-3 text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
                 >
                   GITHUB
                 </a>
@@ -387,7 +328,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems }) => {
                   href="https://linkedin.com/in/diegonr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
+                  className="p-3 -m-3 text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
                 >
                   LINKEDIN
                 </a>

@@ -98,7 +98,7 @@ export const Navigation: React.FC = () => {
             <Magnetic strength={0.3}>
               <Link 
                 href="/"
-                className="w-10 h-10 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
+                className="min-w-11 min-h-11 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
                 onClick={(e) => {
                   if (pathname === `/${locale}`) {
                     e.preventDefault();
@@ -115,20 +115,20 @@ export const Navigation: React.FC = () => {
                 aria-label={t('aria.change_language')}
                 aria-pressed={locale === 'es'}
                 className={cn(
-                  "cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
+                  "p-3 min-h-[44px] flex items-center justify-center cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
                   locale === 'es' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
                 )}
                 onClick={() => locale !== 'es' && toggleLanguage()}
               >
                 {t('language_es')}
               </button>
-              <span className="opacity-20" aria-hidden="true">/</span>
+              <span className="opacity-20 self-center" aria-hidden="true">/</span>
               <button
                 type="button"
                 aria-label={t('aria.change_language')}
                 aria-pressed={locale === 'en'}
                 className={cn(
-                  "cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
+                  "p-3 min-h-[44px] flex items-center justify-center cursor-pointer transition-opacity focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm",
                   locale === 'en' ? "opacity-100 font-bold" : "opacity-40 hover:opacity-80"
                 )}
                 onClick={() => locale !== 'en' && toggleLanguage()}
@@ -141,7 +141,7 @@ export const Navigation: React.FC = () => {
           <button
             type="button"
             aria-label={t('aria.toggle_theme')}
-            className="hidden md:flex items-center gap-2 text-[10px] tracking-widest uppercase cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm"
+            className="hidden md:flex items-center gap-2 p-3 min-h-[44px] text-[10px] tracking-widest uppercase cursor-pointer group focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black rounded-sm"
             onClick={toggleTheme}
           >
             <span className="opacity-60 group-hover:opacity-100 transition-opacity">
@@ -173,7 +173,7 @@ export const Navigation: React.FC = () => {
 
           {/* Mobile Menu */}
           <div className="md:hidden">
-            <MobileMenu navItems={navItems} />
+            <MobileMenu navItems={navItems} isMenuOpen={visible} />
           </div>
         </div>
       </SwissContainer>

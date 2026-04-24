@@ -2,18 +2,10 @@
 
 ## Active
 
-- [x] ~~**[P1] Test Suite**~~ (2026-04-24) - Add basic smoke tests with Playwright
-  - 11 smoke tests covering all critical pages in ES/EN
-  - Tests verify: 200 status, no 500 errors, no critical console errors
-  - Pages covered: Home, About, Projects, Blog, Contact (both locales)
-  - Bonus: Fixed i18n JSON syntax error in `messages/en.json`
-  - Bonus: Added missing `"use client"` directive to `ContactForm.tsx`
-  - Run: `npm test` (uses Playwright)
-
 - [ ] **[P2] Touch Targets** - Increase interactive element hit areas to 44x44px
   - Location: Navigation and Footer components
   - Standard: WCAG Target Size (Minimum) 2.5.8
-  - Suggested: `/polish`
+  - Run: `npm run dev` → inspect touch areas
 
 - [ ] **[P2] Image Alt Text** - Add descriptive alt to project and blog images
   - Files: `projects/[id]/page.tsx:150`, `blog/[id]/page.tsx:144`, `blog/page.tsx:78`
@@ -46,6 +38,25 @@
 ## Done
 
 ### April 2026
+
+- [x] ~~**Playwright Test Suite**~~ (2026-04-24)
+  - 11 smoke tests covering all critical pages in ES/EN
+  - Tests verify: 200 status, no 500 errors, no critical console errors
+  - Pages covered: Home, About, Projects, Blog, Contact (both locales)
+  - Fixed i18n JSON syntax error in `messages/en.json`
+  - Added missing `"use client"` directive to `ContactForm.tsx`
+  - Commits: `7dc62e5`
+
+- [x] ~~**Next.js 16 Proxy Migration**~~ (2026-04-24)
+  - Renamed `middleware.ts` → `proxy.ts` per Next.js 16 convention
+  - Removed redundant no-cache headers from proxy (handled by next.config.mjs)
+  - Commits: `7dc62e5`, `8cd40b0`
+
+- [x] ~~**Cache Headers Cleanup**~~ (2026-04-24)
+  - Removed invalid `incrementalCacheHandlerPath` from next.config.mjs
+  - Removed problematic `/_next/:path*` Cache-Control rule (Next.js warning)
+  - Keep `/:path*` rule for dynamic pages in development
+  - Commits: `7dc62e5`, `a5b2d87`
 
 - [x] ~~**i18n Complete Implementation - All Phases**~~ (2026-04-24)
   - Phase 1: BlogSection & Marquees → `ba6a46e`

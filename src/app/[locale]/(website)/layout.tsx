@@ -16,10 +16,10 @@ export default function WebsiteLayout({
       <Preloader />
       <TVStaticOverlay 
         config={{
-          opacity: 0.05,
+          opacityDark: 0.05,
+          opacityLight: 0.025,
           fps: 15,
           renderScale: 4,
-          mode: "bw",
           scanlines: true,
         }}
       />

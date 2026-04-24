@@ -3,12 +3,31 @@ import { NextRequest } from 'next/server'
 
 export const runtime = 'edge'
 
+// Translated defaults based on locale
+const defaults = {
+  es: {
+    title: 'Diego Navarro',
+    subtitle: 'Solutions Architect — Design Engineering',
+    type: 'website'
+  },
+  en: {
+    title: 'Diego Navarro',
+    subtitle: 'Solutions Architect — Design Engineering',
+    type: 'website'
+  }
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
+  
+  // Extract locale from URL path (/es/og or /en/og)
+  const pathname = request.nextUrl.pathname
+  const locale = pathname.startsWith('/en') ? 'en' : 'es'
+  const defaultTexts = defaults[locale]
 
-  const title = searchParams.get('title') || 'Diego NR'
-  const subtitle = searchParams.get('subtitle') || 'Solutions Architect & Full-Stack Developer'
-  const type = searchParams.get('type') || 'website'
+  const title = searchParams.get('title') || defaultTexts.title
+  const subtitle = searchParams.get('subtitle') || defaultTexts.subtitle
+  const type = searchParams.get('type') || defaultTexts.type
 
   // Truncate title if too long
   const displayTitle = title.length > 50 ? title.substring(0, 47) + '...' : title

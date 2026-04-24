@@ -28,13 +28,8 @@ const nextConfig = {
   },
   
   // Disable static page generation cache in development
-  ...(process.env.NODE_ENV === 'development' && {
-    // Force dynamic rendering in development
-    experimental: {
-      // Disable incremental static regeneration cache
-      incrementalCacheHandlerPath: false,
-    },
-  }),
+  // Note: Next.js 16+ uses dynamic rendering by default
+  // Cache-Control headers in headers() function handle dev caching
   
   // Add headers to disable caching in development
   async headers() {

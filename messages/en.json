@@ -178,34 +178,6 @@
       "error": "Error sending message. Please try again."
     }
   },
-      "email": {
-        "label": "Email address",
-        "placeholder": "email@company.com"
-      },
-      "company": {
-        "label": "Company",
-        "placeholder": "Company name"
-      },
-      "service": {
-        "label": "Service of interest",
-        "placeholder": "Select a service"
-      },
-      "message": {
-        "label": "Message",
-        "placeholder": "Project description and requirements..."
-      }
-    },
-    "submit": "SEND MESSAGE",
-    "submit_sending": "SENDING...",
-    "success": {
-      "title": "Message sent",
-      "message": "Message has been sent. Response within 24 hours."
-    },
-    "error": {
-      "title": "Error sending",
-      "message": "An error occurred. Please try again."
-    }
-  },
   "NewsletterSignup": {
     "title": "NEWSLETTER",
     "heading": "SUBSCRIPTION",

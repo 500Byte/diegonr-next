@@ -3,7 +3,7 @@ import { routing } from "@/i18n/routing";
 import type { NextRequest } from "next/server";
 
 /**
- * Next-intl Middleware
+ * Next-intl Proxy (formerly Middleware)
  * 
  * Handles:
  * - Locale detection from Accept-Language header
@@ -11,16 +11,15 @@ import type { NextRequest } from "next/server";
  * - URL prefixing (/en) for non-default locales
  * - Redirects for missing or invalid locales
  * 
- * IMPORTANT: This middleware runs on Edge Runtime.
- * Must be compatible with Cloudflare Workers/OpenNext.
+ * IMPORTANT: This proxy runs on Node.js Runtime via OpenNext/Cloudflare Workers.
  * 
  * @see https://next-intl-docs.vercel.app/docs/routing/middleware
- * @see https://developers.cloudflare.com/workers/runtime-apis/
+ * @see https://nextjs.org/docs/app/api-reference/file-conventions/proxy
  */
 
 const intlMiddleware = createMiddleware(routing);
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   // Apply intl middleware first
   const response = intlMiddleware(request);
   
@@ -35,7 +34,7 @@ export default function middleware(request: NextRequest) {
 }
 
 /**
- * Middleware matcher configuration.
+ * Proxy matcher configuration.
  * 
  * Excludes:
  * - API routes (/api/*)

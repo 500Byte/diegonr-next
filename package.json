@@ -41,9 +41,9 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --no-warn-ignored",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix --no-warn-ignored",
     "type-check": "tsc --noEmit",
-    "clean": "rm -rf .next out",
     "analyze": "ANALYZE=true npm run build",
-    "test": "echo \"No tests specified yet\"",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
@@ -75,6 +75,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@opennextjs/cloudflare": "^1.19.0",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^22.14.0",
     "eslint": "^9.39.4",

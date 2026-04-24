@@ -2,9 +2,13 @@
 
 ## Active
 
-- [ ] **[P1] Test Suite** - Add basic smoke tests with Vitest/Playwright
-  - Critical for deployment confidence
-  - Priority: Before next major release
+- [x] ~~**[P1] Test Suite**~~ (2026-04-24) - Add basic smoke tests with Playwright
+  - 11 smoke tests covering all critical pages in ES/EN
+  - Tests verify: 200 status, no 500 errors, no critical console errors
+  - Pages covered: Home, About, Projects, Blog, Contact (both locales)
+  - Bonus: Fixed i18n JSON syntax error in `messages/en.json`
+  - Bonus: Added missing `"use client"` directive to `ContactForm.tsx`
+  - Run: `npm test` (uses Playwright)
 
 - [ ] **[P2] Touch Targets** - Increase interactive element hit areas to 44x44px
   - Location: Navigation and Footer components

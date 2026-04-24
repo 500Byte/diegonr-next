@@ -16,6 +16,11 @@ export const LenisProvider = ({ children }: { children: ReactNode }) => {
       touchMultiplier: 2,
     });
 
+    // Expose lenis to window for global access
+    if (typeof window !== 'undefined') {
+      (window as any).lenis = lenis;
+    }
+
     lenis.on('scroll', ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
@@ -26,6 +31,9 @@ export const LenisProvider = ({ children }: { children: ReactNode }) => {
 
     return () => {
       lenis.destroy();
+      if (typeof window !== 'undefined') {
+        (window as any).lenis = undefined;
+      }
     };
   }, []);
 

@@ -5,10 +5,10 @@ import { useEffect, useRef, useCallback } from "react";
 export interface TVStaticConfig {
   /** Opacity of the noise overlay (0.0 - 1.0) */
   opacity?: number;
-  /** Frames per second (12-60) */
+  /** Frames per second (12-30 recommended) */
   fps?: number;
-  /** Grain size in pixels (1 = fine, 4 = chunky) */
-  grainSize?: number;
+  /** Render scale: 1 = full res, 4 = 1/4 res (better performance) */
+  renderScale?: number;
   /** Noise mode: 'bw' | 'phosphor' | 'color' | 'blizzard' */
   mode?: "bw" | "phosphor" | "color" | "blizzard";
   /** Show CRT scanlines overlay */
@@ -20,99 +20,103 @@ interface TVStaticOverlayProps {
 }
 
 const defaultConfig: Required<TVStaticConfig> = {
-  opacity: 0.06,
-  fps: 24,
-  grainSize: 1,
+  opacity: 0.05,
+  fps: 15,
+  renderScale: 4,
   mode: "bw",
   scanlines: true,
 };
 
 /**
- * TV Static Noise Overlay
+ * TV Static Noise Overlay - OPTIMIZED VERSION
  * 
- * Animated grain/noise effect with multiple modes:
+ * Low-resolution rendering for performance:
+ * - Renders at 1/4 resolution (or custom scale)
+ * - Scales up with CSS pixelated rendering
+ * - Reuses buffers to prevent GC pressure
+ * - ~16x fewer pixels to process vs full resolution
+ * 
+ * Modes:
  * - bw: Black and white static
  * - phosphor: Green phosphor glow (CRT monitor style)
  * - color: Full color noise
  * - blizzard: High contrast white/black with random horizontal lines
- * 
- * Features:
- * - Canvas-based rendering for performance
- * - Respects prefers-reduced-motion
- * - Configurable via props
- * - Swiss-Brutalist aesthetic compatible
  */
 export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+  const imgDataRef = useRef<ImageData | null>(null);
   const animationRef = useRef<number>(0);
   const lastFrameRef = useRef<number>(0);
   const isActiveRef = useRef<boolean>(true);
+  const bufferRef = useRef<Uint8ClampedArray | null>(null);
 
   const mergedConfig = { ...defaultConfig, ...config };
-  const { opacity, fps, grainSize, mode, scanlines } = mergedConfig;
+  const { opacity, fps, renderScale, mode, scanlines } = mergedConfig;
 
-  const renderNoise = useCallback(
-    (ctx: CanvasRenderingContext2D, width: number, height: number) => {
-      const g = grainSize;
-      const gridW = Math.ceil(width / g);
-      const gridH = Math.ceil(height / g);
+  const renderNoise = useCallback(() => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    const imgData = imgDataRef.current;
+    const buffer = bufferRef.current;
 
-      // Create temporary canvas for pixel manipulation
-      const tempCanvas = document.createElement("canvas");
-      tempCanvas.width = width;
-      tempCanvas.height = height;
-      const tempCtx = tempCanvas.getContext("2d")!;
-      const imgData = tempCtx.createImageData(width, height);
-      const data = imgData.data;
+    if (!canvas || !ctx || !imgData || !buffer) return;
 
-      for (let gy = 0; gy < gridH; gy++) {
-        for (let gx = 0; gx < gridW; gx++) {
-          const v = Math.random();
-          let r: number, gVal: number, b: number;
+    const width = canvas.width;
+    const height = canvas.height;
+    const len = width * height;
 
-          switch (mode) {
-            case "phosphor":
-              r = 0;
-              gVal = Math.floor(v * 255);
-              b = Math.floor(gVal * 0.2);
-              break;
-            case "color":
-              r = (Math.random() * 255) | 0;
-              gVal = (Math.random() * 255) | 0;
-              b = (Math.random() * 255) | 0;
-              break;
-            case "blizzard":
-              r = gVal = b = v > 0.5 ? 255 : 0;
-              break;
-            default: // bw
-              r = gVal = b = (v * 255) | 0;
-          }
+    // Generate noise directly into buffer
+    for (let i = 0; i < len; i++) {
+      const v = Math.random();
+      const idx = i * 4;
 
-          // Fill grainSize x grainSize block
-          for (let dy = 0; dy < g && gy * g + dy < height; dy++) {
-            for (let dx = 0; dx < g && gx * g + dx < width; dx++) {
-              const px = ((gy * g + dy) * width + (gx * g + dx)) * 4;
-              data[px] = r;
-              data[px + 1] = gVal;
-              data[px + 2] = b;
-              data[px + 3] = 255;
-            }
-          }
+      switch (mode) {
+        case "phosphor": {
+          const phosphorGreen = Math.floor(v * 255);
+          buffer[idx] = 0;      // R
+          buffer[idx + 1] = phosphorGreen;  // G
+          buffer[idx + 2] = Math.floor(phosphorGreen * 0.2); // B
+          buffer[idx + 3] = 255; // A
+          break;
+        }
+        case "color": {
+          buffer[idx] = Math.random() * 255;
+          buffer[idx + 1] = Math.random() * 255;
+          buffer[idx + 2] = Math.random() * 255;
+          buffer[idx + 3] = 255;
+          break;
+        }
+        case "blizzard": {
+          const val = v > 0.5 ? 255 : 0;
+          buffer[idx] = val;
+          buffer[idx + 1] = val;
+          buffer[idx + 2] = val;
+          buffer[idx + 3] = 255;
+          break;
+        }
+        default: { // bw
+          const bw = (v * 255) | 0;
+          buffer[idx] = bw;
+          buffer[idx + 1] = bw;
+          buffer[idx + 2] = bw;
+          buffer[idx + 3] = 255;
+          break;
         }
       }
+    }
 
-      tempCtx.putImageData(imgData, 0, 0);
-      ctx.drawImage(tempCanvas, 0, 0);
+    // Copy buffer to image data
+    imgData.data.set(buffer);
+    ctx.putImageData(imgData, 0, 0);
 
-      // Blizzard mode: add random horizontal line
-      if (mode === "blizzard") {
-        const ly = (Math.random() * height) | 0;
-        ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + Math.random() * 0.5})`;
-        ctx.fillRect(0, ly, width, (Math.random() * 8 + 2) | 0);
-      }
-    },
-    [grainSize, mode]
-  );
+    // Blizzard mode: add random horizontal line
+    if (mode === "blizzard") {
+      const ly = (Math.random() * height) | 0;
+      ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + Math.random() * 0.5})`;
+      ctx.fillRect(0, ly, width, (Math.random() * 4 + 1) | 0);
+    }
+  }, [mode]);
 
   useEffect(() => {
     // Respect reduced motion preference
@@ -123,13 +127,23 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
-    // Handle resize
+    ctxRef.current = ctx;
+
+    // Handle resize - set low-res canvas size
     const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const displayWidth = window.innerWidth;
+      const displayHeight = window.innerHeight;
+      
+      // Render at reduced resolution
+      canvas.width = Math.ceil(displayWidth / renderScale);
+      canvas.height = Math.ceil(displayHeight / renderScale);
+
+      // Create reusable buffers
+      imgDataRef.current = ctx.createImageData(canvas.width, canvas.height);
+      bufferRef.current = new Uint8ClampedArray(canvas.width * canvas.height * 4);
     };
 
     window.addEventListener("resize", handleResize);
@@ -143,7 +157,7 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
 
       if (timestamp - lastFrameRef.current >= interval) {
         lastFrameRef.current = timestamp;
-        renderNoise(ctx, canvas.width, canvas.height);
+        renderNoise();
       }
 
       animationRef.current = requestAnimationFrame(animate);
@@ -158,7 +172,7 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationRef.current);
     };
-  }, [fps, renderNoise]);
+  }, [fps, renderScale, renderNoise]);
 
   // Don't render if reduced motion is preferred
   if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -167,13 +181,15 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
 
   return (
     <>
-      {/* Noise Canvas */}
+      {/* Noise Canvas - Low res scaled up */}
       <canvas
         ref={canvasRef}
         className="fixed inset-0 w-full h-full pointer-events-none"
         style={{
           zIndex: 9999,
           opacity,
+          imageRendering: "pixelated", // Key for retro look when scaling
+          transform: "scale(1.01)", // Slight overscale to prevent edge artifacts
         }}
       />
 

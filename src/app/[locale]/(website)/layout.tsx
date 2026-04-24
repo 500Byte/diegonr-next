@@ -17,8 +17,8 @@ export default function WebsiteLayout({
       <TVStaticOverlay 
         config={{
           opacity: 0.05,
-          fps: 20,
-          grainSize: 1,
+          fps: 15,
+          renderScale: 4,
           mode: "bw",
           scanlines: true,
         }}

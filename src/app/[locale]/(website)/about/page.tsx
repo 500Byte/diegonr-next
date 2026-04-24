@@ -5,8 +5,6 @@ import Image from 'next/image';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
-import { GitHubStats } from '@/components/GitHubStats';
-import { SocialActivityFeed } from '@/components/SocialActivityFeed';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -112,30 +110,6 @@ export default async function AboutPage({ params }: Props) {
         </SwissContainer>
       </section>
 
-      {/* Social Integration Section */}
-      <section className="py-24 md:py-48 bg-white/5">
-        <SwissContainer>
-          <div className="text-center mb-16">
-            <FadeIn>
-              <h2 className="text-4xl md:text-5xl font-medium mb-6 tracking-tighter">
-                {t('presence_title')}
-              </h2>
-              <p className="text-xl text-white/60 max-w-2xl mx-auto">
-                {t('presence_description')}
-              </p>
-            </FadeIn>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <FadeIn delay={0.2}>
-              <GitHubStats />
-            </FadeIn>
-            <FadeIn delay={0.4}>
-              <SocialActivityFeed />
-            </FadeIn>
-          </div>
-        </SwissContainer>
-      </section>
     </div>
   );
 }

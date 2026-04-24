@@ -99,3 +99,9 @@
   - Voz impersonal absoluta (no tú/Usted)
   - Términos estándar: PROYECTOS, SERVICIOS, ABOUT
   - Files: `messages/es.json`, `messages/en.json`, `Vision.tsx`, `page.tsx`
+
+- [x] ~~**Remove GitHubStats & SocialActivityFeed**~~ (2026-04-24)
+  - Deleted components: `GitHubStats.tsx`, `SocialActivityFeed.tsx`
+  - Removed from `about/page.tsx`
+  - Removed unused translation keys: `presence_title`, `presence_description`
+  - Components not aligned with portfolio strategy

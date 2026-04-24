@@ -53,51 +53,37 @@
     @apply font-medium tracking-tighter uppercase;
   }
 
-  /* Custom Cursor - Fixed position at viewport level */
+  /* Custom Cursor - A circle that follows the native cursor */
   .custom-cursor {
-    @apply fixed w-4 h-4 rounded-full pointer-events-none transition-transform duration-300 ease-out;
-    /* High z-index to stay above all content including TV static */
+    @apply fixed w-4 h-4 rounded-full pointer-events-none;
     z-index: 2147483647;
-    /* Solid white for dark mode with glow effect */
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 
-      0 0 10px rgba(255, 255, 255, 0.5),
-      0 0 20px rgba(255, 255, 255, 0.3),
-      0 0 30px rgba(255, 255, 255, 0.1);
-    transform: translate(-50%, -50%) scale(0);
+    /* Start visible - no scale(0) */
+    transform: translate(-50%, -50%);
+    /* White for dark backgrounds */
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
     will-change: transform;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
 
-  /* Light mode - inverted colors */
-  html.light .custom-cursor,
-  body.light .custom-cursor,
+  /* Light mode - black cursor */
   .light .custom-cursor {
-    background: rgba(0, 0, 0, 0.95) !important;
-    border: 1px solid rgba(0, 0, 0, 0.5) !important;
-    box-shadow: 
-      0 0 10px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(0, 0, 0, 0.3),
-      0 0 30px rgba(0, 0, 0, 0.1) !important;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Hover state - expand */
+  .custom-cursor.hovering {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0.5;
   }
 
   /* Hide on touch devices */
   @media (hover: none), (pointer: coarse) {
     .custom-cursor {
       display: none !important;
-    }
-  }
-
-  /* Hover state - expand cursor */
-  .custom-cursor.hovering {
-    transform: translate(-50%, -50%) scale(2.5) !important;
-    opacity: 0.6 !important;
-  }
-
-  /* Always hide native cursor when custom cursor is active */
-  @media (hover: hover) and (pointer: fine) {
-    * {
-      cursor: none !important;
     }
   }
 

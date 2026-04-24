@@ -64,14 +64,34 @@ export const CustomCursor = () => {
     };
   }, []);
 
+  // Apply scale effect via GSAP when hovering
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    if (isHovering) {
+      gsap.to(cursor, {
+        scale: 2.5,
+        opacity: 0.5,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    } else {
+      gsap.to(cursor, {
+        scale: 1,
+        opacity: isVisible ? 1 : 0,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    }
+  }, [isHovering, isVisible]);
+
   return (
     <div
       ref={cursorRef}
-      className={`custom-cursor ${isHovering ? 'hovering' : ''}`}
+      className="custom-cursor"
       style={{
-        opacity: isVisible ? 1 : 0,
-        // Fallback position if GSAP fails
-        transform: `translate(${position.x - 8}px, ${position.y - 8}px)`,
+        opacity: isVisible && !isHovering ? 1 : undefined,
       }}
       aria-hidden="true"
     />

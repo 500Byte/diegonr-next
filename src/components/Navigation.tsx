@@ -15,6 +15,7 @@ export const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
@@ -86,19 +87,22 @@ export const Navigation: React.FC = () => {
 
   return (
     <nav className={cn(
-      "fixed top-0 left-0 w-full z-[100] transition-all duration-500",
-      scrolled 
-        ? "bg-swiss-black/95 backdrop-blur-md py-4 border-b border-swiss-white/10" 
-        : "bg-transparent py-8",
-      visible ? "translate-y-0" : "-translate-y-full"
+      "fixed top-0 left-0 w-full z-[100]",
+      !isMenuOpen && "transition-all duration-500",
+      isMenuOpen ? "bg-swiss-black py-4 border-b border-swiss-white/10 text-swiss-white" : (
+        scrolled 
+          ? "bg-swiss-black/95 backdrop-blur-md py-4 border-b border-swiss-white/10" 
+          : "bg-transparent py-8"
+      ),
+      isMenuOpen ? "transform-none" : (visible ? "translate-y-0" : "-translate-y-full")
     )}>
-      <SwissContainer>
+      <SwissContainer className="relative z-[210]">
         <div className="flex justify-between items-center h-12">
-          <div className="flex items-center gap-12">
+            <div className="flex items-center gap-12 relative z-[220]">
 <Magnetic strength={0.3}>
                 <Link 
                   href="/"
-                  className="min-w-11 min-h-11 rounded-full flex items-center justify-center cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
+                  className="relative z-[250] min-w-11 min-h-11 rounded-full flex items-center justify-center cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
                   onClick={(e) => {
                     if (pathname === `/${locale}`) {
                       e.preventDefault();
@@ -176,7 +180,11 @@ export const Navigation: React.FC = () => {
 
           {/* Mobile Menu */}
           <div className="md:hidden">
-            <MobileMenu navItems={navItems} isMenuOpen={visible} />
+            <MobileMenu 
+              navItems={navItems} 
+              isMenuOpen={visible} 
+              onOpenChange={setIsMenuOpen}
+            />
           </div>
         </div>
       </SwissContainer>

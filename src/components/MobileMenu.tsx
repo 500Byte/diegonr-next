@@ -1,14 +1,14 @@
 "use client";
 
 import { gsap } from "@/lib/gsap";
-import { scrollTo } from "@/lib/lenis";
+import { useGSAP } from "@gsap/react";
+import { scrollTo, pauseLenis, resumeLenis } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Magnetic } from "./Magnetic";
-
 
 interface MobileMenuProps {
   navItems: Array<{
@@ -17,17 +17,16 @@ interface MobileMenuProps {
     path: string;
   }>;
   isMenuOpen?: boolean;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen, onOpenChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const numbersRef = useRef<(HTMLSpanElement | null)[]>([]);
   const footerRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const t = useTranslations("Navigation");
@@ -45,19 +44,21 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
     window.location.href = pathname.replace(`/${locale}`, `/${newLocale}`);
   };
 
-  // Bloquear scroll cuando menú está abierto
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      pauseLenis();
     } else {
       document.body.style.overflow = "";
+      resumeLenis();
     }
+
     return () => {
       document.body.style.overflow = "";
+      resumeLenis();
     };
   }, [isOpen]);
 
-// Sync with Navigation visibility
   useEffect(() => {
     if (isMenuOpen === false && isOpen === true) {
       setIsOpen(false);
@@ -68,18 +69,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-
-  // Keyboard navigation: Escape to close
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -97,7 +86,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
       e.preventDefault();
       setTimeout(() => scrollTo(`#${id}`), 300);
     } else if (path !== "/") {
-      // Page link, let navigation handle it
+      // Page link - let navigation handle it
     } else {
       e.preventDefault();
       setTimeout(() => {
@@ -111,7 +100,110 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
     return String(index + 1).padStart(2, "0");
   };
 
-  // Text scramble effect on hover
+  useGSAP(() => {
+    if (!overlayRef.current) return;
+
+    const overlay = overlayRef.current;
+    const links = linksRef.current.filter(Boolean);
+    const numbers = numbersRef.current.filter(Boolean);
+
+    if (isOpen) {
+      gsap.set(overlay, { display: "block" });
+      
+      const tl = gsap.timeline();
+      
+      tl.set(overlay, { opacity: 0 })
+        .set(links, { opacity: 0, y: 30 })
+        .set(numbers, { opacity: 0, x: -20 })
+        .set(footerRef.current, { opacity: 0, y: 20 });
+
+      tl.to(overlay, {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      })
+        .to(
+          numbers,
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.4,
+            stagger: 0.05,
+            ease: "power3.out",
+          },
+          "-=0.2"
+        )
+        .to(
+          links,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        )
+        .to(
+          footerRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power3.out",
+          },
+          "-=0.3"
+        )
+        .add(() => {
+          if (onOpenChange) onOpenChange(true);
+        }, 0);
+    } else {
+      const tl = gsap.timeline();
+
+      tl.to(links, {
+        opacity: 0,
+        y: -20,
+        duration: 0.2,
+        stagger: 0.03,
+        ease: "power3.in",
+      })
+        .to(
+          numbers,
+          {
+            opacity: 0,
+            x: 20,
+            duration: 0.15,
+            stagger: 0.02,
+            ease: "power3.in",
+          },
+          "-=0.15"
+        )
+        .to(
+          footerRef.current,
+          {
+            opacity: 0,
+            y: -10,
+            duration: 0.15,
+            ease: "power3.in",
+          },
+          "-=0.1"
+        )
+        .to(
+          overlay,
+          {
+            opacity: 0,
+            duration: 0.25,
+            ease: "power3.in",
+            onComplete: () => {
+              gsap.set(overlay, { display: "none" });
+              if (onOpenChange) onOpenChange(false);
+            },
+          },
+          "-=0.05"
+        );
+    }
+  }, { scope: overlayRef, dependencies: [isOpen] });
+
   const handleMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>, originalText: string) => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const element = e.currentTarget.querySelector(".link-text") as HTMLElement;
@@ -138,74 +230,37 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
 
   return (
     <>
-      {/* Mobile Menu Trigger - Hamburger */}
       <button
         type="button"
-        onClick={() => setIsOpen(true)}
-        className="min-w-[44px] min-h-[44px] flex flex-col gap-[6px] p-3 -m-3 items-center justify-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm"
-        aria-label={t("aria.open_menu")}
+        onClick={() => setIsOpen(!isOpen)}
+        className="relative z-[210] min-w-[44px] min-h-[44px] flex flex-col gap-[6px] p-3 -m-3 items-center justify-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm"
+        aria-label={isOpen ? t("aria.close_menu") : t("aria.open_menu")}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
       >
-        <span className="w-6 h-[2px] bg-swiss-white transition-all duration-300 origin-left" />
-        <span className="w-6 h-[2px] bg-swiss-white transition-all duration-300" />
-        <span className="w-4 h-[2px] bg-swiss-white transition-all duration-300 origin-left" />
+        <span className={cn(
+          "w-6 h-[2px] bg-swiss-white transition-all duration-300 origin-center",
+          isOpen && "rotate-45 translate-y-[8px]"
+        )} />
+        <span className={cn(
+          "w-6 h-[2px] bg-swiss-white transition-all duration-300",
+          isOpen && "opacity-0"
+        )} />
+        <span className={cn(
+          "w-6 h-[2px] bg-swiss-white transition-all duration-300 origin-center",
+          isOpen ? "-rotate-45 -translate-y-[8px] w-6" : "w-4 self-start"
+        )} />
       </button>
 
-      {/* Mobile Menu Overlay - Hidden by default to prevent flash */}
       <div
-        ref={menuRef}
+        ref={overlayRef}
         id="mobile-menu"
-        className={cn(
-          "fixed inset-0 z-[200] pointer-events-none opacity-0 invisible",
-          isOpen && "pointer-events-auto opacity-100 visible"
-        )}
+        className="fixed inset-0 z-[200] bg-swiss-black"
+        style={{ display: "none" }}
         aria-hidden={!isOpen}
       >
-        {/* Background Panel */}
-        <div
-          ref={panelRef}
-          className="absolute inset-0 bg-swiss-black"
-        />
-
-        {/* Content Container */}
-        <div className="relative z-10 h-full flex flex-col">
-          {/* Header */}
-          <div className="flex justify-between items-center px-6 py-6 border-b border-swiss-white/10">
-            <Magnetic strength={0.3}>
-              <a
-                href={`/${locale}`}
-                onClick={() => setIsOpen(false)}
-                className="min-w-11 min-h-11 border border-swiss-white rounded-full flex items-center justify-center font-medium text-xs cursor-pointer hover:bg-swiss-white hover:text-swiss-black transition-colors"
-              >
-                {t("brand")}
-              </a>
-            </Magnetic>
-
-            <button
-              ref={closeBtnRef}
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="w-12 h-12 flex items-center justify-center focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm"
-              aria-label={t("aria.close_menu")}
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                className="stroke-swiss-white"
-                strokeWidth="2"
-                strokeLinecap="square"
-              >
-                <line x1="4" y1="4" x2="20" y2="20" />
-                <line x1="20" y1="4" x2="4" y2="20" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Links Container */}
-          <div className="flex-1 flex flex-col justify-center px-6 py-12">
+        <div className="relative z-10 h-full flex flex-col pt-24">
+          <div className="flex-1 flex flex-col justify-start px-6 pt-8 pb-12">
             <nav className="space-y-2">
               {navItems.map((item, index) => {
                 const isActive = pathname.includes(item.path);
@@ -213,7 +268,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
 
                 return (
                   <div key={item.id} className="relative flex items-baseline gap-4 overflow-hidden">
-                    {/* Index Number */}
                     <span
                       ref={(el) => { numbersRef.current[index] = el; }}
                       className="font-mono text-xs text-swiss-white/40 tracking-widest pt-2"
@@ -221,7 +275,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                       [{getLinkIndex(index)}]
                     </span>
 
-                    {/* Link */}
                     <a
                       ref={(el) => { linksRef.current[index] = el; }}
                       href={item.path}
@@ -229,12 +282,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                       onMouseEnter={(e) => handleMouseEnter(e, originalText)}
                       className={cn(
                         "group relative font-black text-4xl sm:text-5xl uppercase tracking-tighter",
-                        "transition-all duration-300",
+                        "transition-colors duration-300",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 rounded-sm",
                         isActive ? "text-swiss-white" : "text-swiss-white/60 hover:text-swiss-white"
                       )}
                     >
-                      {/* Brackets animados para activo */}
                       {isActive && (
                         <>
                           <span className="absolute -left-4 animate-pulse text-swiss-white/60">[</span>
@@ -244,7 +296,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                       
                       <span className="link-text relative">
                         {originalText}
-                        {/* Underline animation */}
                         <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-swiss-white transition-all duration-500 group-hover:w-full" />
                       </span>
                     </a>
@@ -254,16 +305,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
             </nav>
           </div>
 
-          {/* Footer */}
           <div
             ref={footerRef}
             className="px-6 py-6 border-t border-swiss-white/10"
           >
-            {/* Divider line animation */}
-            <div className="w-full h-px bg-swiss-white/20 mb-6 origin-left scale-x-100" />
+            <div className="w-full h-px bg-swiss-white/20 mb-6" />
 
             <div className="flex flex-col gap-6">
-              {/* Language Toggle */}
               <div className="flex items-center gap-4">
                 <button
                   type="button"
@@ -272,14 +320,14 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                   className="flex items-center gap-2 p-3 min-h-[44px] -m-3 text-xs font-mono tracking-widest uppercase"
                 >
                   <span className={cn(
-                    "transition-opacity cursor-pointer",
+                    "transition-colors cursor-pointer",
                     locale === "es" ? "text-swiss-white font-bold" : "text-swiss-white/40 hover:text-swiss-white/60"
                   )}>
                     ES
                   </span>
                   <span className="text-swiss-white/20">/</span>
                   <span className={cn(
-                    "transition-opacity cursor-pointer",
+                    "transition-colors cursor-pointer",
                     locale === "en" ? "text-swiss-white font-bold" : "text-swiss-white/40 hover:text-swiss-white/60"
                   )}>
                     EN
@@ -287,7 +335,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                 </button>
               </div>
 
-              {/* Theme Toggle */}
               <button
                 type="button"
                 onClick={toggleTheme}
@@ -303,7 +350,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                 )} />
               </button>
 
-              {/* Contact Info */}
               <div className="flex flex-col gap-2 text-xs font-mono tracking-widest text-swiss-white/40">
                 <a
                   href="mailto:hello@diegonr.com"
@@ -314,7 +360,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen }) 
                 <span>SANTA MARTA, CO</span>
               </div>
 
-              {/* Social Links */}
               <div className="flex gap-6">
                 <a
                   href="https://github.com/500byte"

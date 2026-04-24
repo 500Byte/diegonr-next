@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Home({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'Marquee' });
   const projects = await getAllProjects();
   const services = await getAllServices();
   const blogPosts = await getAllPosts();
@@ -39,10 +40,10 @@ export default async function Home({ params }: Props) {
   return (
     <>
       <Hero />
-      <MarqueeBanner text="SOLUTIONS ARCHITECT • FULL-STACK DEVELOPER • AI SPECIALIST •" speed={60} />
+      <MarqueeBanner text={t('text_1')} speed={60} />
       <About />
       <Works projects={projects} />
-      <MarqueeBanner text="UI/UX DESIGN • BACKEND ARCHITECTURE • CLOUD COMPUTING •" speed={80} direction="right" />
+      <MarqueeBanner text={t('text_2')} speed={80} direction="right" />
       <Services services={services} />
       <BlogSection blogPosts={blogPosts} />
       <Vision />

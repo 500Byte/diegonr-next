@@ -29,8 +29,9 @@
 ## Someday
 
 - [ ] **BlogSection i18n** - Complete migration (uses Sanity data)
-- [ ] **Vision section i18n** - Complete migration (static content)
-- [ ] **NewsletterSignup i18n** - Complete form translations
+- [x] ~~**NewsletterSignup**~~ (2026-04-24) - Disabled, not needed for current strategy
+  - Commented out in `contact/page.tsx`
+  - Component remains in codebase but inactive
 - [ ] **PWA Complete** - Service worker with Workbox, full manifest
 - [ ] **Social Preview Testing** - Verify OG images on Twitter/Facebook/LinkedIn
 
@@ -84,3 +85,17 @@
   - ScrollTrigger animations now use once: true (play once, not reverse)
   - MobileMenu skips animations when reduced motion preferred
   - Commit: 6f2c75d
+
+- [x] ~~**Vision Section i18n**~~ (2026-04-24)
+  - Migrated static content to i18n system
+  - Fixed: Component now uses `useTranslations` hook
+  - All labels, headings, tabs, and content are now translatable
+  - Content in `/messages/es.json` and `/messages/en.json`
+  - Labels: `[04 — PRINCIPLES]` / `[05 — PRINCIPIOS]` (corrected numbering)
+
+- [x] ~~**Copy Update: Design Engineer Positioning**~~ (2026-04-24)
+  - Repositioned from "Solutions Architect & Full-Stack Developer" to "Design Engineer"
+  - Updated years: 5+ → 8+ years experience
+  - Voz impersonal absoluta (no tú/Usted)
+  - Términos estándar: PROYECTOS, SERVICIOS, ABOUT
+  - Files: `messages/es.json`, `messages/en.json`, `Vision.tsx`, `page.tsx`

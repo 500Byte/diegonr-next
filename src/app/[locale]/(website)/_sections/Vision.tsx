@@ -1,28 +1,30 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { SwissContainer } from '@/components/Layout';
-import { Magnetic } from '@/components/Magnetic';
 import { TextReveal, FadeIn } from '@/components/animations/text-reveal';
 import { cn } from '@/lib/utils';
 
-const tabs = [
-  {
-    title: "Visión",
-    content: "Mi visión es redefinir la interacción digital a través de un diseño suizo minimalista y funcional. Creo que la simplicidad es la máxima sofisticación, y mi objetivo es crear interfaces que no solo sean visualmente impactantes, sino también intuitivas y accesibles para todos los usuarios."
-  },
-  {
-    title: "Componente",
-    content: "Cada componente que desarrollo es una pieza de ingeniería artesanal. Utilizo las últimas tecnologías como React, GSAP y Tailwind CSS para construir sistemas de diseño robustos y escalables. Mi enfoque se centra en la modularidad y el rendimiento, garantizando una experiencia fluida en cualquier dispositivo."
-  },
-  {
-    title: "Misión",
-    content: "Mi misión es ayudar a marcas y empresas a destacar en el saturado mundo digital. A través de una combinación estratégica de diseño y desarrollo, transformo ideas complejas en soluciones digitales elegantes que generan resultados tangibles y dejan una impresión duradera en la audiencia."
-  }
-];
-
 export const Vision: React.FC = () => {
+  const t = useTranslations('Vision');
   const [activeTab, setActiveTab] = useState(0);
+
+  // Tab data using translations
+  const tabs = [
+    {
+      title: t('tab1_title'),
+      content: t('tab1_content')
+    },
+    {
+      title: t('tab2_title'),
+      content: t('tab2_content')
+    },
+    {
+      title: t('tab3_title'),
+      content: t('tab3_content')
+    }
+  ];
 
   return (
     <section id="vision" className="py-24 md:py-48 bg-swiss-black text-swiss-white overflow-hidden border-t border-white/5">
@@ -31,16 +33,16 @@ export const Vision: React.FC = () => {
           <div className="col-span-12 lg:col-span-4">
             <FadeIn>
               <p className="font-mono text-xs text-white/60 mb-4 uppercase tracking-widest">
-                [04 — PHILOSOPHY]
+                {t('label')}
               </p>
             </FadeIn>
             <TextReveal
               as="h2"
               className="text-5xl md:text-7xl font-medium tracking-tighter leading-[0.9]"
-              splitBy="chars"
-              stagger={0.03}
+              splitBy="words"
+              stagger={0.1}
             >
-              CORE<br />VALUES
+              {t('heading')}
             </TextReveal>
           </div>
           
@@ -78,7 +80,7 @@ export const Vision: React.FC = () => {
                   </p>
                   <div className="h-px bg-white/20 w-24 mb-8" />
                   <p className="font-mono text-[10px] text-white/60 uppercase tracking-[0.3em]">
-                    ESTABLISHED PRINCIPLE // {tabs[activeTab].title}
+                    {t('footer_label')} // {tabs[activeTab].title}
                   </p>
                 </div>
               </div>

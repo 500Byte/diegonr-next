@@ -23,14 +23,14 @@
     }
   },
   "Hero": {
-    "tag": "[ID: SOLUTIONS ARCHITECT]",
-    "name": "DIEGO NR",
-    "role": "SOLUTIONS ARCHITECT",
-    "description_1": "I'm a hybrid Solutions Architect who fuses native UI/UX expertise with efficiency-oriented software engineering. I operate beyond traditional web development, specializing in AI-Augmented Development and system orchestration.",
-    "description_2": "My approach is syntax-agnostic but strict on data structure: I master workflow automation, ETL pipelines, and SDLC industrialization.",
+    "tag": "[SOLUTIONS ARCHITECT]",
+    "name": "DIEGO NAVARRO",
+    "role": "Solutions Architect — Design Engineering",
+    "description_1": "Specialist in building scalable digital systems and development workflow automation. Eight years of experience closing the technical gap between high-fidelity design and software architecture.",
+    "description_2": "Technical stack: React/TypeScript for frontend, Python for backend logic, Docker for infrastructure. Arch Linux development environment.",
     "cta": "VIEW PROJECTS",
-    "cta_aria": "Go to contact page",
-    "image_alt": "Portrait of Diego NR, Solutions Architect",
+    "cta_aria": "Go to projects page",
+    "image_alt": "Diego Navarro, Solutions Architect",
     "status": "STATUS",
     "core_stack": "CORE STACK",
     "location": "LOCATION",
@@ -38,35 +38,35 @@
   },
   "About": {
     "label": "[01 — ABOUT]",
-    "heading": "WHO AM I?",
-    "subtitle": "Solutions architect with a passion for creating exceptional digital experiences.",
-    "bio_1": "I'm a full-stack developer with over 5 years of experience building digital products that combine exceptional design with robust architecture.",
-    "bio_2": "I currently specialize in AI-Augmented Development, where I use language models to automate workflows and accelerate the software development cycle.",
-    "bio_3": "I believe in writing clean, documented, and maintainable code. Every project is an opportunity to create something elegantly simple.",
+    "heading": "ABOUT",
+    "subtitle": "Solutions Architect with Graphic Design background, specialized in Software Development Life Cycle (SDLC) optimization.",
+    "bio_1": "Professional focus on modern frontend engineering and infrastructure management. Background in Graphic Design enables precise translation of visual specifications into technical implementation.",
+    "bio_2": "Track record: 150+ projects delivered. Implementation of custom architectures and automation systems with documented 30% increase in operational efficiency.",
+    "bio_3": "Technical stack centered on React component development, service orchestration via Docker, and Linux environment administration (Arch/CachyOS).",
     "skills_label": "SKILLS",
     "experience_label": "[EXPERIENCE]",
     "cta": "CONTACT",
     "cta_cursor": "HELLO",
     "stats_experience": "Years of experience",
     "stats_projects": "Projects completed",
-    "stats_clients": "Happy clients",
+    "stats_clients": "Efficiency improvement",
     "current_badge": "CURRENT",
     "image_alt": "Professional profile image"
   },
   "Services": {
-    "label": "[03 — SERVICES]",
-    "heading": "WHAT I DO",
-    "description": "Specialized services to transform ideas into exceptional digital products.",
+    "label": "[03 — CAPABILITIES]",
+    "heading": "SERVICES",
+    "description": "Technical capabilities and professional services.",
     "view_all": "VIEW ALL",
     "view_details": "VIEW DETAILS",
-    "capabilities_label": "[CAPABILITIES]",
+    "capabilities_label": "[SERVICES]",
     "cta": "REQUEST CONSULTATION",
     "image_alt": "Image of {title} service"
   },
   "Works": {
-    "label": "[02 — WORKS]",
+    "label": "[02 — PROJECTS]",
     "heading": "SELECTED PROJECTS",
-    "description": "A selection of projects representing my approach to software architecture and user experience.",
+    "description": "Selected projects representing technical architecture and execution.",
     "view_all": "VIEW ALL PROJECTS",
     "view_project": "VIEW PROJECT",
     "view_details": "VIEW DETAILS",
@@ -74,42 +74,44 @@
     "image_alt": "Screenshot of {title} project"
   },
   "BlogSection": {
-    "label": "[04 — INSIGHTS]",
-    "heading": "LATEST POSTS",
-    "description": "Reflections on development, architecture, and technology.",
+    "label": "Thoughts & Articles",
+    "heading": "BLOG",
+    "description": "Exploring the intersection of technology, design, and digital strategy.",
     "read_more": "READ MORE",
-    "view_all": "VIEW ALL",
+    "view_all": "View all articles",
     "image_alt": "Image for {title} article"
   },
   "Vision": {
-    "label": "[05 — VISION]",
-    "heading": "MY APPROACH",
-    "description": "I believe in the power of technology to transform businesses and improve lives.",
-    "principles": {
-      "title": "PRINCIPLES",
-      "items": [
-        "Architecture over code",
-        "Scalability from day 1",
-        "AI as accelerator, not replacement",
-        "Quality over speed"
-      ]
-    }
+    "label": "[05 — PRINCIPLES]",
+    "heading": "WORK PRINCIPLES",
+    "description": "Production deployment is the primary metric. Optimization for maintainability, performance, and system reliability.",
+    "tab1_title": "Engineering",
+    "tab1_content": "Production deployment is the primary metric. Optimization for maintainability, performance, and system reliability. Code is developed considering long-term maintenance and team collaboration as core requirements.",
+    "tab2_title": "Systems",
+    "tab2_content": "Interface implementation requires solid architectural foundations. Components, APIs, and workflows designed as integrated systems, ensuring scalability from initial release through product growth.",
+    "tab3_title": "Efficiency",
+    "tab3_content": "Process optimization through CI/CD, automated testing, and design-to-code pipelines. The documented 30% efficiency improvement results from systematic process optimization.",
+    "footer_label": "ESTABLISHED PRINCIPLE"
+  },
+  "Marquee": {
+    "text_1": "SOLUTIONS ARCHITECT • DESIGN ENGINEERING • SYSTEMS AUTOMATION •",
+    "text_2": "REACT • TYPESCRIPT • DOCKER • ARCH LINUX •"
   },
   "ContactForm": {
-    "title": "LET'S TALK",
-    "subtitle": "Have a project in mind? Let's talk.",
+    "title": "CONTACT",
+    "subtitle": "Project description and technical requirements.",
     "fields": {
       "name": {
-        "label": "Name",
-        "placeholder": "Your name"
+        "label": "Full name",
+        "placeholder": "Full name"
       },
       "email": {
-        "label": "Email",
-        "placeholder": "you@email.com"
+        "label": "Email address",
+        "placeholder": "email@company.com"
       },
       "company": {
-        "label": "Company (optional)",
-        "placeholder": "Your company"
+        "label": "Company",
+        "placeholder": "Company name"
       },
       "service": {
         "label": "Service of interest",
@@ -117,40 +119,40 @@
       },
       "message": {
         "label": "Message",
-        "placeholder": "Tell me about your project..."
+        "placeholder": "Project description and requirements..."
       }
     },
     "submit": "SEND MESSAGE",
     "submit_sending": "SENDING...",
     "success": {
-      "title": "Message sent!",
-      "message": "Thank you for contacting me. I'll respond soon."
+      "title": "Message sent",
+      "message": "Message has been sent. Response within 24 hours."
     },
     "error": {
       "title": "Error sending",
-      "message": "There was a problem. Please try again."
+      "message": "An error occurred. Please try again."
     }
   },
   "NewsletterSignup": {
     "title": "NEWSLETTER",
-    "heading": "STAY UPDATED",
-    "description": "Receive insights on development, architecture, and technology directly in your inbox.",
-    "email_placeholder": "you@email.com",
+    "heading": "SUBSCRIPTION",
+    "description": "Technical publications on software architecture and automation.",
+    "email_placeholder": "email@company.com",
     "submit": "SUBSCRIBE",
     "submit_sending": "...",
-    "success": "Thank you for subscribing!",
-    "error": "Error subscribing. Please try again.",
-    "privacy": "We don't share your email. Unsubscribe anytime."
+    "success": "Subscription confirmed.",
+    "error": "Subscription error. Please try again.",
+    "privacy": "Contact information is not shared."
   },
   "Footer": {
     "brand": "DN",
-    "tagline": "Solutions Architect & Full-Stack Developer",
-    "copyright": "© {year} Diego NR. All rights reserved.",
+    "tagline": "Solutions Architect — Design Engineering",
+    "copyright": "© {year} Diego Navarro",
     "navigation_label": "Navigation",
     "social_label": "Social",
     "location_label": "Location",
     "location_city": "Santa Marta, Colombia",
-    "location_remote": "Remote • Global",
+    "location_remote": "Remote • Worldwide",
     "back_to_top": "Back to top",
     "links": {
       "home": "Home",
@@ -177,26 +179,26 @@
   "NotFound": {
     "title": "404",
     "heading": "PAGE NOT FOUND",
-    "description": "The page you're looking for doesn't exist or has been moved.",
+    "description": "The requested page does not exist or has been moved.",
     "cta": "BACK TO HOME"
   },
   "Offline": {
     "title": "OFFLINE",
-    "description": "You appear to be offline. Some features may not be available.",
+    "description": "Connection unavailable. Some features may not be available.",
     "cta": "RETRY"
   },
   "Metadata": {
-    "home_title": "Diego NR | Solutions Architect & Full-Stack Developer",
-    "home_description": "Solutions architect specialized in AI-Augmented Development. I transform complex ideas into scalable digital systems.",
-    "about_title": "About | Diego NR",
-    "about_description": "Learn about my journey as a full-stack developer and solutions architect.",
-    "projects_title": "Projects | Diego NR",
-    "projects_description": "Portfolio of software architecture and full-stack development projects.",
-    "services_title": "Services | Diego NR",
-    "services_description": "Tailored digital solutions: architecture, development, consulting.",
-    "blog_title": "Blog | Diego NR",
-    "blog_description": "Reflections on software development, architecture, and technology.",
-    "contact_title": "Contact | Diego NR",
-    "contact_description": "Have a project in mind? Let's get in touch and make it happen."
+    "home_title": "Diego Navarro — Solutions Architect",
+    "home_description": "Solutions Architect specialized in Design Engineering. Eight years of experience in digital systems architecture and development workflow automation.",
+    "about_title": "About | Diego Navarro — Solutions Architect",
+    "about_description": "Solutions Architect with Graphic Design background. Specialized in SDLC optimization, systems architecture, and automation.",
+    "projects_title": "Projects | Diego Navarro — Solutions Architect",
+    "projects_description": "Selected projects representing technical architecture and execution.",
+    "services_title": "Services | Diego Navarro — Solutions Architect",
+    "services_description": "Technical capabilities: Design Systems, Full-Stack architecture, process automation.",
+    "blog_title": "Blog | Diego Navarro — Solutions Architect",
+    "blog_description": "Technical publications on software architecture, design systems, and automation.",
+    "contact_title": "Contact | Diego Navarro — Solutions Architect",
+    "contact_description": "Contact form for technical inquiries and project proposals."
   }
 }

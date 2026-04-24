@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
 import { ArrowUpRight } from 'lucide-react';
@@ -10,6 +11,7 @@ import { BlogPostDocument } from '@/types';
 
 
 export const BlogSection: React.FC<{ blogPosts?: BlogPostDocument[] }> = ({ blogPosts }) => {
+  const t = useTranslations('BlogSection');
   const safePosts = blogPosts || []
   
   // Handle empty blog posts gracefully
@@ -23,16 +25,16 @@ export const BlogSection: React.FC<{ blogPosts?: BlogPostDocument[] }> = ({ blog
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
           <div className="md:col-span-8">
             <FadeIn>
-              <p className="font-mono text-xs text-white/60 mb-4 uppercase tracking-widest">Pensamientos & Artículos</p>
+              <p className="font-mono text-xs text-white/60 mb-4 uppercase tracking-widest">{t('label')}</p>
               <h2 className="text-5xl md:text-7xl lg:text-8xl font-medium leading-none tracking-tighter">
-                BLOG<span className="text-white/20">.</span>
+                {t('heading')}<span className="text-white/20">.</span>
               </h2>
             </FadeIn>
           </div>
           <div className="md:col-span-4 flex md:items-end md:justify-end">
             <FadeIn delay={0.2}>
               <p className="text-white/60 max-w-sm md:text-right text-sm uppercase tracking-wider">
-                Explorando la intersección entre tecnología, diseño y estrategia digital.
+                {t('description')}
               </p>
             </FadeIn>
           </div>
@@ -85,7 +87,7 @@ export const BlogSection: React.FC<{ blogPosts?: BlogPostDocument[] }> = ({ blog
               className="group flex items-center gap-3 py-2"
             >
               <span className="font-mono text-xs text-white/60 group-hover:text-white transition-colors uppercase tracking-widest">
-                Ver todos los artículos
+                {t('view_all')}
               </span>
               <div className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
                 <ArrowUpRight className="w-4 h-4" />

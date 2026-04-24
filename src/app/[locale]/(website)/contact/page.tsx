@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
 import { ContactForm } from '@/components/ContactForm';
-import { NewsletterSignup } from '@/components/NewsletterSignup';
+// import { NewsletterSignup } from '@/components/NewsletterSignup'; // Disabled - not needed
 
 export default function ContactPage() {
   return (
@@ -43,12 +43,13 @@ export default function ContactPage() {
                 </div>
               </FadeIn>
 
-              {/* Newsletter Signup */}
+              {/* Newsletter Signup - Disabled
               <FadeIn delay={0.6}>
                 <div className="pt-8 border-t border-white/10">
                   <NewsletterSignup />
                 </div>
               </FadeIn>
+              */}
             </div>
           </div>
         </SwissContainer>

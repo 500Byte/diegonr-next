@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -7,54 +7,56 @@ import { Magnetic } from '@/components/Magnetic'
 import { Send, CheckCircle, AlertCircle, MessageSquare, User, Mail, Briefcase } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres').max(50, 'El nombre es demasiado largo'),
-  email: z.string().email('Email inválido'),
-  company: z.string().optional(),
-  subject: z.string().min(5, 'El asunto debe tener al menos 5 caracteres').max(100, 'El asunto es demasiado largo'),
-  message: z.string().min(20, 'El mensaje debe tener al menos 20 caracteres').max(1000, 'El mensaje es demasiado largo'),
-  service: z.enum(['development', 'design', 'ai', 'consulting', 'other']).refine(val => val, {
-    message: 'Selecciona un servicio',
-  }),
-  budget: z.enum(['small', 'medium', 'large', 'enterprise', 'discuss']).refine(val => val, {
-    message: 'Selecciona un rango de presupuesto',
-  }),
-  timeline: z.enum(['asap', '1month', '3months', '6months', 'flexible']).refine(val => val, {
-    message: 'Selecciona un timeline',
-  }),
-})
-
-type ContactFormData = z.infer<typeof contactSchema>
-
-const services = [
-  { id: 'development', label: 'Desarrollo Web/App', value: 'development' as const },
-  { id: 'design', label: 'Diseño UX/UI', value: 'design' as const },
-  { id: 'ai', label: 'Inteligencia Artificial', value: 'ai' as const },
-  { id: 'consulting', label: 'Consultoría Técnica', value: 'consulting' as const },
-  { id: 'other', label: 'Otro', value: 'other' as const },
-]
-
-const budgets = [
-  { id: 'small', label: '< €5,000', value: 'small' as const },
-  { id: 'medium', label: '€5,000 - €15,000', value: 'medium' as const },
-  { id: 'large', label: '€15,000 - €50,000', value: 'large' as const },
-  { id: 'enterprise', label: '> €50,000', value: 'enterprise' as const },
-  { id: 'discuss', label: 'A discutir', value: 'discuss' as const },
-]
-
-const timelines = [
-  { id: 'asap', label: 'Lo antes posible', value: 'asap' as const },
-  { id: '1month', label: '1 mes', value: '1month' as const },
-  { id: '3months', label: '2-3 meses', value: '3months' as const },
-  { id: '6months', label: '3-6 meses', value: '6months' as const },
-  { id: 'flexible', label: 'Flexible', value: 'flexible' as const },
-]
-
 export function ContactForm() {
   const t = useTranslations('ContactForm')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const formRef = useRef<HTMLFormElement>(null)
+
+  // Define schema inside component to access translations
+  const contactSchema = useMemo(() => z.object({
+    name: z.string().min(2, t('validation.name_min')).max(50, t('validation.name_max')),
+    email: z.string().email(t('validation.email_invalid')),
+    company: z.string().optional(),
+    subject: z.string().min(5, t('validation.subject_min')).max(100, t('validation.subject_max')),
+    message: z.string().min(20, t('validation.message_min')).max(1000, t('validation.message_max')),
+    service: z.enum(['development', 'design', 'ai', 'consulting', 'other']).refine(val => val, {
+      message: t('validation.service_required'),
+    }),
+    budget: z.enum(['small', 'medium', 'large', 'enterprise', 'discuss']).refine(val => val, {
+      message: t('validation.budget_required'),
+    }),
+    timeline: z.enum(['asap', '1month', '3months', '6months', 'flexible']).refine(val => val, {
+      message: t('validation.timeline_required'),
+    }),
+  }), [t])
+
+  type ContactFormData = z.infer<typeof contactSchema>
+
+  // Translated options
+  const services = [
+    { id: 'development', label: t('services.development'), value: 'development' as const },
+    { id: 'design', label: t('services.design'), value: 'design' as const },
+    { id: 'ai', label: t('services.ai'), value: 'ai' as const },
+    { id: 'consulting', label: t('services.consulting'), value: 'consulting' as const },
+    { id: 'other', label: t('services.other'), value: 'other' as const },
+  ]
+
+  const budgets = [
+    { id: 'small', label: t('budgets.small'), value: 'small' as const },
+    { id: 'medium', label: t('budgets.medium'), value: 'medium' as const },
+    { id: 'large', label: t('budgets.large'), value: 'large' as const },
+    { id: 'enterprise', label: t('budgets.enterprise'), value: 'enterprise' as const },
+    { id: 'discuss', label: t('budgets.discuss'), value: 'discuss' as const },
+  ]
+
+  const timelines = [
+    { id: 'asap', label: t('timelines.asap'), value: 'asap' as const },
+    { id: '1month', label: t('timelines.1month'), value: '1month' as const },
+    { id: '3months', label: t('timelines.3months'), value: '3months' as const },
+    { id: '6months', label: t('timelines.6months'), value: '6months' as const },
+    { id: 'flexible', label: t('timelines.flexible'), value: 'flexible' as const },
+  ]
 
   const {
     register,
@@ -70,13 +72,12 @@ export function ContactForm() {
     setSubmitStatus('idle')
 
     try {
-      // Configurar EmailJS
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID || ''
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
 
       if (!serviceId || !templateId || !publicKey) {
-        console.warn('EmailJS no configurado para contacto. Simulando envío...')
+        console.warn('EmailJS not configured for contact. Simulating send...')
         await new Promise(resolve => setTimeout(resolve, 1500))
         setSubmitStatus('success')
         reset()
@@ -86,12 +87,12 @@ export function ContactForm() {
       const templateParams = {
         from_name: data.name,
         from_email: data.email,
-        company: data.company || 'No especificada',
+        company: data.company || t('fields.company.placeholder'),
         subject: data.subject,
         message: data.message,
         service: services.find(s => s.value === data.service)?.label || data.service,
         budget: budgets.find(b => b.value === data.budget)?.label || data.budget,
-        timeline: timelines.find(t => t.value === data.timeline)?.label || data.timeline,
+        timeline: timelines.find(tm => tm.value === data.timeline)?.label || data.timeline,
         to_email: 'diego@diegonr.com',
       }
 
@@ -100,7 +101,7 @@ export function ContactForm() {
       setSubmitStatus('success')
       reset()
     } catch (error) {
-      console.error('Error enviando formulario de contacto:', error)
+      console.error('Error sending contact form:', error)
       setSubmitStatus('error')
     } finally {
       setIsSubmitting(false)
@@ -114,10 +115,10 @@ export function ContactForm() {
           <MessageSquare className="w-8 h-8 text-swiss-white" />
         </div>
         <h3 className="text-2xl md:text-3xl font-medium mb-4">
-          Hablemos de tu Proyecto
+          {t('title')}
         </h3>
         <p className="text-white/60 text-lg max-w-md mx-auto">
-          Cuéntame sobre tu idea. Estoy aquí para ayudarte a hacerla realidad.
+          {t('subtitle')}
         </p>
       </div>
 
@@ -125,7 +126,7 @@ export function ContactForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="name" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-              Nombre *
+              {t('fields.name.label')}
             </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -134,7 +135,7 @@ export function ContactForm() {
                 type="text"
                 id="name"
                 className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
-                placeholder="Tu nombre completo"
+                placeholder={t('fields.name.placeholder')}
               />
             </div>
             {errors.name && (
@@ -144,7 +145,7 @@ export function ContactForm() {
 
           <div>
             <label htmlFor="email" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-              Email *
+              {t('fields.email.label')}
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -153,7 +154,7 @@ export function ContactForm() {
                 type="email"
                 id="email"
                 className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
-                placeholder="tu@email.com"
+                placeholder={t('fields.email.placeholder')}
               />
             </div>
             {errors.email && (
@@ -164,7 +165,7 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="company" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-            Empresa (Opcional)
+            {t('fields.company.label')}
           </label>
           <div className="relative">
             <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
@@ -173,21 +174,21 @@ export function ContactForm() {
               type="text"
               id="company"
               className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
-              placeholder="Nombre de tu empresa"
+              placeholder={t('fields.company.placeholder')}
             />
           </div>
         </div>
 
         <div>
           <label htmlFor="service" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-            Servicio de Interés *
+            {t('fields.service.label')}
           </label>
           <select
             {...register('service')}
             id="service"
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-white/30 transition-colors"
           >
-            <option value="" className="bg-swiss-black">Selecciona un servicio</option>
+            <option value="" className="bg-swiss-black">{t('fields.service.placeholder')}</option>
             {services.map((service) => (
               <option key={service.id} value={service.value} className="bg-swiss-black">
                 {service.label}
@@ -202,14 +203,14 @@ export function ContactForm() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="budget" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-              Presupuesto *
+              {t('fields.budget.label')}
             </label>
             <select
               {...register('budget')}
               id="budget"
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-white/30 transition-colors"
             >
-              <option value="" className="bg-swiss-black">Selecciona presupuesto</option>
+              <option value="" className="bg-swiss-black">{t('fields.budget.placeholder')}</option>
               {budgets.map((budget) => (
                 <option key={budget.id} value={budget.value} className="bg-swiss-black">
                   {budget.label}
@@ -223,14 +224,14 @@ export function ContactForm() {
 
           <div>
             <label htmlFor="timeline" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-              Timeline *
+              {t('fields.timeline.label')}
             </label>
             <select
               {...register('timeline')}
               id="timeline"
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-white/30 transition-colors"
             >
-              <option value="" className="bg-swiss-black">Selecciona timeline</option>
+              <option value="" className="bg-swiss-black">{t('fields.timeline.placeholder')}</option>
               {timelines.map((timeline) => (
                 <option key={timeline.id} value={timeline.value} className="bg-swiss-black">
                   {timeline.label}
@@ -245,14 +246,14 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="subject" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-            Asunto *
+            {t('fields.subject.label')}
           </label>
           <input
             {...register('subject')}
             type="text"
             id="subject"
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
-            placeholder="Breve descripción del proyecto"
+            placeholder={t('fields.subject.placeholder')}
           />
           {errors.subject && (
             <p className="text-error text-sm mt-1">{errors.subject.message}</p>
@@ -261,14 +262,14 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="message" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
-            Mensaje *
+            {t('fields.message.label')}
           </label>
           <textarea
             {...register('message')}
             id="message"
             rows={6}
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors resize-none"
-            placeholder="Cuéntame más sobre tu proyecto, objetivos, desafíos, etc."
+            placeholder={t('fields.message.placeholder')}
           />
           {errors.message && (
             <p className="text-error text-sm mt-1">{errors.message.message}</p>
@@ -277,9 +278,9 @@ export function ContactForm() {
 
         <div className="pt-4">
           <div id="form-status" aria-live="polite" aria-atomic="true" className="sr-only">
-            {submitStatus === 'success' && 'Mensaje enviado correctamente'}
-            {submitStatus === 'error' && 'Error al enviar el mensaje. Por favor, inténtalo de nuevo.'}
-            {isSubmitting && 'Enviando mensaje...'}
+            {submitStatus === 'success' && t('aria.success')}
+            {submitStatus === 'error' && t('aria.error')}
+            {isSubmitting && t('aria.sending')}
           </div>
           <Magnetic strength={0.3}>
             <button
@@ -291,21 +292,21 @@ export function ContactForm() {
               {isSubmitting ? (
                 <>
                   <div className="w-5 h-5 border-2 border-swiss-black/30 border-t-swiss-black rounded-full animate-spin" />
-                  Enviando...
+                  {t('submit_sending')}
                 </>
               ) : submitStatus === 'success' ? (
                 <>
                   <CheckCircle className="w-5 h-5" />
-                  ¡Mensaje Enviado!
+                  {t('submit_success')}
                 </>
               ) : submitStatus === 'error' ? (
                 <>
                   <AlertCircle className="w-5 h-5" />
-                  Error - Reintentar
+                  {t('submit_error')}
                 </>
               ) : (
                 <>
-                  Enviar Mensaje
+                  {t('submit')}
                   <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                 </>
               )}
@@ -314,7 +315,7 @@ export function ContactForm() {
         </div>
 
         <p className="text-white/40 text-sm text-center">
-          Responderé a tu mensaje en menos de 24 horas. Todos los datos están seguros y protegidos.
+          {t('privacy_note')}
         </p>
       </form>
     </div>

@@ -98,13 +98,86 @@
     "text_2": "REACT • TYPESCRIPT • DOCKER • ARCH LINUX •"
   },
   "ContactForm": {
-    "title": "CONTACT",
-    "subtitle": "Project description and technical requirements.",
+    "title": "Let's Talk About Your Project",
+    "subtitle": "Tell me about your idea. I'm here to help you make it a reality.",
+    "privacy_note": "I will respond to your message within 24 hours. All data is secure and protected.",
     "fields": {
       "name": {
-        "label": "Full name",
-        "placeholder": "Full name"
+        "label": "Name *",
+        "placeholder": "Your full name"
       },
+      "email": {
+        "label": "Email *",
+        "placeholder": "you@email.com"
+      },
+      "company": {
+        "label": "Company (Optional)",
+        "placeholder": "Your company name"
+      },
+      "subject": {
+        "label": "Subject *",
+        "placeholder": "Brief project description"
+      },
+      "message": {
+        "label": "Message *",
+        "placeholder": "Tell me more about your project, objectives, challenges, etc."
+      },
+      "service": {
+        "label": "Service of Interest *",
+        "placeholder": "Select a service"
+      },
+      "budget": {
+        "label": "Budget *",
+        "placeholder": "Select budget"
+      },
+      "timeline": {
+        "label": "Timeline *",
+        "placeholder": "Select timeline"
+      }
+    },
+    "services": {
+      "development": "Web/App Development",
+      "design": "UX/UI Design",
+      "ai": "Artificial Intelligence",
+      "consulting": "Technical Consulting",
+      "other": "Other"
+    },
+    "budgets": {
+      "small": "< €5,000",
+      "medium": "€5,000 - €15,000",
+      "large": "€15,000 - €50,000",
+      "enterprise": "> €50,000",
+      "discuss": "To be discussed"
+    },
+    "timelines": {
+      "asap": "As soon as possible",
+      "1month": "1 month",
+      "3months": "2-3 months",
+      "6months": "3-6 months",
+      "flexible": "Flexible"
+    },
+    "validation": {
+      "name_min": "Name must be at least 2 characters",
+      "name_max": "Name is too long",
+      "email_invalid": "Invalid email",
+      "subject_min": "Subject must be at least 5 characters",
+      "subject_max": "Subject is too long",
+      "message_min": "Message must be at least 20 characters",
+      "message_max": "Message is too long",
+      "service_required": "Please select a service",
+      "budget_required": "Please select a budget range",
+      "timeline_required": "Please select a timeline"
+    },
+    "submit": "Send Message",
+    "submit_sending": "Sending...",
+    "submit_success": "Message Sent!",
+    "submit_error": "Error - Retry",
+    "aria": {
+      "sending": "Sending message...",
+      "success": "Message sent successfully",
+      "error": "Error sending message. Please try again."
+    }
+  },
       "email": {
         "label": "Email address",
         "placeholder": "email@company.com"

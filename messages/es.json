@@ -98,39 +98,84 @@
     "text_2": "REACT • TYPESCRIPT • DOCKER • ARCH LINUX •"
   },
   "ContactForm": {
-    "title": "CONTACTO",
-    "subtitle": "Descripción del proyecto y requerimientos técnicos.",
+    "title": "Hablemos de tu Proyecto",
+    "subtitle": "Cuéntame sobre tu idea. Estoy aquí para ayudarte a hacerla realidad.",
+    "privacy_note": "Responderé a tu mensaje en menos de 24 horas. Todos los datos están seguros y protegidos.",
     "fields": {
       "name": {
-        "label": "Nombre completo",
-        "placeholder": "Nombre completo"
+        "label": "Nombre *",
+        "placeholder": "Tu nombre completo"
       },
       "email": {
-        "label": "Correo electrónico",
-        "placeholder": "correo@empresa.com"
+        "label": "Email *",
+        "placeholder": "tu@email.com"
       },
       "company": {
-        "label": "Empresa",
-        "placeholder": "Nombre de la empresa"
+        "label": "Empresa (Opcional)",
+        "placeholder": "Nombre de tu empresa"
       },
-      "service": {
-        "label": "Servicio de interés",
-        "placeholder": "Seleccionar un servicio"
+      "subject": {
+        "label": "Asunto *",
+        "placeholder": "Breve descripción del proyecto"
       },
       "message": {
-        "label": "Mensaje",
-        "placeholder": "Descripción del proyecto y requerimientos..."
+        "label": "Mensaje *",
+        "placeholder": "Cuéntame más sobre tu proyecto, objetivos, desafíos, etc."
+      },
+      "service": {
+        "label": "Servicio de Interés *",
+        "placeholder": "Selecciona un servicio"
+      },
+      "budget": {
+        "label": "Presupuesto *",
+        "placeholder": "Selecciona presupuesto"
+      },
+      "timeline": {
+        "label": "Timeline *",
+        "placeholder": "Selecciona timeline"
       }
     },
-    "submit": "ENVIAR MENSAJE",
-    "submit_sending": "ENVIANDO...",
-    "success": {
-      "title": "Mensaje enviado",
-      "message": "El mensaje ha sido enviado. Respuesta en un plazo de 24 horas."
+    "services": {
+      "development": "Desarrollo Web/App",
+      "design": "Diseño UX/UI",
+      "ai": "Inteligencia Artificial",
+      "consulting": "Consultoría Técnica",
+      "other": "Otro"
     },
-    "error": {
-      "title": "Error al enviar",
-      "message": "Se ha producido un error. Intentar nuevamente."
+    "budgets": {
+      "small": "< €5,000",
+      "medium": "€5,000 - €15,000",
+      "large": "€15,000 - €50,000",
+      "enterprise": "> €50,000",
+      "discuss": "A discutir"
+    },
+    "timelines": {
+      "asap": "Lo antes posible",
+      "1month": "1 mes",
+      "3months": "2-3 meses",
+      "6months": "3-6 meses",
+      "flexible": "Flexible"
+    },
+    "validation": {
+      "name_min": "El nombre debe tener al menos 2 caracteres",
+      "name_max": "El nombre es demasiado largo",
+      "email_invalid": "Email inválido",
+      "subject_min": "El asunto debe tener al menos 5 caracteres",
+      "subject_max": "El asunto es demasiado largo",
+      "message_min": "El mensaje debe tener al menos 20 caracteres",
+      "message_max": "El mensaje es demasiado largo",
+      "service_required": "Selecciona un servicio",
+      "budget_required": "Selecciona un rango de presupuesto",
+      "timeline_required": "Selecciona un timeline"
+    },
+    "submit": "Enviar Mensaje",
+    "submit_sending": "Enviando...",
+    "submit_success": "¡Mensaje Enviado!",
+    "submit_error": "Error - Reintentar",
+    "aria": {
+      "sending": "Enviando mensaje...",
+      "success": "Mensaje enviado correctamente",
+      "error": "Error al enviar el mensaje. Por favor, inténtalo de nuevo."
     }
   },
   "NewsletterSignup": {

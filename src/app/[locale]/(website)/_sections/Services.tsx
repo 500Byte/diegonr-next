@@ -99,8 +99,8 @@ export function Services({ services }: { services?: ServiceDocument[] }) {
             <TextReveal
               as="h2"
               className="text-4xl md:text-5xl lg:text-7xl font-medium tracking-tighter"
-              splitBy="chars"
-              stagger={0.03}
+              splitBy="words"
+              stagger={0.08}
             >
               {t("heading")}
             </TextReveal>

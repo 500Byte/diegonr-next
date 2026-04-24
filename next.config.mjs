@@ -1,7 +1,8 @@
 import createNextIntlPlugin from "next-intl/plugin";
 
-// Initialize Cloudflare dev environment (non-blocking)
-if (process.env.NODE_ENV === 'development') {
+// Initialize Cloudflare dev environment ONLY if explicitly enabled
+// Disabled by default to prevent aggressive caching in local development
+if (process.env.NODE_ENV === 'development' && process.env.ENABLE_CLOUDFLARE_DEV === 'true') {
   import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev()).catch(() => {
     // Silently fail if Cloudflare is not configured
   });
@@ -25,6 +26,64 @@ const nextConfig = {
       },
     ],
   },
+  
+  // Disable static page generation cache in development
+  ...(process.env.NODE_ENV === 'development' && {
+    // Force dynamic rendering in development
+    experimental: {
+      // Disable incremental static regeneration cache
+      incrementalCacheHandlerPath: false,
+    },
+  }),
+  
+  // Add headers to disable caching in development
+  async headers() {
+    const headers = [];
+    
+    if (process.env.NODE_ENV === 'development') {
+      headers.push(
+        {
+          source: '/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+            },
+            {
+              key: 'Pragma',
+              value: 'no-cache',
+            },
+            {
+              key: 'Expires',
+              value: '0',
+            },
+            {
+              key: 'Surrogate-Control',
+              value: 'no-store',
+            },
+          ],
+        },
+        {
+          // Also disable cache for static assets in development
+          source: '/_next/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'no-store, no-cache, must-revalidate, max-age=0',
+            },
+          ],
+        }
+      );
+    }
+    
+    return headers;
+  },
+  
+  // Disable powered by header
+  poweredByHeader: false,
+  
+  // Enable React strict mode for better development experience
+  reactStrictMode: true,
 };
 
 const withNextIntl = createNextIntlPlugin();

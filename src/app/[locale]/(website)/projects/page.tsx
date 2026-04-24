@@ -71,14 +71,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function ProjectsPage() {
+export default async function ProjectsPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'ProjectsPage' });
   const projects = await getAllProjects();
+
   return (
     <div className="page-content">
-      <PageHeader 
-        title="PROYECTOS" 
-        subtitle="Trabajos Seleccionados"
-        description="Una colección de experimentos, productos y soluciones digitales construidas con precisión y propósito."
+      <PageHeader
+        title={t('title')}
+        subtitle={t('subtitle')}
+        description={t('description')}
       />
       
       <section className="py-24">

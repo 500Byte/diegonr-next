@@ -200,5 +200,39 @@
     "blog_description": "Publicaciones técnicas sobre arquitectura de software, sistemas de diseño y automatización.",
     "contact_title": "Contacto | Diego Navarro — Solutions Architect",
     "contact_description": "Formulario de contacto para consultas técnicas y propuestas de proyecto."
+  },
+  "AboutPage": {
+    "title": "SOBRE MÍ",
+    "subtitle": "Perfil Profesional",
+    "description": "Solutions Architect con formación en Diseño Gráfico. Especializado en la optimización del ciclo de vida de desarrollo y arquitectura de sistemas escalables.",
+    "approach_title": "EL ENFOQUE",
+    "approach_p1": "Combinación de ingeniería de frontend moderna con gestión sólida de infraestructura. La formación en diseño permite traducir especificaciones visuales complejas en implementaciones técnicas precisas.",
+    "approach_p2": "Ocho años de experiencia entregando soluciones digitales. Especialización en arquitecturas personalizadas y sistemas de automatización que incrementan la eficiencia operativa.",
+    "presence_title": "PRESENCIA DIGITAL",
+    "presence_description": "Actividad en el ecosistema tecnológico, contribuciones open source y colaboraciones profesionales.",
+    "image_alt": "Fotografía de perfil profesional"
+  },
+  "ContactPage": {
+    "title": "CONTACTO",
+    "subtitle": "Consultas Técnicas",
+    "description": "Formulario para consultas sobre proyectos, arquitectura de sistemas y servicios de desarrollo.",
+    "email_label": "Correo Electrónico",
+    "social_label": "Redes Profesionales",
+    "availability_note": "Disponible para proyectos remotos internacionales."
+  },
+  "BlogPage": {
+    "title": "PUBLICACIONES",
+    "subtitle": "Análisis Técnicos",
+    "description": "Publicaciones sobre arquitectura de software, sistemas de diseño, automatización de workflows y mejores prácticas de desarrollo."
+  },
+  "ServicesPage": {
+    "title": "SERVICIOS",
+    "subtitle": "Capacidades Técnicas",
+    "description": "Servicios especializados en arquitectura de sistemas, desarrollo full-stack y optimización de procesos de desarrollo."
+  },
+  "ProjectsPage": {
+    "title": "PROYECTOS",
+    "subtitle": "Trabajos Seleccionados",
+    "description": "Colección de proyectos representativos en arquitectura de software, sistemas de diseño y aplicaciones escalables."
   }
 }

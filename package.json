@@ -31,8 +31,12 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "npm run clean:dev && next dev",
+    "dev:clean": "npm run clean:all && next dev",
     "start": "next start",
+    "clean": "rm -rf .next out",
+    "clean:dev": "rm -rf .next .open-next .wrangler",
+    "clean:all": "rm -rf .next out .open-next .wrangler node_modules/.cache",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "lint": "eslint \"src/**/*.{ts,tsx}\" --no-warn-ignored",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix --no-warn-ignored",

@@ -1,6 +1,7 @@
 import { toPlainText } from '@portabletext/react';
 import React from 'react';
 import { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
@@ -11,61 +12,77 @@ import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
 import { ArrowUpRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: 'Blog | Diego NR',
-  description: 'Compartiendo conocimientos sobre tecnología, diseño y el futuro del desarrollo web. Artículos sobre desarrollo full-stack, IA, arquitectura de software y mejores prácticas.',
-  keywords: ['blog', 'tecnología', 'desarrollo web', 'IA', 'arquitectura', 'programación', 'full-stack'],
-  authors: [{ name: 'Diego NR' }],
-  creator: 'Diego NR',
-  publisher: 'Diego NR',
-  metadataBase: new URL('https://diegonr.com'),
-  alternates: {
-    canonical: '/blog',
-  },
-  openGraph: {
-    title: 'Blog | Diego NR',
-    description: 'Compartiendo conocimientos sobre tecnología, diseño y el futuro del desarrollo web.',
-    url: '/blog',
-    siteName: 'Diego NR Blog',
-    locale: 'es_ES',
-    type: 'website',
-    images: [
-      {
-        url: '/og?title=Blog&type=Articles&subtitle=Pensamientos y Artículos',
-        width: 1200,
-        height: 630,
-        alt: 'Blog - Diego NR',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blog | Diego NR',
-    description: 'Compartiendo conocimientos sobre tecnología, diseño y el futuro del desarrollo web.',
-    creator: '@diegonr',
-    images: ['/og?title=Blog&type=Articles&subtitle=Pensamientos y Artículos'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+type Props = {
+  params: Promise<{ locale: string }>;
 };
 
-export default async function BlogPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+
+  return {
+    title: t('blog_title'),
+    description: t('blog_description'),
+    keywords: ['blog', 'technology', 'web development', 'AI', 'architecture', 'programming', 'full-stack'],
+    authors: [{ name: 'Diego NR' }],
+    creator: 'Diego NR',
+    publisher: 'Diego NR',
+    metadataBase: new URL('https://diegonr.com'),
+    alternates: {
+      canonical: `/${locale}/blog`,
+      languages: {
+        'es': '/es/blog',
+        'en': '/en/blog',
+      },
+    },
+    openGraph: {
+      title: t('blog_title'),
+      description: t('blog_description'),
+      url: `/${locale}/blog`,
+      siteName: 'Diego NR Blog',
+      locale: locale === 'en' ? 'en_US' : 'es_ES',
+      type: 'website',
+      images: [
+        {
+          url: `/og?title=Blog&type=Articles&subtitle=${encodeURIComponent(t('blog_title'))}&lang=${locale}`,
+          width: 1200,
+          height: 630,
+          alt: t('blog_title'),
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('blog_title'),
+      description: t('blog_description'),
+      creator: '@diegonr',
+      images: [`/og?title=Blog&type=Articles&subtitle=${encodeURIComponent(t('blog_title'))}&lang=${locale}`],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
+}
+
+export default async function BlogPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'BlogPage' });
   const blogPosts = await getAllPosts();
+
   return (
     <div className="page-content">
-      <PageHeader 
-        title="BLOG" 
-        subtitle="Pensamientos & Artículos"
-        description="Compartiendo conocimientos sobre tecnología, diseño y el futuro del desarrollo web."
+      <PageHeader
+        title={t('title')}
+        subtitle={t('subtitle')}
+        description={t('description')}
       />
       
       <section className="py-24">

@@ -15,6 +15,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
+  const tPage = await getTranslations({ locale, namespace: 'AboutPage' });
 
   return {
     title: t('about_title'),
@@ -71,13 +72,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function AboutPage() {
+export default async function AboutPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'AboutPage' });
+
   return (
     <div className="page-content">
-      <PageHeader 
-        title="SOBRE MÍ" 
-        subtitle="Mi Historia & Filosofía"
-        description="Arquitecto de soluciones digitales con una pasión por la intersección entre el diseño minimalista y la ingeniería de vanguardia."
+      <PageHeader
+        title={t('title')}
+        subtitle={t('subtitle')}
+        description={t('description')}
       />
       
       <section className="py-24 md:py-48">
@@ -85,23 +89,19 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-24">
             <div className="md:col-span-6">
               <FadeIn>
-                <h2 className="text-4xl md:text-5xl font-medium mb-12 tracking-tighter">EL ENFOQUE</h2>
+                <h2 className="text-4xl md:text-5xl font-medium mb-12 tracking-tighter">{t('approach_title')}</h2>
                 <div className="space-y-8 text-lg text-white/70 leading-relaxed font-light">
-                  <p>
-                    Creo en la simplicidad como la máxima sofisticación. Mi trabajo se centra en eliminar lo innecesario para dejar que la esencia del producto brille.
-                  </p>
-                  <p>
-                    Con más de 5 años de experiencia en el ecosistema digital, he ayudado a startups y empresas consolidadas a escalar sus productos mediante arquitecturas robustas y experiencias de usuario memorables.
-                  </p>
+                  <p>{t('approach_p1')}</p>
+                  <p>{t('approach_p2')}</p>
                 </div>
               </FadeIn>
             </div>
             <div className="md:col-span-6">
               <FadeIn delay={0.2}>
                 <div className="aspect-[4/5] bg-white/5 border border-white/10 relative overflow-hidden group">
-                  <Image 
-                    src="https://picsum.photos/seed/about/800/1000" 
-                    alt="Profile" 
+                  <Image
+                    src="https://picsum.photos/seed/about/800/1000"
+                    alt={t('image_alt')}
                     fill
                     className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
                   />
@@ -118,10 +118,10 @@ export default function AboutPage() {
           <div className="text-center mb-16">
             <FadeIn>
               <h2 className="text-4xl md:text-5xl font-medium mb-6 tracking-tighter">
-                PRESENCIA DIGITAL
+                {t('presence_title')}
               </h2>
               <p className="text-xl text-white/60 max-w-2xl mx-auto">
-                Mi actividad en el ecosistema tech y colaboraciones abiertas
+                {t('presence_description')}
               </p>
             </FadeIn>
           </div>

@@ -200,5 +200,39 @@
     "blog_description": "Technical publications on software architecture, design systems, and automation.",
     "contact_title": "Contact | Diego Navarro — Solutions Architect",
     "contact_description": "Contact form for technical inquiries and project proposals."
+  },
+  "AboutPage": {
+    "title": "ABOUT",
+    "subtitle": "Professional Profile",
+    "description": "Solutions Architect with Graphic Design background. Specialized in SDLC optimization and scalable systems architecture.",
+    "approach_title": "THE APPROACH",
+    "approach_p1": "Combination of modern frontend engineering with solid infrastructure management. Design background enables translation of complex visual specifications into precise technical implementations.",
+    "approach_p2": "Eight years of experience delivering digital solutions. Specialization in custom architectures and automation systems that increase operational efficiency.",
+    "presence_title": "DIGITAL PRESENCE",
+    "presence_description": "Activity in the technology ecosystem, open source contributions and professional collaborations.",
+    "image_alt": "Professional profile photograph"
+  },
+  "ContactPage": {
+    "title": "CONTACT",
+    "subtitle": "Technical Inquiries",
+    "description": "Form for inquiries about projects, systems architecture and development services.",
+    "email_label": "Email",
+    "social_label": "Professional Networks",
+    "availability_note": "Available for international remote projects."
+  },
+  "BlogPage": {
+    "title": "PUBLICATIONS",
+    "subtitle": "Technical Analysis",
+    "description": "Publications on software architecture, design systems, workflow automation and development best practices."
+  },
+  "ServicesPage": {
+    "title": "SERVICES",
+    "subtitle": "Technical Capabilities",
+    "description": "Specialized services in systems architecture, full-stack development and development process optimization."
+  },
+  "ProjectsPage": {
+    "title": "PROJECTS",
+    "subtitle": "Selected Work",
+    "description": "Collection of representative projects in software architecture, design systems and scalable applications."
   }
 }

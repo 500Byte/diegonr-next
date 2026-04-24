@@ -105,14 +105,17 @@ function ServicesList({ services }: { services: Awaited<ReturnType<typeof getAll
   );
 }
 
-export default async function ServicesPage() {
+export default async function ServicesPage({ params }: Props) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'ServicesPage' });
   const services = await getAllServices();
+
   return (
     <div className="page-content">
-      <PageHeader 
-        title="SERVICIOS" 
-        subtitle="Capacidades & Soluciones"
-        description="Ofrezco un enfoque integral para el desarrollo de productos digitales, desde la concepción hasta el despliegue."
+      <PageHeader
+        title={t('title')}
+        subtitle={t('subtitle')}
+        description={t('description')}
       />
       
       <section className="py-24 md:py-48">

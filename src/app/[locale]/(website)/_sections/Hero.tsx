@@ -90,12 +90,12 @@ export function Hero() {
         })
       }
 
-      // Animate name characters
+      // Animate name words (parallax effect)
       if (nameRef.current) {
-        const chars = nameRef.current.querySelectorAll(".name-char")
-        chars.forEach((char, i) => {
-          gsap.to(char, {
-            x: x * (i - 6) * 0.5,
+        const words = nameRef.current.querySelectorAll(".name-char")
+        words.forEach((word, i) => {
+          gsap.to(word, {
+            x: x * (i - 0.5) * 3,
             y: y * 2,
             duration: 0.3,
             ease: "expo.out",
@@ -161,17 +161,17 @@ export function Hero() {
       })
     }
 
-    // Animate name - dramatic entrance
+    // Animate name - dramatic entrance (by words, not letters)
     if (nameRef.current) {
-      const chars = nameRef.current.querySelectorAll(".name-char")
+      const words = nameRef.current.querySelectorAll(".name-char")
       tl.from(
-        chars,
+        words,
         {
           y: "120%",
           rotateX: 90,
           opacity: 0,
           duration: 1,
-          stagger: 0.04,
+          stagger: 0.15,
           ease: "power4.out",
           transformOrigin: "bottom",
         },
@@ -235,13 +235,14 @@ export function Hero() {
     }
   }, { scope: sectionRef, dependencies: [isReady] })
 
-  // Split name into characters for animation with perspective
-  const name = "DIEGO NAVARRO"
-  const nameChars = name.split("").map((char, i) => (
-    <span key={i} className="inline-block overflow-hidden perspective-1000">
+  // Split name into words for animation - prevents breaking by letters
+  const nameWords = ["DIEGO", "NAVARRO"]
+  const nameElements = nameWords.map((word, i) => (
+    <span key={i} className="inline-block overflow-hidden perspective-1000 whitespace-nowrap">
       <span className="name-char inline-block">
-        {char === " " ? "\u00A0" : char}
+        {word}
       </span>
+      {i < nameWords.length - 1 && <span className="inline-block">&nbsp;</span>}
     </span>
   ))
 
@@ -275,7 +276,7 @@ export function Hero() {
             className="text-[12vw] md:text-[10vw] lg:text-[8vw] mb-8 tracking-tighter leading-[0.85] font-medium"
             style={{ perspective: "1000px" }}
           >
-            {nameChars}
+            {nameElements}
           </h1>
 
           <div ref={descriptionRef} className="space-y-4 max-w-xl">

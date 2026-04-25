@@ -56,10 +56,10 @@ export const BlogSection: React.FC<{ blogPosts?: BlogPostDocument[] }> = ({ blog
                 
                 <div className="relative z-10 flex-1">
                   <div className="flex items-center gap-4 mb-2">
-                    <span className="px-2 py-0.5 bg-white/10 text-white/60 text-[8px] font-mono rounded-sm uppercase tracking-widest">
+                    <span className="px-2 py-0.5 bg-white/10 text-white/60 text-[10px] font-mono rounded-sm uppercase tracking-widest">
                       {post.category}
                     </span>
-                    <span className="font-mono text-[8px] text-white/40 uppercase tracking-widest">
+                    <span className="font-mono text-[10px] text-white/40 uppercase tracking-widest">
                       {post.read_time}
                     </span>
                   </div>

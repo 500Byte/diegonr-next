@@ -149,7 +149,7 @@ export default async function PostSingle({ params }: PageProps) {
           <div className="max-w-4xl mx-auto">
             <FadeIn>
               <div className="aspect-video bg-white/5 overflow-hidden mb-16 relative">
-                { post.image && <Image src={urlFor(post.image).url()} alt="" fill
+                { post.image && <Image src={urlFor(post.image).url()} alt={`Cover image for ${post.title}`} fill
                   className="object-cover grayscale"
                  /> }
               </div>

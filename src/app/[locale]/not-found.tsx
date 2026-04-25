@@ -6,12 +6,12 @@ import { Magnetic } from '@/components/Magnetic';
 import { Navigation } from '@/components/Navigation';
 import { Barcode } from '@/components/ui/barcode';
 import { MarqueeBanner } from '@/components/ui/marquee-banner';
+import { Link } from '@/i18n/routing';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import Link from 'next/link';
 import React from 'react';
 
-export default function RootNotFound() {
+export default function NotFound() {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -65,7 +65,7 @@ export default function RootNotFound() {
       <Navigation />
       <div
         ref={containerRef}
-        className="relative min-h-[90vh] flex flex-col justify-center bg-swiss-black overflow-hidden pt-40"
+        className="relative min-h-[90vh] flex flex-col justify-center bg-swiss-black overflow-hidden pt-20"
       >
         {/* Background Grid */}
         <div
@@ -84,7 +84,7 @@ export default function RootNotFound() {
             <p className="font-mono text-white/40 text-xs uppercase tracking-[0.3em] mb-4">
               [ ERROR_CODE: NULL_POINTER_EXCEPTION ]
             </p>
-            <h1 className="not-found-chars text-[20vw] md:text-[15vw] font-medium leading-none tracking-tighter">
+            <h1 className="not-found-chars text-[30vw] md:text-[25vw] font-medium leading-none tracking-tighter">
               {errorCodes}
             </h1>
           </div>
@@ -102,7 +102,7 @@ export default function RootNotFound() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <Magnetic strength={0.3}>
                 <Link
-                  href="/es"
+                  href="/"
                   className="group flex items-center gap-3 px-8 py-4 border border-white/20 hover:border-white/60 transition-colors duration-300"
                 >
                   <span className="font-mono text-xs uppercase tracking-widest text-white">
@@ -125,8 +125,8 @@ export default function RootNotFound() {
         <div className="absolute bottom-8 right-8 opacity-20 hidden md:block">
           <Barcode />
         </div>
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 }

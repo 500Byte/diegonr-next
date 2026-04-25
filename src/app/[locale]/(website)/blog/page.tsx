@@ -92,7 +92,7 @@ export default async function BlogPage({ params }: Props) {
               <FadeIn key={post.slug?.current} delay={index * 0.1}>
                 <Link href={`/blog/${post.slug?.current}`} className="group cursor-pointer space-y-6 block">
                   <div className="aspect-video bg-white/5 border border-white/10 relative overflow-hidden">
-                    { post.image && <Image src={urlFor(post.image).url()} alt="" fill
+                    { post.image && <Image src={urlFor(post.image).url()} alt={`Cover image for ${post.title}`} fill
                       className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
                      /> }
                   </div>

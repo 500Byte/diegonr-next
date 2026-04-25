@@ -155,7 +155,7 @@ export default async function ProjectSingle({ params }: PageProps) {
         <SwissContainer>
           <FadeIn>
             <div className="aspect-video bg-white/5 overflow-hidden mb-24 relative">
-              { project.image && <Image src={urlFor(project.image).url()} alt="" fill
+              { project.image && <Image src={urlFor(project.image).url()} alt={`Cover image for ${project.title}`} fill
                 className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                /> }
             </div>

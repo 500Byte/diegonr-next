@@ -10,3 +10,17 @@ export const scrollTo = (target: any, options?: any) => {
     });
   }
 };
+
+export const pauseLenis = () => {
+  const lenis = getLenis();
+  if (lenis) {
+    lenis.stop();
+  }
+};
+
+export const resumeLenis = () => {
+  const lenis = getLenis();
+  if (lenis) {
+    lenis.start();
+  }
+};

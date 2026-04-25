@@ -131,7 +131,7 @@ export function Works({ projects }: { projects?: ProjectDocument[] }) {
               </div>
               <div className="flex gap-2">
                 {currentProject.tech?.slice(0, 3).map((techField) => (
-                  <span key={techField.item?.toString()} className="font-mono text-[9px] text-swiss-gray-light uppercase tracking-widest">
+                  <span key={techField.item?.toString()} className="font-mono text-[10px] text-swiss-gray-light uppercase tracking-widest">
                     {techField.item}
                   </span>
                 ))}

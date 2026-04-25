@@ -183,7 +183,7 @@ export function About() {
                         {stat.value}
                       </span>
                     </div>
-                    <p className="font-mono text-white/60 text-[8px] md:text-[10px] mt-2 md:mt-4 leading-tight uppercase tracking-[0.2em]">
+                    <p className="font-mono text-white/60 text-[10px] mt-2 md:mt-4 leading-tight uppercase tracking-[0.2em]">
                       {stat.label.toUpperCase()}
                     </p>
                   </div>

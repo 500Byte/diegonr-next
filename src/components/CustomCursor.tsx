@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { useEffect, useRef, useState } from 'react';
+
+const BASE_SIZE = 10;
+const HOVER_SIZE = 40;
 
 export const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -13,24 +15,19 @@ export const CustomCursor = () => {
     const cursor = cursorRef.current;
     if (!cursor) return;
 
-    // Check for touch device
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     if (isTouchDevice) {
       cursor.style.display = 'none';
       return;
     }
 
-    // Set initial position to center
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    setPosition({ x: centerX, y: centerY });
-    gsap.set(cursor, { x: centerX, y: centerY });
+    gsap.set(cursor, {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    });
 
-    // Position tracking
     const onMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
-      
       gsap.to(cursor, {
         x: e.clientX,
         y: e.clientY,
@@ -39,18 +36,17 @@ export const CustomCursor = () => {
       });
     };
 
-    // Hover detection
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const isInteractive = target.closest('a, button, [role="button"], .cursor-pointer, .magnetic-wrap');
+      const isInteractive = target.closest(
+        'a, button, [role="button"], .cursor-pointer, .magnetic-wrap'
+      );
       setIsHovering(!!isInteractive);
     };
 
-    // Hide when leaving window
     const onMouseLeave = () => setIsVisible(false);
     const onMouseEnter = () => setIsVisible(true);
 
-    // Add listeners
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseover', onMouseOver);
     document.addEventListener('mouseleave', onMouseLeave);
@@ -64,36 +60,45 @@ export const CustomCursor = () => {
     };
   }, []);
 
-  // Apply scale effect via GSAP when hovering
   useEffect(() => {
     const cursor = cursorRef.current;
     if (!cursor) return;
 
-    if (isHovering) {
-      gsap.to(cursor, {
-        scale: 2.5,
-        opacity: 0.5,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-    } else {
-      gsap.to(cursor, {
-        scale: 1,
-        opacity: isVisible ? 1 : 0,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-    }
-  }, [isHovering, isVisible]);
+    const size = isHovering ? HOVER_SIZE : BASE_SIZE;
+
+    gsap.to(cursor, {
+      width: size,
+      height: size,
+      xPercent: -50,
+      yPercent: -50,
+      duration: 0.35,
+      ease: 'power2.out',
+    });
+  }, [isHovering]);
 
   return (
-    <div
-      ref={cursorRef}
-      className="custom-cursor"
-      style={{
-        opacity: isVisible && !isHovering ? 1 : undefined,
-      }}
-      aria-hidden="true"
-    />
+    <>
+      <style>{`
+        .custom-cursor {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: ${BASE_SIZE}px;
+          height: ${BASE_SIZE}px;
+          border-radius: 50%;
+          background-color: white;
+          pointer-events: none;
+          z-index: 99999;
+          mix-blend-mode: difference;
+          transition: opacity 0.2s ease;
+        }
+      `}</style>
+      <div
+        ref={cursorRef}
+        className="custom-cursor"
+        style={{ opacity: isVisible ? 1 : 0 }}
+        aria-hidden="true"
+      />
+    </>
   );
 };

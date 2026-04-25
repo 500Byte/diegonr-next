@@ -1,10 +1,15 @@
-import { LenisProvider } from "@/components/providers/LenisProvider";
-import { CustomCursor } from "@/components/CustomCursor";
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
-import { Preloader } from "@/components/Preloader";
-import { TVStaticOverlay } from "@/components/TVStaticOverlay";
-import { StructuredData, generatePersonStructuredData, generateWebSiteStructuredData, generateOrganizationStructuredData } from "@/components/StructuredData";
+import { CustomCursor } from '@/components/CustomCursor';
+import { Footer } from '@/components/Footer';
+import { Navigation } from '@/components/Navigation';
+import { Preloader } from '@/components/Preloader';
+import { LenisProvider } from '@/components/providers/LenisProvider';
+import {
+  StructuredData,
+  generateOrganizationStructuredData,
+  generatePersonStructuredData,
+  generateWebSiteStructuredData,
+} from '@/components/StructuredData';
+import { TVStaticOverlay } from '@/components/TVStaticOverlay';
 
 export default function WebsiteLayout({
   children,
@@ -14,9 +19,9 @@ export default function WebsiteLayout({
   return (
     <LenisProvider>
       <Preloader />
-      <TVStaticOverlay 
+      <TVStaticOverlay
         config={{
-          opacityDark: 0.05,
+          opacityDark: 0.025,
           opacityLight: 0.025,
           fps: 15,
           renderScale: 4,
@@ -27,9 +32,7 @@ export default function WebsiteLayout({
         {/* CustomCursor inside page-wrapper to share stacking context */}
         <CustomCursor />
         <Navigation />
-        <main className="relative min-h-screen">
-          {children}
-        </main>
+        <main className="relative min-h-screen">{children}</main>
         <Footer />
       </div>
       <StructuredData data={generatePersonStructuredData()} />

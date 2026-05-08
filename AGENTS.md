@@ -57,6 +57,44 @@
   - Images are processed using `urlFor()` helper from `@sanity/image-url`.
 - **Colocation**: Page-specific components live next to their page in `_`-prefixed directories. Only truly shared components go in `src/components/`.
 
+## Editing Content via API
+
+All content (projects, services, blog posts) is managed via **Sanity API**. Use the helpers in `src/lib/sanity.ts`:
+
+```typescript
+import { updateDocument, getProject, getAllProjects, getPost, getService } from '@/lib/sanity';
+
+// Example: Update project description
+const project = await getProject('ecommerce-react');
+await updateDocument(project._id, {
+  description_es: 'New description here...'
+});
+
+// Example: Update blog post
+const post = await getPost('my-blog-post');
+await updateDocument(post._id, {
+  title: 'New Title',
+  excerpt: 'New excerpt...'
+});
+
+// Example: Update service
+const service = await getService('development');
+await updateDocument(service._id, {
+  description_es: 'New service description...'
+});
+```
+
+**Requirements:**
+- `SANITY_API_TOKEN` must be set in environment
+- For local development: add to `.env.local`
+- For production: `wrangler secret put SANITY_API_TOKEN`
+
+**Available functions:**
+- `updateDocument(id, fields)` - Update specific fields
+- `createDocument(doc)` - Create new document
+- `deleteDocument(id)` - Delete document
+- `createOrReplace(doc)` - Create or replace document
+
 ## Anti-Patterns (DO NOT)
 - **DO NOT** create global directories like `src/sections/`, `src/data/`, or `src/constants/` for code used by a single page.
 - **DO NOT** extract static arrays under 20 lines to separate files. Inline them in the consuming component.

@@ -119,3 +119,56 @@ export async function getPost(slug: string): Promise<BlogPostDocument | null> {
     { slug }
   );
 }
+
+// ============================================================================
+// WRITE OPERATIONS (API) - Requires SANITY_API_TOKEN
+// ============================================================================
+
+if (!token) {
+  console.warn('SANITY_API_TOKEN not configured - write operations will fail');
+}
+
+export interface WriteOptions {
+  returnDocuments?: boolean;
+}
+
+export async function updateDocument<T extends Record<string, unknown>>(
+  id: string,
+  fields: Partial<T>,
+  options: WriteOptions = { returnDocuments: true }
+): Promise<unknown> {
+  if (!token) {
+    throw new Error('SANITY_API_TOKEN is required for write operations. Set it in .env.local or via wrangler secret put SANITY_API_TOKEN');
+  }
+
+  const mutation = client.patch(id).set(fields);
+  return options.returnDocuments ? mutation.commit() : mutation.commit();
+}
+
+export async function createDocument<T extends { _type: string }>(
+  doc: T
+): Promise<unknown> {
+  if (!token) {
+    throw new Error('SANITY_API_TOKEN is required for write operations. Set it in .env.local or via wrangler secret put SANITY_API_TOKEN');
+  }
+
+  return client.create(doc);
+}
+
+export async function deleteDocument(id: string): Promise<unknown> {
+  if (!token) {
+    throw new Error('SANITY_API_TOKEN is required for write operations. Set it in .env.local or via wrangler secret put SANITY_API_TOKEN');
+  }
+
+  return client.delete(id);
+}
+
+export async function createOrReplaceDocument<T extends { _type: string; _id: string }>(
+  doc: T
+): Promise<unknown> {
+  if (!token) {
+    throw new Error('SANITY_API_TOKEN is required for write operations. Set it in .env.local or via wrangler secret put SANITY_API_TOKEN');
+  }
+
+  return client.createOrReplace(doc);
+}

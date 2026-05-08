@@ -8,8 +8,13 @@ const getEnvVar = (key: string): string | undefined => {
   return process.env[key] || envObj?.[key];
 }
 
-const projectId = getEnvVar('NEXT_PUBLIC_SANITY_PROJECT_ID') || 'qda0c21o';
+const projectId = getEnvVar('NEXT_PUBLIC_SANITY_PROJECT_ID')!;
 const dataset = getEnvVar('NEXT_PUBLIC_SANITY_DATASET') || 'production';
+
+if (!projectId) {
+  console.error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable');
+}
+
 const apiVersion = '2025-01-01'; // Use current date for latest features
 const token = getEnvVar('SANITY_API_TOKEN');
 

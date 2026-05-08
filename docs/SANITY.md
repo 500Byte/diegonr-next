@@ -9,7 +9,7 @@ Content is managed in **Sanity Cloud** and served to the Next.js frontend via GR
 │  Sanity Studio  │────▶│   Sanity Cloud  │◀────│  Next.js SSR    │
 │  (Editor)      │     │  (API + CDN)    │     │  (Fetch)       │
 └─────────────────┘     └─────────────────┘     └────────────────┘
-       Project ID: qda0c21o       Dataset: production      Studio: diegonr.sanity.studio
+       Project ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID}  Dataset: ${NEXT_PUBLIC_SANITY_DATASET}  Studio: diegonr.sanity.studio
 ```
 
 ## Studio Configuration (`/sanity/`)

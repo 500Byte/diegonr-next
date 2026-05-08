@@ -8,9 +8,9 @@
 		"global_fetch_strictly_public"
 	],
 	"vars": {
-		"NEXT_PUBLIC_SANITY_PROJECT_ID": "qda0c21o",
-		"NEXT_PUBLIC_SANITY_DATASET": "production"
+		// Environment variables should be managed via Cloudflare Dashboard or 'wrangler secret put'
 	},
+
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"

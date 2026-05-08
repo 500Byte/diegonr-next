@@ -271,3 +271,15 @@ Thumbs.db
 .wrangler/
 worker-configuration.d.ts
 cloudflare-env.d.ts
+
+# Internal docs & tracking
+GEMINI.md
+TASKS.md
+docs/I18N_AUDIT.md
+docs/DEPENDENCIES.md
+
+# Agent skills
+.agents/
+
+# Personal portfolio - no contributions needed
+CONTRIBUTING.md

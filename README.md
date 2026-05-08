@@ -1,106 +1,176 @@
 # Diego NR Portfolio
 
-Modern portfolio website for Diego NR - Solutions Architect & Full-Stack Developer.
+A production-ready personal portfolio showcasing expertise in frontend architecture, animations, and full-stack development. Built with Next.js 16, Sanity CMS, and deployed to Cloudflare Workers.
 
-## Description
-A highly optimized, modern personal portfolio and professional services website built to showcase expertise in web development, AI integration, and advanced frontend architectures. It features high-end GSAP animations, a custom Sanity Cloud CMS integration, and a sophisticated monochromatic/Swiss design system.
+---
 
-## Technology Stack
+## Overview
 
-- **Framework**: Next.js 16 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **Animations**: GSAP & Lenis (Smooth Scrolling)
-- **CMS**: Sanity Cloud (Headless CMS)
-- **Hosting**: Cloudflare Workers (via OpenNext)
-- **CI/CD**: GitHub Actions
-- **Node.js**: 22 LTS
-- **Forms**: EmailJS
-- **Analytics**: Google Analytics 4
+This portfolio features a sophisticated monochromatic design system with smooth scrolling, GSAP animations, and a headless CMS for content management. It supports multiple languages, is fully responsive, and optimized for performance.
 
-## Installation
+### Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript (strict mode) |
+| Styling | Tailwind CSS v4 |
+| Animations | GSAP + Lenis (smooth scroll) |
+| CMS | Sanity Cloud |
+| Hosting | Cloudflare Workers (OpenNext) |
+| i18n | next-intl |
+| Forms | EmailJS |
+
+### Features
+
+- **Smooth Scrolling** — Lenis-powered scroll experience
+- **GSAP Animations** — Scroll-triggered animations and micro-interactions
+- **Multi-language** — English and Spanish support via next-intl
+- **Content Management** — Sanity Studio for blog, projects, and services
+- **Contact Forms** — Newsletter and contact forms via EmailJS
+- **Analytics** — Google Analytics 4 integration
+- **PWA Ready** — Offline page and installable manifest
+- **Dark Mode** — System preference detection with next-themes
+
+---
+
+## Quick Start
 
 ```bash
+# Clone the repository
+git clone https://github.com/500byte/diegonr-next.git
+cd diegonr-next
+
 # Install dependencies
 npm install
 
 # Start development server
-npm run dev &
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start &
+npm run dev
 ```
 
-## Environment Variables
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-Copy `.env.example` to `.env.local` and fill in the required values:
+---
+
+## Environment Setup
+
+Copy the example environment file and configure your values:
+
+```bash
+cp .env.example .env.local
+```
+
+### Required Variables
 
 ```env
-# SANITY CMS (Required)
-NEXT_PUBLIC_SANITY_PROJECT_ID=
+# Sanity CMS (Required)
+NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
 NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_TOKEN=
-
-# Analytics & Tracking (Optional)
-NEXT_PUBLIC_GA_MEASUREMENT_ID=
-
-# GitHub Stats (Optional)
-NEXT_PUBLIC_GITHUB_TOKEN=
-
-# EmailJS (Required for forms)
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=
-NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID=
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=
+SANITY_API_TOKEN=your-api-token
 ```
 
-## Folder Structure
+### Optional Variables
+
+```env
+# Analytics
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+
+# Forms (EmailJS)
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_xxx
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_xxx
+NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID=template_xxx
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=xxx
+```
+
+> [!NOTE]
+> Get your Sanity credentials from [sanity.io/manage](https://www.sanity.io/manage). The `SANITY_API_TOKEN` is only needed for draft previews.
+
+---
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Fix lint errors |
+| `npm run type-check` | Run TypeScript check |
+| `npm run preview` | Preview Cloudflare build |
+
+---
+
+## Project Structure
 
 ```
-├── docs/                # Architecture and coding standards documentation
-├── public/              # Static assets (images, icons)
-├── sanity/              # Standalone Sanity Studio admin panel
+diegonr-next/
 ├── src/
-│   ├── app/             # Next.js App Router (pages, layouts, actions)
-│   │   ├── (website)/   # Main website routes and colocated _sections
-│   ├── components/      # Shared components (UI, animations, providers)
-│   ├── lib/             # Utilities and configurations (sanity, lenis, utils)
-│   └── types/           # Shared TypeScript types for Sanity CMS
+│   ├── app/                 # Next.js App Router
+│   │   └── [locale]/        # Internationalized routes
+│   │       ├── (website)/  # Main pages (_sections colocalized)
+│   │       └── api/        # API routes
+│   ├── components/         # Shared components
+│   │   ├── ui/             # Atomic UI components
+│   │   ├── animations/     # GSAP wrappers
+│   │   └── providers/      # Context providers
+│   ├── lib/                # Utilities (sanity, lenis, utils)
+│   └── types/              # TypeScript types
+├── sanity/                 # Sanity Studio (standalone)
+├── docs/                   # Architecture & coding standards
+└── public/                 # Static assets
 ```
 
-## Development Guidelines
-
-Refer to the `/docs` directory for detailed architectural and coding standards:
-- `ARCHITECTURE.md`
-- `CODING_STANDARDS.md`
-- `DEPENDENCIES.md`
-- `DEPLOYMENT.md`
+---
 
 ## Deployment
 
-### Cloudflare Workers (via GitHub Actions)
-This project deploys automatically to Cloudflare Workers on every push to `master`:
+### Cloudflare Workers (Recommended)
 
-**Workflow**: `git push origin master` → GitHub Actions → lint → type-check → build → deploy
+The project deploys automatically via GitHub Actions on every push to `master`.
 
-**Required Secrets** (configured in GitHub → Settings → Secrets):
+**Required GitHub Secrets:**
+
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 - `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - `NEXT_PUBLIC_SANITY_DATASET`
 
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed setup instructions.
+**Manual Deployment:**
+
+```bash
+npm run deploy
+```
+
+> [!IMPORTANT]
+> The `SANITY_API_TOKEN` must be added as a Cloudflare Secret:
+> ```bash
+> wrangler secret put SANITY_API_TOKEN
+> ```
 
 ### Sanity Studio
-The admin interface lives in `/sanity`:
+
+Deploy the admin panel:
+
 ```bash
 cd sanity
 npx sanity deploy
 ```
 
+---
+
+## Documentation
+
+For detailed architecture and coding standards, see the `/docs` directory:
+
+- [Architecture](/docs/ARCHITECTURE.md) — System design and patterns
+- [Coding Standards](/docs/CODING_STANDARDS.md) — Code conventions
+- [Deployment](/docs/DEPLOYMENT.md) — Cloudflare setup guide
+- [Sanity CMS](/docs/SANITY.md) — Content schema and usage
+- [i18n](/docs/I18N_AUDIT.md) — Internationalization details
+
+---
+
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT — see the [LICENSE](LICENSE) file for details.

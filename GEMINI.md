@@ -37,3 +37,31 @@ A modern, animated personal portfolio and professional services website built fo
 - Follow the existing pattern of separating data fetching (in server-side `page.tsx`) and passing data as props to client-side `<Section />` components.
 - **DO NOT** create global directories (`src/sections/`, `src/data/`, `src/constants/`) for single-page content. Use colocation.
 - **DO NOT** extract small static arrays to separate files. Inline them in the consuming component.
+
+## Agent Skill Integration
+
+This repository utilizes a structured Skill system (Superpowers) to ensure high-quality, consistent, and verified contributions.
+
+- **Mandatory Skill Activation**: Before performing any task or if there is even a 1% chance a skill applies, you **MUST** invoke `activate_skill(name="using-superpowers")`.
+- **Brainstorming Hard Gate**: Any creative work, feature implementation, or complex refactoring **MUST** start with the `brainstorming` skill. No implementation actions should be taken until a design is approved.
+- **Priority of Instructions**: 
+  1. User direct requests and project-specific docs (`AGENTS.md`, `GEMINI.md`).
+  2. Loaded Skills (Superpowers).
+  3. Default system prompt.
+
+## Technical Tool Mapping
+
+When following skill instructions, map abstract tool names to their Gemini CLI equivalents:
+
+| Abstract Tool | Gemini CLI Tool |
+| :--- | :--- |
+| `Skill` / `skill` | `activate_skill` |
+| `Read` | `read` |
+| `Edit` | `edit` |
+| `Bash` | `bash` |
+| `Write` | `write` |
+| `TodoWrite` | `todowrite` |
+| `Grep` | `grep` |
+| `Glob` | `glob` |
+
+Skills-provided documentation and plans should be stored in `docs/superpowers/specs/` and `docs/superpowers/plans/` respectively.

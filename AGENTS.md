@@ -1,4 +1,16 @@
-# Agent Guidance
+# AGENTS.md
+
+## Project Overview
+A modern, animated personal portfolio and professional services website built for a **Design Engineer / Full-Stack** using Next.js 16 (Canary/Future). It features high-end GSAP animations, custom Sanity Cloud CMS integration, and a sophisticated Swiss-Brutalist design system.
+
+## Agent Role: The Design Engineer
+As an agent in this repository, you are not just a coder; you are a **Design Engineer / Full-Stack**. Your goal is to ensure every change follows the **"Architecture through Automation"** principle. Prioritize system-wide quality, automated verification, and performance over quick fixes.
+
+## Technical Principles: "Architecture through Automation"
+This repository follows a strict automation-first mindset. All contributions must respect:
+- **Performance & Quality Standards**: Every UI change must prioritize high-performance benchmarks (Core Web Vitals), technical SEO, and accessibility (WCAG) as core architectural requirements.
+- **Structured Data Integration**: Components must be designed to consume deterministic, structured data models, ensuring a strict decoupling between presentation logic and data source.
+- **Systematic Scalability**: Prioritize programmatic, reusable solutions and automated workflows over manual, repetitive implementation tasks.
 
 ## Build & Development Commands
 - Start dev server: `npm run dev`
@@ -9,178 +21,55 @@
 - TypeScript check: `npm run type-check`
 - Preview build (Cloudflare): `npm run preview`
 
+## Testing Instructions
+The project uses **Playwright** for end-to-end and smoke testing.
+- Run all tests: `npx playwright test`
+- Run tests in UI mode: `npx playwright test --ui`
+- View test report: `npx playwright show-report`
+- **Location**: E2E tests are located exclusively in the `e2e/` directory.
+- **Requirement**: New features or major UI updates should include a basic smoke test in `e2e/smoke.spec.ts` or a new spec file.
+
+## Localization (i18n) Workflow
+The project implements a "Dual-Layer i18n" strategy:
+1. **Routing & Static UI**: Managed by `next-intl` via the `[locale]` dynamic segment.
+   - Translation files: `messages/es.json` and `messages/en.json`.
+   - **Requirement**: Always update both files when adding or modifying UI strings.
+2. **CMS Content**: Sanity fields use a field-level localization pattern: `{field}_{locale}`.
+   - Example: `title_es`, `title_en`, `description_es`, `description_en`.
+   - **Requirement**: When fetching data in `src/lib/sanity.ts`, ensure you handle the locale suffix correctly.
+
 ## TypeScript Configuration
 - Targeting ES2022 with `esnext` modules.
-- Strict mode is enabled (`"strict": true`), but ESLint rules for `@typescript-eslint/no-explicit-any` and `@typescript-eslint/no-unused-vars` are currently disabled.
+- Strict mode is enabled (`"strict": true`).
 - Path aliases: `@/*` maps to `./src/*`.
 
-## Code Style
-
-### Imports & Exports
-- **Exports**: Named exports are the strong preference for components and utilities (e.g., `export function Hero()`). Default exports are mostly used for Next.js mandatory files (`page.tsx`, `layout.tsx`) and config files.
-- **Imports**: Group third-party library imports first (React, GSAP, Sanity), followed by local alias imports (`@/components/...`), and relative imports last.
-
-### Naming Conventions
-- **Components/Sections**: PascalCase files (`Hero.tsx`, `About.tsx`).
-- **UI Components**: kebab-case files (`marquee-banner.tsx`, `magnetic-button.tsx`).
-- **Functions/Hooks**: camelCase.
+## Code Style & Architecture
 
 ### Component Patterns
-- **Server Components**: Used for data fetching (e.g., fetch Sanity documents using GROQ in `page.tsx`). They pass data down to sections.
-- **Client Components**: Declared with `"use client"`. Heavy use of `useRef` for GSAP targeting and `useState`/`useEffect` for interaction.
+- **Server Components**: Used for data fetching (Sanity GROQ queries in `page.tsx`).
+- **Client Components**: Declared with `"use client"`. Used for GSAP animations, interactions, and providers.
+- **Colocation**: Page-specific components live in `_`-prefixed directories next to their page (e.g., `src/app/[locale]/(website)/_sections/`).
 
-### Error Handling
-- Next.js default error boundaries (`error.tsx`, `not-found.tsx` usually present in App Router).
-- Unhandled Promise rejections should be caught in data fetching layers.
+### Animations (GSAP)
+- Use the `useGSAP` hook for React-safe animations.
+- **Scope**: Always pass a `scope` (ref to the container) to `useGSAP`.
+- **Motion**: Respect `prefers-reduced-motion`.
+- **Easing**: Prefer industrial/mechanical eases (`power4.out`, `expo.out`) over organic bounces.
 
-### State Management
-- Local state via React `useState`.
-- Global UI state like theme via `next-themes` (`ThemeProvider`).
-- Smooth scroll state managed by Lenis (`LenisProvider`).
-
-## Module Structure
-- `src/app/`: Next.js pages and layouts.
-- `src/app/(website)/_sections/`: Home page sections (Hero, About, Works, etc.). Colocated, private to the home page.
-- `src/components/`: Shared components used across multiple pages (Navigation, Footer, PageHeader).
-- `src/components/ui/`: Reusable, atomic UI components (kebab-case).
-- `src/components/animations/`: Specific animation wrappers.
-- `src/components/providers/`: Context providers (Lenis, Theme).
-- `src/lib/`: Utilities (`utils.ts`, `lenis.ts`, `sanity.ts`, `analytics.tsx`).
-- `src/types/`: Shared TypeScript interfaces for Sanity document models.
-- `sanity/`: Standalone Sanity Studio project (configuration and schema definitions).
-
-## Key Design Patterns
-- **Animations**: Uses GSAP `useGSAP` hook for React-safe animations. Always pass a `scope` (usually a ref to the section container) to `useGSAP` to avoid global selector conflicts. For scroll-linked animations, use GSAP ScrollTrigger (`gsap-scrolltrigger` skill).
-- **Headless CMS**: Content is managed via **Sanity Cloud**. Data is fetched using `next-sanity` and GROQ queries.
-  - Documents are typed and accessed directly (e.g., `doc.title`, `doc.slug.current`).
-  - Rich Text is rendered using the `<PortableText />` component from `@portabletext/react`.
-  - Images are processed using `urlFor()` helper from `@sanity/image-url`.
-- **Colocation**: Page-specific components live next to their page in `_`-prefixed directories. Only truly shared components go in `src/components/`.
-
-## Editing Content via API
-
-All content (projects, services, blog posts) is managed via **Sanity API**. Use the helpers in `src/lib/sanity.ts`:
-
-```typescript
-import { updateDocument, getProject, getAllProjects, getPost, getService } from '@/lib/sanity';
-
-// Example: Update project description
-const project = await getProject('ecommerce-react');
-await updateDocument(project._id, {
-  description_es: 'New description here...'
-});
-
-// Example: Update blog post
-const post = await getPost('my-blog-post');
-await updateDocument(post._id, {
-  title: 'New Title',
-  excerpt: 'New excerpt...'
-});
-
-// Example: Update service
-const service = await getService('development');
-await updateDocument(service._id, {
-  description_es: 'New service description...'
-});
-```
-
-**Requirements:**
-- `SANITY_API_TOKEN` must be set in environment
-- For local development: add to `.env.local`
-- For production: `wrangler secret put SANITY_API_TOKEN`
-
-**Available functions:**
-- `updateDocument(id, fields)` - Update specific fields
-- `createDocument(doc)` - Create new document
-- `deleteDocument(id)` - Delete document
-- `createOrReplace(doc)` - Create or replace document
-
-## Anti-Patterns (DO NOT)
-- **DO NOT** create global directories like `src/sections/`, `src/data/`, or `src/constants/` for code used by a single page.
-- **DO NOT** extract static arrays under 20 lines to separate files. Inline them in the consuming component.
-- **DO NOT** create barrel files (`index.ts` re-exports) except in `src/types/`.
-- **DO NOT** add `"use client"` to components that only render static content. Encapsulate interactivity in minimal client wrappers.
-- **DO NOT** create route groups `(group)` unless there is a real layout conflict between routes.
-- **DO NOT** make large "catch-all" commits. Keep commits atomic per feature/logical change.
+### Anti-Patterns (DO NOT)
+- **DO NOT** create global directories like `src/sections/` for single-page content. Use colocation.
+- **DO NOT** extract small static arrays to separate files. Inline them.
+- **DO NOT** add `"use client"` to top-level pages. Reserve it for interactive sub-components.
 
 ## Git Commits (Conventional Commits)
+Follow [Conventional Commits](https://www.conventionalcommits.org/) with atomic commits.
+- Format: `<type>[optional scope]: <description>`
+- Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.
 
-We follow [Conventional Commits](https://www.conventionalcommits.org/) with **atomic commits per feature** (Option B):
+## Deployment
+- **Hosting**: Cloudflare Workers via OpenNext.
+- **CI/CD**: GitHub Actions (lint → type-check → build → deploy).
+- **Secrets**: Managed via GitHub Secrets and Wrangler.
 
-### Commit Structure
-```
-<type>[optional scope]: <description>
-
-[optional body]
-
-[optional footer(s)]
-```
-
-### Types
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style (formatting, no logic change)
-- `refactor`: Code refactoring
-- `perf`: Performance improvements
-- `test`: Tests
-- `chore`: Maintenance tasks
-
-### Atomic Commits (One feature = One commit)
-
-**CRITICAL:** Each commit must represent a single logical change. Mixing unrelated changes makes rollback difficult and code review impossible.
-
-**Correct:**
-```bash
-git commit -m "feat(nav): add keyboard navigation and focus-visible states"
-git commit -m "perf(hero): implement mouse tracking throttling with RAF"
-git commit -m "style(typography): increase minimum font size to 12px"
-git commit -m "feat(page-transitions): create PageTransitionProvider component"
-git commit -m "feat(layout): integrate PageTransitionProvider in website layout"
-git commit -m "feat(hero): listen for page-transition-complete event"
-```
-
-**Incorrect (DO NOT):**
-```bash
-git commit -m "various updates"  # Too vague
-git commit -m "fix everything"   # Multiple unrelated changes
-git commit -m "feat(transitions): implement async page transitions"  # 4 files, 4 different concerns
-```
-
-### Scope Guidelines
-- Use component/feature name as scope: `(nav)`, `(hero)`, `(sanity)`, `(forms)`
-- For docs: `(docs)`, `(agents)`, `(deployment)`
-- For multiple files in same feature: single commit with descriptive scope
-
-## Deployment & Secrets
-- **Hosting**: The project is deployed to **Cloudflare Workers** via OpenNext.
-- **CI/CD**: Automatic deployment via GitHub Actions on every push to `master`.
-- **Node.js**: Version 22 LTS required for CI/CD pipeline.
-- **GitHub Actions**: Uses `actions/checkout@v5`, `actions/setup-node@v5`, and `npx wrangler deploy`.
-- **Secrets Management**: 
-  - GitHub Secrets (for CI/CD): `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`
-  - Cloudflare Secrets (for runtime): `SANITY_API_TOKEN`
-- **Required Environment Variables**: `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `SANITY_API_TOKEN`.
-
-### Workflow
-1. Push to `master` branch
-2. GitHub Actions triggers automatically
-3. Runs: lint → type-check → build → deploy
-4. If any step fails, deployment is aborted
-
-## Testing
-- No testing framework is currently configured in `package.json`.
-
-## Documentation
-- Refer to `/docs` directory for architectural and coding standards.
-
-## Agent Skills Usage
-
-When performing tasks that match available skills, **ALWAYS use the appropriate skill** instead of manual implementation:
-
-- **TASKS.md Operations**: Use the `task-management` skill for all task management operations (add, complete, update, query tasks). Never edit TASKS.md directly without loading the skill first.
-- **Git Commits**: Use the `git-commit` skill for creating conventional commits.
-- **Sanity Development**: Use the `sanity-best-practices` skill for schema design, GROQ queries, and CMS operations.
-- **Cloudflare Workers**: Use the `wrangler` or `workers-best-practices` skills for deployment and configuration.
-
-Skills provide specialized workflows, safety checks, and best practices. Always prefer skill-assisted operations over raw commands.
+---
+*Refer to DESIGN.md for visual specifications and docs/ for deep architecture details.*

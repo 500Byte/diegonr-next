@@ -5,7 +5,7 @@
 A modern, animated personal portfolio and professional services website built for a Full-Stack Developer & Solutions Architect. It features high-end GSAP animations, a custom Sanity Cloud CMS integration, and a sophisticated monochromatic/Swiss design system.
 
 ## Tech Stack
-- Framework: Next.js (App Router)
+- Framework: Next.js 16 (App Router)
 - Language: TypeScript/JavaScript
 - Styling: Tailwind CSS v4
 - Animation: GSAP 3, @gsap/react, Lenis (smooth scrolling)
@@ -22,7 +22,7 @@ A modern, animated personal portfolio and professional services website built fo
 ## Code Conventions
 - **Component Exports**: Predominantly named exports (`export function Component()`).
 - **Path Aliases**: Intensive use of `@/` path aliases pointing to the `src/` directory.
-- **Animation logic**: Encapsulated within `useGSAP` hooks with explicit `scope` references.
+- **Animation logic**: Encapsulated within `useGSAP` hooks with explicit `scope` references. Shared transitions are located in `src/components/transitions/`.
 
 ## File Organization
 - `src/app/`: Next.js routing and page definitions.

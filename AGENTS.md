@@ -66,6 +66,15 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/) with atomic 
 - Format: `<type>[optional scope]: <description>`
 - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.
 
+## Task Management Taxonomy
+Maintain `TASKS.md` using a strict logical separation:
+1. **Roadmap**: Dedicated to new feature development or major projects. Organized by sequential steps (Step 1, Step 2, etc.).
+2. **Maintenance**: Dedicated to technical debt, accessibility (WCAG), bugs, and polish. Organized by urgency levels:
+   - **High**: Critical fixes or blockers.
+   - **Medium**: Important UX/UI improvements.
+   - **Low**: Minor refinements or non-urgent updates.
+3. **Backlog**: Reserved for future ideas or low-priority enhancements.
+
 ## Deployment
 - **Hosting**: Cloudflare Workers via OpenNext.
 - **CI/CD**: GitHub Actions (lint → type-check → build → deploy).

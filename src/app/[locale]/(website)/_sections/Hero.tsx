@@ -14,6 +14,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 const coreStack = [
   "React / Next.js",
   "TypeScript",
+  "WordPress / CMS",
   "Node.js",
   "Python",
   "PostgreSQL",

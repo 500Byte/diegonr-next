@@ -1,5 +1,5 @@
 ---
-trigger: skill_activation
+trigger: model_decision
 description: Documenta la dependencia obligatoria de las skills de diseño y auditoría en el comando /impeccable.
 ---
 

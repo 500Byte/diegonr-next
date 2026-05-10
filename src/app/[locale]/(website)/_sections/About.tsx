@@ -1,23 +1,24 @@
 "use client";
 
-import { useRef } from "react"
-import { gsap } from "@/lib/gsap"
-import { useGSAP } from "@gsap/react"
-import { TextReveal, FadeIn } from "@/components/animations/text-reveal"
-import { Magnetic } from "@/components/Magnetic"
-import { cn } from "@/lib/utils"
-import { SwissContainer } from "@/components/Layout"
-import { useTranslations } from "next-intl"
+import { FadeIn, TextReveal } from "@/components/animations/text-reveal";
+import { SwissContainer } from "@/components/Layout";
+import { Magnetic } from "@/components/Magnetic";
+import { gsap } from "@/lib/gsap";
+import { cn } from "@/lib/utils";
+import { useGSAP } from "@gsap/react";
+import { useTranslations } from "next-intl";
+import { useRef } from "react";
 
 const getStats = (t: (key: string) => string) => [
-  { value: "5+", label: t("stats_experience") },
-  { value: "50+", label: t("stats_projects") },
-  { value: "20+", label: t("stats_clients") },
+  { value: "8+", label: t("stats_experience") },
+  { value: "100+", label: t("stats_projects") },
+  { value: "30%", label: t("stats_clients") },
 ]
 
 const skills = [
   "React / Next.js",
   "TypeScript",
+  "WordPress / CMS",
   "Node.js",
   "Python",
   "PostgreSQL",
@@ -26,15 +27,15 @@ const skills = [
   "LLMs / AI",
   "Tailwind CSS",
   "GSAP",
-  "Sanity",
+  "Sanity (Headless)",
   "GraphQL",
 ]
 
 const experiences = [
-  { year: "2024", role: "Solutions Architect", company: "Freelance", type: "current" },
-  { year: "2022", role: "Senior Full-Stack Developer", company: "Tech Startup", type: "past" },
-  { year: "2020", role: "Full-Stack Developer", company: "Digital Agency", type: "past" },
-  { year: "2019", role: "Frontend Developer", company: "Startup", type: "past" },
+  { year: "2024", role: "WordPress Developer", company: "Orbidi", type: "past" },
+  { year: "2023", role: "WordPress Developer", company: "11AM", type: "past" },
+  { year: "2019", role: "Digital Strategy & Design", company: "Maradentro", type: "past" },
+  { year: "2017", role: "Design Engineering", company: "Freelance", type: "current" },
 ]
 
 export function About() {

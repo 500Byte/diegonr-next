@@ -23,14 +23,14 @@
     }
   },
   "Hero": {
-    "tag": "[SOLUTIONS ARCHITECT]",
+    "tag": "[DESIGN ENGINEER / FULL-STACK]",
     "name": "DIEGO NAVARRO",
-    "role": "Solutions Architect — Design Engineering",
-    "description_1": "Specialist in building scalable digital systems and development workflow automation. Eight years of experience closing the technical gap between high-fidelity design and software architecture.",
-    "description_2": "Technical stack: React/TypeScript for frontend, Python for backend logic, Docker for infrastructure. Arch Linux development environment.",
+    "role": "Design Engineering — Systems Architecture",
+    "description_1": "Specializing in the intersection of systemic design and high-performance software architecture. I build digital solutions where technical precision and scalability are the priority.",
+    "description_2": "From automating complex processes to developing high-fidelity interfaces, focused on optimizing the product life cycle through quality engineering.",
     "cta": "VIEW PROJECTS",
     "cta_aria": "Go to projects page",
-    "image_alt": "Diego Navarro, Solutions Architect",
+    "image_alt": "Diego Navarro, Design Engineer",
     "status": "STATUS",
     "core_stack": "CORE STACK",
     "location": "LOCATION",
@@ -39,10 +39,10 @@
   "About": {
     "label": "[01 — ABOUT]",
     "heading": "ABOUT",
-    "subtitle": "Solutions Architect with Graphic Design background, specialized in Software Development Life Cycle (SDLC) optimization.",
-    "bio_1": "Professional focus on modern frontend engineering and infrastructure management. Background in Graphic Design enables precise translation of visual specifications into technical implementation.",
-    "bio_2": "Track record: 150+ projects delivered. Implementation of custom architectures and automation systems with documented 30% increase in operational efficiency.",
-    "bio_3": "Technical stack centered on React component development, service orchestration via Docker, and Linux environment administration (Arch/CachyOS).",
+    "subtitle": "Architecture through Automation",
+    "bio_1": "Experience isn't measured just in years, but in the efficiency of the systems built. After managing the delivery of 150+ platforms, my focus evolved from manual execution to technical facilitation.",
+    "bio_2": "Development of AutoQA: an automated auditing framework designed to ensure Core Web Vitals, SEO, and accessibility standards in large-scale deployments. Along with building custom scrapers for normalization and mass data migration.",
+    "bio_3": "Specializing in Fullstack development, integrating modern architectures with Next.js and AI-powered workflows to solve complex business problems.",
     "skills_label": "SKILLS",
     "experience_label": "[EXPERIENCE]",
     "cta": "CONTACT",
@@ -56,7 +56,7 @@
   "Services": {
     "label": "[03 — CAPABILITIES]",
     "heading": "SERVICES",
-    "description": "Technical capabilities and professional services.",
+    "description": "Product engineering and systems architecture applied to content ecosystems and automation.",
     "view_all": "VIEW ALL",
     "view_details": "VIEW DETAILS",
     "capabilities_label": "[SERVICES]",
@@ -89,13 +89,13 @@
     "tab1_content": "Production deployment is the primary metric. Optimization for maintainability, performance, and system reliability. Code is developed considering long-term maintenance and team collaboration as core requirements.",
     "tab2_title": "Systems",
     "tab2_content": "Interface implementation requires solid architectural foundations. Components, APIs, and workflows designed as integrated systems, ensuring scalability from initial release through product growth.",
-    "tab3_title": "Efficiency",
-    "tab3_content": "Process optimization through CI/CD, automated testing, and design-to-code pipelines. The documented 30% efficiency improvement results from systematic process optimization.",
+    "tab3_title": "Automation",
+    "tab3_content": "Process optimization through CI/CD, automated testing, and design-to-code pipelines. Focusing on programmatic solutions allows for a systematic increase in operational efficiency.",
     "footer_label": "ESTABLISHED PRINCIPLE"
   },
   "Marquee": {
     "text_1": "SOLUTIONS ARCHITECT • DESIGN ENGINEERING • SYSTEMS AUTOMATION •",
-    "text_2": "REACT • TYPESCRIPT • DOCKER • ARCH LINUX •"
+    "text_2": "REACT • TYPESCRIPT • WORDPRESS • DOCKER • ARCH LINUX •"
   },
   "ContactForm": {
     "title": "Let's Talk About Your Project",
@@ -136,10 +136,10 @@
       }
     },
     "services": {
-      "development": "Web/App Development",
-      "design": "UX/UI Design",
-      "ai": "Artificial Intelligence",
-      "consulting": "Technical Consulting",
+      "development": "Content Architecture & CMS",
+      "design": "Design Systems Engineering",
+      "ai": "Artificial Intelligence Systems",
+      "consulting": "Automation & Tooling",
       "other": "Other"
     },
     "budgets": {
@@ -233,25 +233,25 @@
     "cta": "RETRY"
   },
   "Metadata": {
-    "home_title": "Diego Navarro — Solutions Architect",
-    "home_description": "Solutions Architect specialized in Design Engineering. Eight years of experience in digital systems architecture and development workflow automation.",
-    "about_title": "About | Diego Navarro — Solutions Architect",
-    "about_description": "Solutions Architect with Graphic Design background. Specialized in SDLC optimization, systems architecture, and automation.",
-    "projects_title": "Projects | Diego Navarro — Solutions Architect",
+    "home_title": "Diego Navarro — Design Engineer & Solutions Architect",
+    "home_description": "Design Engineer & Solutions Architect specializing in development process optimization and high-performance scalable architectures.",
+    "about_title": "About | Diego Navarro — Design Engineer",
+    "about_description": "Design Engineer & Solutions Architect specializing in development process optimization, systems architecture, and automation.",
+    "projects_title": "Projects | Diego Navarro — Design Engineer",
     "projects_description": "Selected projects representing technical architecture and execution.",
-    "services_title": "Services | Diego Navarro — Solutions Architect",
+    "services_title": "Services | Diego Navarro — Design Engineer",
     "services_description": "Technical capabilities: Design Systems, Full-Stack architecture, process automation.",
-    "blog_title": "Blog | Diego Navarro — Solutions Architect",
+    "blog_title": "Blog | Diego Navarro — Design Engineer",
     "blog_description": "Technical publications on software architecture, design systems, and automation.",
-    "contact_title": "Contact | Diego Navarro — Solutions Architect",
+    "contact_title": "Contact | Diego Navarro — Design Engineer",
     "contact_description": "Contact form for technical inquiries and project proposals."
   },
   "AboutPage": {
     "title": "ABOUT",
     "subtitle": "Professional Profile",
-    "description": "Solutions Architect with Graphic Design background. Specialized in SDLC optimization and scalable systems architecture.",
+    "description": "Design Engineer & Full-Stack Developer specializing in development process optimization and scalable systems architecture.",
     "approach_title": "THE APPROACH",
-    "approach_p1": "Combination of modern frontend engineering with solid infrastructure management. Design background enables translation of complex visual specifications into precise technical implementations.",
+    "approach_p1": "Combination of modern frontend engineering with solid infrastructure management. My approach ranges from micro-optimization of interface components to the robustness of systems architecture.",
     "approach_p2": "Eight years of experience delivering digital solutions. Specialization in custom architectures and automation systems that increase operational efficiency.",
     "image_alt": "Professional profile photograph"
   },
@@ -269,9 +269,9 @@
     "description": "Publications on software architecture, design systems, workflow automation and development best practices."
   },
   "ServicesPage": {
-    "title": "SERVICES",
-    "subtitle": "Technical Capabilities",
-    "description": "Specialized services in systems architecture, full-stack development and development process optimization."
+    "title": "CAPABILITIES",
+    "subtitle": "Engineering & Solutions",
+    "description": "Systems architecture and engineering solutions applied to content ecosystems, process automation, and systemic design."
   },
   "ProjectsPage": {
     "title": "PROJECTS",
@@ -290,9 +290,12 @@
     "tech_label": "Technologies",
     "about_label": "About the project",
     "view_site": "View live site",
-    "view_code": "View code",
+    "view_code": "View on GitHub",
     "challenges_label": "Challenges",
-    "solution_label": "Solution"
+    "solution_label": "Solution",
+    "results_label": "Results",
+    "specs_label": "Technical Specs",
+    "gallery_label": "Gallery"
   },
   "ServiceDetail": {
     "back_link": "Back to services",
@@ -303,4 +306,7 @@
     "process_label": "Process",
     "deliverables_label": "Deliverables"
   }
+}les_label": "Deliverables"
+  }
+}
 }

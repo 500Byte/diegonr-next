@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: t('services_title'),
     description: t('services_description'),
     keywords: [
-      'servicios', 'desarrollo full-stack', 'arquitectura', 'IA', 'consultoría',
-      'services', 'full-stack development', 'architecture', 'AI', 'consulting'
+      'arquitectura de contenidos', 'design systems engineering', 'automatización', 'SDLC tooling', 'full-stack',
+      'content architecture', 'design systems', 'automation', 'SDLC', 'full-stack'
     ],
     authors: [{ name: 'Diego NR' }],
     creator: 'Diego NR',

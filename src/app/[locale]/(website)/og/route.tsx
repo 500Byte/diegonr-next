@@ -7,12 +7,12 @@ export const runtime = 'edge'
 const defaults = {
   es: {
     title: 'Diego Navarro',
-    subtitle: 'Solutions Architect — Design Engineering',
+    subtitle: 'Design Engineering — Systems Architecture',
     type: 'website'
   },
   en: {
     title: 'Diego Navarro',
-    subtitle: 'Solutions Architect — Design Engineering',
+    subtitle: 'Design Engineering — Systems Architecture',
     type: 'website'
   }
 }

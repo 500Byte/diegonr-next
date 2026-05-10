@@ -23,14 +23,14 @@
     }
   },
   "Hero": {
-    "tag": "[SOLUTIONS ARCHITECT]",
+    "tag": "[DESIGN ENGINEER / FULL-STACK]",
     "name": "DIEGO NAVARRO",
-    "role": "Solutions Architect — Design Engineering",
-    "description_1": "Especialista en la construcción de sistemas digitales escalables y la automatización de flujos de desarrollo. Ocho años de experiencia cerrando la brecha técnica entre el diseño de alta fidelidad y la arquitectura de software.",
-    "description_2": "Stack técnico: React/TypeScript para frontend, Python para lógica de backend, Docker para infraestructura. Entorno de desarrollo Arch Linux.",
+    "role": "Design Engineering — Systems Architecture",
+    "description_1": "Especializado en la intersección del diseño sistémico y la arquitectura de software de alto rendimiento. Construyo soluciones digitales donde la precisión técnica y la escalabilidad son la prioridad.",
+    "description_2": "Desde la automatización de procesos complejos hasta el desarrollo de interfaces de alta fidelidad, enfocado en optimizar el ciclo de vida del producto mediante ingeniería de calidad.",
     "cta": "VER PROYECTOS",
     "cta_aria": "Ir a la página de proyectos",
-    "image_alt": "Diego Navarro, Solutions Architect",
+    "image_alt": "Diego Navarro, Design Engineer",
     "status": "STATUS",
     "core_stack": "CORE STACK",
     "location": "LOCATION",
@@ -89,13 +89,13 @@
     "tab1_content": "El despliegue en producción es la métrica principal. Optimización para mantenibilidad, rendimiento y fiabilidad del sistema. El código se desarrolla considerando el mantenimiento a largo plazo y la colaboración en equipo como requisitos fundamentales.",
     "tab2_title": "Sistemas",
     "tab2_content": "La implementación de interfaces requiere bases arquitectónicas sólidas. Componentes, APIs y flujos de trabajo diseñados como sistemas integrados, asegurando escalabilidad desde el lanzamiento inicial hasta el crecimiento del producto.",
-    "tab3_title": "Eficiencia",
-    "tab3_content": "Optimización de procesos mediante CI/CD, pruebas automatizadas y pipelines de diseño a código. El incremento documentado del 30% en eficiencia resulta de la optimización sistemática de procesos.",
+    "tab3_title": "Automatización",
+    "tab3_content": "Optimización de procesos mediante CI/CD, pruebas automatizadas y pipelines de diseño a código. El enfoque en soluciones programáticas permite un incremento sistemático de la eficiencia operativa.",
     "footer_label": "PRINCIPIO ESTABLECIDO"
   },
   "Marquee": {
     "text_1": "SOLUTIONS ARCHITECT • DESIGN ENGINEERING • SYSTEMS AUTOMATION •",
-    "text_2": "REACT • TYPESCRIPT • DOCKER • ARCH LINUX •"
+    "text_2": "REACT • TYPESCRIPT • WORDPRESS • DOCKER • ARCH LINUX •"
   },
   "ContactForm": {
     "title": "Hablemos de tu Proyecto",
@@ -136,10 +136,10 @@
       }
     },
     "services": {
-      "development": "Desarrollo Web/App",
-      "design": "Diseño UX/UI",
-      "ai": "Inteligencia Artificial",
-      "consulting": "Consultoría Técnica",
+      "development": "Arquitectura de Contenidos & CMS",
+      "design": "Ingeniería de Sistemas de Diseño",
+      "ai": "Sistemas de Inteligencia Artificial",
+      "consulting": "Automatización & Tooling",
       "other": "Otro"
     },
     "budgets": {
@@ -233,25 +233,25 @@
     "cta": "REINTENTAR"
   },
   "Metadata": {
-    "home_title": "Diego Navarro — Solutions Architect",
-    "home_description": "Solutions Architect especializado en Design Engineering. Ocho años de experiencia en arquitectura de sistemas digitales y automatización de flujos de desarrollo.",
-    "about_title": "Sobre mí | Diego Navarro — Solutions Architect",
-    "about_description": "Solutions Architect con formación en Diseño Gráfico. Especializado en SDLC optimization, arquitectura de sistemas y automatización.",
-    "projects_title": "Proyectos | Diego Navarro — Solutions Architect",
+    "home_title": "Diego Navarro — Design Engineer & Solutions Architect",
+    "home_description": "Design Engineer & Solutions Architect especializado en la optimización de procesos de desarrollo y arquitecturas escalables de alto rendimiento.",
+    "about_title": "Sobre mí | Diego Navarro — Design Engineer",
+    "about_description": "Design Engineer & Solutions Architect especializado en la optimización de procesos de desarrollo, arquitectura de sistemas y automatización.",
+    "projects_title": "Proyectos | Diego Navarro — Design Engineer",
     "projects_description": "Proyectos seleccionados que representan arquitectura técnica y ejecución.",
-    "services_title": "Servicios | Diego Navarro — Solutions Architect",
+    "services_title": "Servicios | Diego Navarro — Design Engineer",
     "services_description": "Capacidades técnicas: Design Systems, arquitectura Full-Stack, automatización de procesos.",
-    "blog_title": "Blog | Diego Navarro — Solutions Architect",
+    "blog_title": "Blog | Diego Navarro — Design Engineer",
     "blog_description": "Publicaciones técnicas sobre arquitectura de software, sistemas de diseño y automatización.",
-    "contact_title": "Contacto | Diego Navarro — Solutions Architect",
+    "contact_title": "Contacto | Diego Navarro — Design Engineer",
     "contact_description": "Formulario de contacto para consultas técnicas y propuestas de proyecto."
   },
   "AboutPage": {
     "title": "SOBRE MÍ",
     "subtitle": "Perfil Profesional",
-    "description": "Solutions Architect con formación en Diseño Gráfico. Especializado en la optimización del ciclo de vida de desarrollo y arquitectura de sistemas escalables.",
+    "description": "Design Engineer & Full-Stack Developer especializado en la optimización de procesos de desarrollo y arquitectura de sistemas escalables.",
     "approach_title": "EL ENFOQUE",
-    "approach_p1": "Combinación de ingeniería de frontend moderna con gestión sólida de infraestructura. La formación en diseño permite traducir especificaciones visuales complejas en implementaciones técnicas precisas.",
+    "approach_p1": "Combinación de ingeniería de frontend moderna con gestión sólida de infraestructura. Mi enfoque abarca desde la micro-optimización de componentes de interfaz hasta la robustez de la arquitectura de sistemas.",
     "approach_p2": "Ocho años de experiencia entregando soluciones digitales. Especialización en arquitecturas personalizadas y sistemas de automatización que incrementan la eficiencia operativa.",
     "image_alt": "Fotografía de perfil profesional"
   },
@@ -269,9 +269,9 @@
     "description": "Publicaciones sobre arquitectura de software, sistemas de diseño, automatización de workflows y mejores prácticas de desarrollo."
   },
   "ServicesPage": {
-    "title": "SERVICIOS",
-    "subtitle": "Capacidades Técnicas",
-    "description": "Servicios especializados en arquitectura de sistemas, desarrollo full-stack y optimización de procesos de desarrollo."
+    "title": "CAPACIDADES",
+    "subtitle": "Ingeniería & Soluciones",
+    "description": "Arquitectura de sistemas y soluciones de ingeniería aplicadas a ecosistemas de contenido, automatización de procesos y diseño sistémico."
   },
   "ProjectsPage": {
     "title": "PROYECTOS",
@@ -290,9 +290,12 @@
     "tech_label": "Tecnologías",
     "about_label": "Sobre el proyecto",
     "view_site": "Ver sitio en vivo",
-    "view_code": "Ver código",
+    "view_code": "Ver en GitHub",
     "challenges_label": "Desafíos",
-    "solution_label": "Solución"
+    "solution_label": "Solución",
+    "results_label": "Resultados",
+    "specs_label": "Specs Técnicas",
+    "gallery_label": "Galería"
   },
   "ServiceDetail": {
     "back_link": "Volver a servicios",

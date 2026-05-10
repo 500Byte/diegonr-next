@@ -37,6 +37,39 @@ export const projectType = defineType({
     defineField({ name: 'description_en', title: 'Description (EN)', type: 'array', of: [{ type: 'block' }] }),
     defineField({ name: 'tech', title: 'Technologies', type: 'array', of: [{ type: 'object', fields: [{ name: 'item', type: 'string' }] }] }),
     defineField({ name: 'url', title: 'Project URL', type: 'url', description: 'External link to the live project' }),
+    defineField({ name: 'github_url', title: 'GitHub URL', type: 'url' }),
+    defineField({
+      name: 'gallery',
+      title: 'Gallery',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [{ name: 'alt', type: 'string', title: 'Alt Text' }]
+        }
+      ]
+    }),
+    defineField({ name: 'challenge_es', title: 'Challenge (ES)', type: 'array', of: [{ type: 'block' }] }),
+    defineField({ name: 'challenge_en', title: 'Challenge (EN)', type: 'array', of: [{ type: 'block' }] }),
+    defineField({ name: 'solution_es', title: 'Solution (ES)', type: 'array', of: [{ type: 'block' }] }),
+    defineField({ name: 'solution_en', title: 'Solution (EN)', type: 'array', of: [{ type: 'block' }] }),
+    defineField({ name: 'results_es', title: 'Results (ES)', type: 'array', of: [{ type: 'block' }] }),
+    defineField({ name: 'results_en', title: 'Results (EN)', type: 'array', of: [{ type: 'block' }] }),
+    defineField({
+      name: 'technical_specs',
+      title: 'Technical Specs',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Label' },
+            { name: 'value', type: 'string', title: 'Value' }
+          ]
+        }
+      ]
+    }),
     defineField({ name: 'featured', title: 'Featured', type: 'boolean' }),
     defineField({ name: 'image', title: 'Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'content', title: 'Content', type: 'array', of: [{ type: 'block' }] }),

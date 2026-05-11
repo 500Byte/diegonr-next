@@ -1,6 +1,6 @@
 import { createClient } from 'next-sanity';
 import { createImageUrlBuilder } from '@sanity/image-url';
-import { ProjectDocument, ServiceDocument, BlogPostDocument } from '../types';
+import { ProjectDocument, ServiceDocument, BlogPostDocument, SiteSettings, PageMetadata } from '../types';
 
 // Helper to get environment variables across different runtimes (Node.js, Cloudflare Workers)
 const getEnvVar = (key: string): string | undefined => {
@@ -118,6 +118,33 @@ export async function getPost(slug: string): Promise<BlogPostDocument | null> {
     `*[_type == "blog_post" && slug.current == $slug && !(_id in path("drafts.**")) && published == true][0]`,
     { slug }
   );
+}
+
+// ============================================================================
+// SITE SETTINGS
+// ============================================================================
+
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  return await client.fetch<SiteSettings | null>(
+    `*[_type == "siteSettings" && !(_id in path("drafts.**"))][0]`
+  )
+}
+
+// ============================================================================
+// PAGE METADATA
+// ============================================================================
+
+export async function getPageMetadata(page: string): Promise<PageMetadata | null> {
+  return await client.fetch<PageMetadata | null>(
+    `*[_type == "pageMetadata" && page == $page && !(_id in path("drafts.**"))][0]`,
+    { page }
+  )
+}
+
+export async function getAllPageMetadata(): Promise<PageMetadata[]> {
+  return await client.fetch<PageMetadata[]>(
+    `*[_type == "pageMetadata" && !(_id in path("drafts.**"))]`
+  )
 }
 
 // ============================================================================

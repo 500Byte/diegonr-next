@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { getAllProjects } from '@/lib/sanity';
+import { buildPageMetadata } from '@/lib/metadata';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
@@ -16,59 +17,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-  return {
-    title: t('projects_title'),
-    description: t('projects_description'),
-    keywords: [
-      'proyectos', 'portafolio', 'trabajos', 'case studies', 'desarrollo web',
-      'projects', 'portfolio', 'works', 'case studies', 'web development'
-    ],
-    authors: [{ name: 'Diego NR' }],
-    creator: 'Diego NR',
-    publisher: 'Diego NR',
-    metadataBase: new URL('https://diegonr.com'),
-    alternates: {
-      canonical: `/${locale}/projects`,
-      languages: {
-        'es': '/es/projects',
-        'en': '/en/projects',
-      },
-    },
-    openGraph: {
+  return buildPageMetadata({
+    page: 'projects',
+    locale,
+    fallback: {
       title: t('projects_title'),
       description: t('projects_description'),
-      url: `/${locale}/projects`,
-      siteName: 'Diego NR Portfolio',
-      locale: locale === 'en' ? 'en_US' : 'es_ES',
-      type: 'website',
-      images: [
-        {
-          url: `/og?title=Projects&type=Projects&subtitle=Selected Work&lang=${locale}`,
-          width: 1200,
-          height: 630,
-          alt: t('projects_title'),
-        },
-      ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('projects_title'),
-      description: t('projects_description'),
-      creator: '@diegonr',
-      images: [`/og?title=Projects&type=Projects&subtitle=Selected Work&lang=${locale}`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-  };
+  });
 }
 
 export default async function ProjectsPage({ params }: Props) {

@@ -10,6 +10,7 @@ import { Services } from './_sections/Services';
 import { BlogSection } from './_sections/BlogSection';
 import { MarqueeBanner } from '@/components/ui/marquee-banner';
 import { getAllProjects, getAllServices, getAllPosts } from '@/lib/sanity';
+import { buildPageMetadata } from '@/lib/metadata';
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -23,10 +24,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-  return {
-    title: t('home_title'),
-    description: t('home_description'),
-  };
+  return buildPageMetadata({
+    page: 'home',
+    locale,
+    fallback: {
+      title: t('home_title'),
+      description: t('home_description'),
+    },
+  });
 }
 
 export default async function Home({ params }: Props) {

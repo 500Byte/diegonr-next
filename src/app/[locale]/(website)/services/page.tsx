@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { getAllServices } from '@/lib/sanity';
+import { buildPageMetadata } from '@/lib/metadata';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
@@ -17,59 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-  return {
-    title: t('services_title'),
-    description: t('services_description'),
-    keywords: [
-      'arquitectura de contenidos', 'design systems engineering', 'automatización', 'SDLC tooling', 'full-stack',
-      'content architecture', 'design systems', 'automation', 'SDLC', 'full-stack'
-    ],
-    authors: [{ name: 'Diego NR' }],
-    creator: 'Diego NR',
-    publisher: 'Diego NR',
-    metadataBase: new URL('https://diegonr.com'),
-    alternates: {
-      canonical: `/${locale}/services`,
-      languages: {
-        'es': '/es/services',
-        'en': '/en/services',
-      },
-    },
-    openGraph: {
+  return buildPageMetadata({
+    page: 'services',
+    locale,
+    fallback: {
       title: t('services_title'),
       description: t('services_description'),
-      url: `/${locale}/services`,
-      siteName: 'Diego NR Portfolio',
-      locale: locale === 'en' ? 'en_US' : 'es_ES',
-      type: 'website',
-      images: [
-        {
-          url: `/og?title=Services&type=Services&subtitle=Capabilities & Solutions&lang=${locale}`,
-          width: 1200,
-          height: 630,
-          alt: t('services_title'),
-        },
-      ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('services_title'),
-      description: t('services_description'),
-      creator: '@diegonr',
-      images: [`/og?title=Services&type=Services&subtitle=Capabilities & Solutions&lang=${locale}`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-  };
+  });
 }
 
 // Client component wrapper for locale

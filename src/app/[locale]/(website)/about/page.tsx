@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Image from 'next/image';
+import { buildPageMetadata } from '@/lib/metadata';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
@@ -13,61 +14,15 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
-  const tPage = await getTranslations({ locale, namespace: 'AboutPage' });
 
-  return {
-    title: t('about_title'),
-    description: t('about_description'),
-    keywords: [
-      'sobre mí', 'historia', 'filosofía', 'desarrollador', 'arquitecto',
-      'about me', 'story', 'philosophy', 'developer', 'architect'
-    ],
-    authors: [{ name: 'Diego NR' }],
-    creator: 'Diego NR',
-    publisher: 'Diego NR',
-    metadataBase: new URL('https://diegonr.com'),
-    alternates: {
-      canonical: `/${locale}/about`,
-      languages: {
-        'es': '/es/about',
-        'en': '/en/about',
-      },
-    },
-    openGraph: {
+  return buildPageMetadata({
+    page: 'about',
+    locale,
+    fallback: {
       title: t('about_title'),
       description: t('about_description'),
-      url: `/${locale}/about`,
-      siteName: 'Diego NR Portfolio',
-      locale: locale === 'en' ? 'en_US' : 'es_ES',
-      type: 'website',
-      images: [
-        {
-          url: `/og?title=About&type=About&subtitle=Story & Philosophy&lang=${locale}`,
-          width: 1200,
-          height: 630,
-          alt: t('about_title'),
-        },
-      ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('about_title'),
-      description: t('about_description'),
-      creator: '@diegonr',
-      images: [`/og?title=About&type=About&subtitle=Story & Philosophy&lang=${locale}`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-  };
+  });
 }
 
 export default async function AboutPage({ params }: Props) {

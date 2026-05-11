@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
 
 import { getAllPosts } from '@/lib/sanity';
+import { buildPageMetadata } from '@/lib/metadata';
 import { PageHeader } from '@/components/PageHeader';
 import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
@@ -20,56 +21,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 
-  return {
-    title: t('blog_title'),
-    description: t('blog_description'),
-    keywords: ['blog', 'technology', 'web development', 'AI', 'architecture', 'programming', 'full-stack'],
-    authors: [{ name: 'Diego NR' }],
-    creator: 'Diego NR',
-    publisher: 'Diego NR',
-    metadataBase: new URL('https://diegonr.com'),
-    alternates: {
-      canonical: `/${locale}/blog`,
-      languages: {
-        'es': '/es/blog',
-        'en': '/en/blog',
-      },
-    },
-    openGraph: {
+  return buildPageMetadata({
+    page: 'blog',
+    locale,
+    fallback: {
       title: t('blog_title'),
       description: t('blog_description'),
-      url: `/${locale}/blog`,
-      siteName: 'Diego NR Blog',
-      locale: locale === 'en' ? 'en_US' : 'es_ES',
-      type: 'website',
-      images: [
-        {
-          url: `/og?title=Blog&type=Articles&subtitle=${encodeURIComponent(t('blog_title'))}&lang=${locale}`,
-          width: 1200,
-          height: 630,
-          alt: t('blog_title'),
-        },
-      ],
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('blog_title'),
-      description: t('blog_description'),
-      creator: '@diegonr',
-      images: [`/og?title=Blog&type=Articles&subtitle=${encodeURIComponent(t('blog_title'))}&lang=${locale}`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
-      },
-    },
-  };
+  });
 }
 
 export default async function BlogPage({ params }: Props) {

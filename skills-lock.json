@@ -26,6 +26,12 @@
       "sourceType": "github",
       "computedHash": "8429138b3ce13a7cba2d786ab03ce3309877f4bd43ed6d7cf1d00afa9768e526"
     },
+    "case-study-writing": {
+      "source": "inference-sh/skills",
+      "sourceType": "github",
+      "skillPath": "guides/writing/case-study-writing/SKILL.md",
+      "computedHash": "528a8663cb38bc63bc9740650b6eec14b885e179ad8f9b189d85117fb1d908c0"
+    },
     "clarify": {
       "source": "pbakaus/impeccable",
       "sourceType": "github",

@@ -26,10 +26,12 @@ export const pageMetadataType = defineType({
             if (!value) return true
             const { getClient } = context
             const client = getClient({ apiVersion: '2025-01-01' })
-            const id = context.document?._id?.replace(/^drafts\./, '') || ''
+            const id = context.document?._id || ''
+            const publishedId = id.replace(/^drafts\./, '')
+            const draftId = id.startsWith('drafts.') ? id : `drafts.${id}`
             const count = await client.fetch<number>(
-              `count(*[_type == "pageMetadata" && page == $page && _id != $id])`,
-              { page: value, id }
+              `count(*[_type == "pageMetadata" && page == $page && _id != $publishedId && _id != $draftId])`,
+              { page: value, publishedId, draftId }
             )
             return count > 0 ? 'Ya existe un documento para esta página' : true
           }),

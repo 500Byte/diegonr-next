@@ -74,3 +74,36 @@ export interface BlogPostDocument extends BaseSanityDocument {
   tags?: { tag?: string }[];
   content?: PortableTextBlock[];
 }
+
+export interface SiteSettings {
+  _id: string;
+  _type: 'siteSettings';
+  brand: {
+    name: string;
+    fullName: string;
+    tagline_es: PortableTextBlock[];
+    tagline_en: PortableTextBlock[];
+  };
+  contact: {
+    email: string;
+    location_es: string;
+    location_en: string;
+  };
+  socialLinks: { platform: string; url: string }[];
+  seo: {
+    siteUrl: string;
+    twitterHandle: string;
+  };
+  copyright: string;
+}
+
+export interface PageMetadata {
+  _id: string;
+  _type: 'pageMetadata';
+  page: 'home' | 'about' | 'services' | 'projects' | 'blog' | 'contact';
+  metaTitle?: { es?: string; en?: string };
+  metaDescription?: { es?: string; en?: string };
+  keywords?: { es?: string[]; en?: string[] };
+  ogImage?: SanityImage;
+  robotsIndex?: boolean;
+}

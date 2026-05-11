@@ -6,7 +6,9 @@
  * Requires SANITY_API_TOKEN and NEXT_PUBLIC_SANITY_PROJECT_ID in .env.local
  */
 import { createClient } from '@sanity/client'
-import 'dotenv/config'
+import dotenv from 'dotenv'
+import path from 'path'
+dotenv.config({ path: path.resolve(__dirname, '../../.env.local') })
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import type { SiteSettings } from '@/types'
 
 interface StructuredDataPerson {
   '@context': string
@@ -123,17 +124,21 @@ interface StructuredDataProject {
   }
 }
 
-export function generatePersonStructuredData(): StructuredDataPerson {
+export function generatePersonStructuredData(settings?: SiteSettings): StructuredDataPerson {
+  const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com';
+  const name = settings?.brand?.name || 'Diego NR';
+  const sameAs = settings?.socialLinks?.map(l => l.url) || [
+    'https://github.com/diegonr',
+    'https://linkedin.com/in/diegonr',
+    'https://twitter.com/diegonr'
+  ];
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Diego NR',
-    url: 'https://diegonr.com',
-    sameAs: [
-      'https://github.com/diegonr',
-      'https://linkedin.com/in/diegonr',
-      'https://twitter.com/diegonr'
-    ],
+    name,
+    url: siteUrl,
+    sameAs,
     jobTitle: 'Solutions Architect & Full-Stack Developer',
     worksFor: {
       '@type': 'Organization',
@@ -167,13 +172,17 @@ export function generatePersonStructuredData(): StructuredDataPerson {
   }
 }
 
-export function generateWebSiteStructuredData(): StructuredDataWebSite {
+export function generateWebSiteStructuredData(settings?: SiteSettings): StructuredDataWebSite {
+  const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com';
+  const name = settings?.brand?.name || 'Diego NR';
+  const fullName = settings?.brand?.fullName || 'Diego NR';
+
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Diego NR - Solutions Architect & Full-Stack Developer',
-    url: 'https://diegonr.com',
-    description: 'Portfolio profesional de Diego NR, desarrollador Full-Stack especializado en IA, arquitectura de soluciones y diseño UX/UI.',
+    name: `${fullName} - Solutions Architect & Full-Stack Developer`,
+    url: siteUrl,
+    description: `Portfolio profesional de ${name}, desarrollador Full-Stack especializado en IA, arquitectura de soluciones y diseño UX/UI.`,
     inLanguage: 'es-ES',
     copyrightHolder: {
       '@type': 'Person',
@@ -194,8 +203,12 @@ export function generateArticleStructuredData(
   image: string,
   datePublished: string,
   dateModified: string,
-  keywords: string[] = []
+  keywords: string[] = [],
+  settings?: SiteSettings
 ): StructuredDataArticle {
+  const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com';
+  const authorName = settings?.brand?.name || 'Diego NR';
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -206,15 +219,15 @@ export function generateArticleStructuredData(
     dateModified: dateModified,
     author: {
       '@type': 'Person',
-      name: 'Diego NR',
-      url: 'https://diegonr.com'
+      name: authorName,
+      url: siteUrl
     },
     publisher: {
       '@type': 'Person',
-      name: 'Diego NR',
+      name: authorName,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://diegonr.com/og?title=Diego NR&type=Portfolio'
+        url: `${siteUrl}/og?title=${encodeURIComponent(authorName)}&type=Portfolio`
       }
     },
     mainEntityOfPage: {
@@ -233,19 +246,23 @@ export function generateProjectStructuredData(
   image: string,
   dateCreated: string,
   technologies: string[] = [],
-  category: string = 'Web Application'
+  category: string = 'Web Application',
+  settings?: SiteSettings
 ): StructuredDataProject {
+  const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com';
+  const authorName = settings?.brand?.name || 'Diego NR';
+
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: name,
-    description: description,
-    image: image,
-    url: url,
+    name,
+    description,
+    image,
+    url,
     creator: {
       '@type': 'Person',
-      name: 'Diego NR',
-      url: 'https://diegonr.com'
+      name: authorName,
+      url: siteUrl
     },
     dateCreated: dateCreated,
     programmingLanguage: technologies,
@@ -254,7 +271,8 @@ export function generateProjectStructuredData(
   }
 }
 
-export function generateBreadcrumbStructuredData(breadcrumbs: Array<{ name: string; url: string }>): StructuredDataBreadcrumbList {
+export function generateBreadcrumbStructuredData(breadcrumbs: Array<{ name: string; url: string }>, settings?: SiteSettings): StructuredDataBreadcrumbList {
+  const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -262,29 +280,35 @@ export function generateBreadcrumbStructuredData(breadcrumbs: Array<{ name: stri
       '@type': 'ListItem',
       position: index + 1,
       name: crumb.name,
-      item: `https://diegonr.com${crumb.url}`
+      item: `${siteUrl}${crumb.url}`
     }))
   }
 }
 
-export function generateOrganizationStructuredData(): StructuredDataOrganization {
+export function generateOrganizationStructuredData(settings?: SiteSettings): StructuredDataOrganization {
+  const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com';
+  const fullName = settings?.brand?.fullName || 'Diego NR';
+  const name = settings?.brand?.name || 'Diego NR';
+  const email = settings?.contact?.email;
+  const sameAs = settings?.socialLinks?.map(l => l.url) || [
+    'https://github.com/diegonr',
+    'https://linkedin.com/in/diegonr',
+    'https://twitter.com/diegonr'
+  ];
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Diego NR - Solutions Architect & Full-Stack Developer',
-    url: 'https://diegonr.com',
-    logo: 'https://diegonr.com/og?title=Diego NR&type=Portfolio',
+    name: `${fullName} - Solutions Architect & Full-Stack Developer`,
+    url: siteUrl,
+    logo: `${siteUrl}/og?title=${encodeURIComponent(name)}&type=Portfolio`,
     description: 'Portfolio profesional especializado en desarrollo Full-Stack, inteligencia artificial, arquitectura de soluciones y diseño UX/UI.',
     foundingDate: '2020',
-    sameAs: [
-      'https://github.com/diegonr',
-      'https://linkedin.com/in/diegonr',
-      'https://twitter.com/diegonr'
-    ],
+    sameAs,
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'Professional',
-      url: 'https://diegonr.com/contact'
+      ...(email ? { email } : { url: `${siteUrl}/contact` })
     }
   }
 }

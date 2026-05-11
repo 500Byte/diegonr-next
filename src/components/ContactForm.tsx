@@ -9,7 +9,11 @@ import { Magnetic } from '@/components/Magnetic'
 import { Send, CheckCircle, AlertCircle, MessageSquare, User, Mail, Briefcase } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
-export function ContactForm() {
+interface ContactFormProps {
+  toEmail?: string;
+}
+
+export function ContactForm({ toEmail }: ContactFormProps) {
   const t = useTranslations('ContactForm')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -77,7 +81,7 @@ export function ContactForm() {
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID || ''
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
-      const toEmail = process.env.CONTACT_FORM_TO_EMAIL || 'your-email@domain.com'
+      const resolvedToEmail = toEmail || process.env.CONTACT_FORM_TO_EMAIL || 'your-email@domain.com'
 
       if (!serviceId || !templateId || !publicKey) {
         console.warn('EmailJS not configured for contact. Simulating send...')
@@ -96,7 +100,7 @@ export function ContactForm() {
         service: services.find(s => s.value === data.service)?.label || data.service,
         budget: budgets.find(b => b.value === data.budget)?.label || data.budget,
         timeline: timelines.find(tm => tm.value === data.timeline)?.label || data.timeline,
-        to_email: toEmail,
+        to_email: resolvedToEmail,
       }
 
       await emailjs.send(serviceId, templateId, templateParams, publicKey)

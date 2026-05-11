@@ -10,12 +10,19 @@ import {
   generateWebSiteStructuredData,
 } from '@/components/StructuredData';
 import { TVStaticOverlay } from '@/components/TVStaticOverlay';
+import { getSiteSettings } from '@/lib/sanity';
 
-export default function WebsiteLayout({
+export default async function WebsiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const siteSettings = await getSiteSettings();
+
+  const socialLinks = siteSettings?.socialLinks;
+  const email = siteSettings?.contact?.email;
+  const copyright = siteSettings?.copyright;
+
   return (
     <LenisProvider>
       <Preloader />
@@ -31,13 +38,13 @@ export default function WebsiteLayout({
       <div className="page-wrapper min-h-screen bg-swiss-black text-swiss-white">
         {/* CustomCursor inside page-wrapper to share stacking context */}
         <CustomCursor />
-        <Navigation />
+        <Navigation socialLinks={socialLinks} email={email} />
         <main className="relative min-h-screen">{children}</main>
-        <Footer />
+        <Footer socialLinks={socialLinks} email={email} copyright={copyright} />
       </div>
-      <StructuredData data={generatePersonStructuredData()} />
-      <StructuredData data={generateWebSiteStructuredData()} />
-      <StructuredData data={generateOrganizationStructuredData()} />
+      <StructuredData data={generatePersonStructuredData(siteSettings ?? undefined)} />
+      <StructuredData data={generateWebSiteStructuredData(siteSettings ?? undefined)} />
+      <StructuredData data={generateOrganizationStructuredData(siteSettings ?? undefined)} />
     </LenisProvider>
   );
 }

@@ -141,11 +141,7 @@ export async function getPageMetadata(page: string): Promise<PageMetadata | null
   )
 }
 
-export async function getAllPageMetadata(): Promise<PageMetadata[]> {
-  return await client.fetch<PageMetadata[]>(
-    `*[_type == "pageMetadata" && !(_id in path("drafts.**"))]`
-  )
-}
+
 
 // ============================================================================
 // WRITE OPERATIONS (API) - Requires SANITY_API_TOKEN

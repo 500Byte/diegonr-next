@@ -18,9 +18,11 @@ interface MobileMenuProps {
   }>;
   isMenuOpen?: boolean;
   onOpenChange?: (isOpen: boolean) => void;
+  socialLinks?: { platform: string; url: string }[];
+  email?: string;
 }
 
-export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen, onOpenChange }) => {
+export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen, onOpenChange, socialLinks, email }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -351,33 +353,32 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ navItems, isMenuOpen, on
               </button>
 
               <div className="flex flex-col gap-2 text-xs font-mono tracking-widest text-swiss-white/40">
-                <a
-                  href="mailto:hello@diegonr.com"
-                  className="hover:text-swiss-white transition-colors"
-                >
-                  HELLO@DIEGONR.COM
-                </a>
+                {email && (
+                  <a
+                    href={`mailto:${email}`}
+                    className="hover:text-swiss-white transition-colors"
+                  >
+                    {email.toUpperCase()}
+                  </a>
+                )}
                 <span>SANTA MARTA, CO</span>
               </div>
 
-              <div className="flex gap-6">
-                <a
-                  href="https://github.com/500byte"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 -m-3 text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
-                >
-                  GITHUB
-                </a>
-                <a
-                  href="https://linkedin.com/in/diegonr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 -m-3 text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
-                >
-                  LINKEDIN
-                </a>
-              </div>
+              {socialLinks && socialLinks.length > 0 && (
+                <div className="flex gap-6">
+                  {socialLinks.map((link) => (
+                    <a
+                      key={link.platform}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 -m-3 text-xs font-mono tracking-widest uppercase text-swiss-white/40 hover:text-swiss-white transition-colors"
+                    >
+                      {link.platform}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

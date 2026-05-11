@@ -11,7 +11,12 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Link, useRouter } from '@/i18n/routing';
 import { MobileMenu } from './MobileMenu';
 
-export const Navigation: React.FC = () => {
+interface NavigationProps {
+  socialLinks?: { platform: string; url: string }[];
+  email?: string;
+}
+
+export const Navigation: React.FC<NavigationProps> = ({ socialLinks, email }) => {
   const [scrolled, setScrolled] = useState(false);
   const [visible, setVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -184,6 +189,8 @@ export const Navigation: React.FC = () => {
               navItems={navItems} 
               isMenuOpen={visible} 
               onOpenChange={setIsMenuOpen}
+              socialLinks={socialLinks}
+              email={email}
             />
           </div>
         </div>

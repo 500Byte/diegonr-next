@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
-import { getPageMetadata } from './sanity'
-import { getSiteSettings } from './sanity'
+import { getPageMetadata, urlFor, getSiteSettings } from './sanity'
 
 interface BuildMetadataOptions {
   page: string
@@ -32,17 +31,11 @@ export async function buildPageMetadata({
   const keywords = pageMeta?.keywords?.[localeKey] || []
   const robotsIndex = pageMeta?.robotsIndex ?? true
 
-  const pathMap: Record<string, string> = {
-    home: '',
-    about: '/about',
-    services: '/services',
-    projects: '/projects',
-    blog: '/blog',
-    contact: '/contact',
-  }
-  const path = pathMap[page] || '/'
+  const path = page === 'home' ? '' : `/${page}`
 
-  const ogImageUrl = `/og?title=${encodeURIComponent(title)}&type=${page}&lang=${locale}`
+  const ogImageUrl = pageMeta?.ogImage
+    ? urlFor(pageMeta.ogImage).width(1200).height(630).url()
+    : `/og?title=${encodeURIComponent(title)}&type=${page}&lang=${locale}`
 
   return {
     title,

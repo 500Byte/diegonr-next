@@ -9,7 +9,13 @@ import { scrollTo } from '@/lib/lenis';
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 
-export const Footer: React.FC = () => {
+interface FooterProps {
+  socialLinks?: { platform: string; url: string }[];
+  email?: string;
+  copyright?: string;
+}
+
+export const Footer: React.FC<FooterProps> = ({ socialLinks, email, copyright }) => {
   const t = useTranslations('Footer');
 
   const navLinks = [
@@ -19,6 +25,10 @@ export const Footer: React.FC = () => {
     { label: t('links.blog'), path: '/blog' as const },
     { label: t('links.contact'), path: '/contact' as const }
   ];
+
+  const displayEmail = email || 'hola@diegonr.com';
+  const mailtoHref = `mailto:${displayEmail}`;
+  const displayCopyright = copyright || 'DIEGO NAVARRO';
 
   return (
     <footer className="py-20 md:py-32 bg-swiss-black text-swiss-white border-t border-white/5">
@@ -41,10 +51,17 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-4">
             <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">{t('social_label')}</p>
             <div className="flex flex-col gap-2">
-              <a href="https://github.com/500Byte/" target="_blank" rel="noopener noreferrer" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">GitHub</a>
-              <a href="https://www.linkedin.com/in/diego-lnr/" target="_blank" rel="noopener noreferrer" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">LinkedIn</a>
-              <a href="#" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">Twitter</a>
-              <a href="#" className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2">Instagram</a>
+              {socialLinks?.map((link) => (
+                <a
+                  key={link.platform}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lg font-light hover:text-white/60 transition-colors p-2 -m-2"
+                >
+                  {link.platform}
+                </a>
+              ))}
             </div>
           </div>
           <div className="md:col-span-4 md:text-right">
@@ -54,13 +71,12 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Email Marquee */}
         <div className="w-full border-y border-white/10 py-12 mb-24 cursor-pointer group">
-          <a href="mailto:hola@diegonr.com" className="block">
+          <a href={mailtoHref} className="block">
             <Marquee speed={40} pauseOnHover={true} className="py-4">
               <div className="flex items-center">
                 <span className="text-6xl md:text-[10vw] font-medium tracking-tighter mx-12">
-                  HOLA@DIEGONR.COM
+                  {displayEmail.toUpperCase()}
                 </span>
                 <ArrowUpRight className="w-12 h-12 md:w-[6vw] md:h-[6vw] mx-12 opacity-40" />
               </div>
@@ -70,7 +86,7 @@ export const Footer: React.FC = () => {
 
         <div className="flex flex-col md:flex-row justify-between items-end gap-8">
           <div className="text-[10px] tracking-[0.4em] uppercase opacity-40">
-            © {new Date().getFullYear()} DIEGO NAVARRO
+            © {new Date().getFullYear()} {displayCopyright.toUpperCase()}
           </div>
           <div className="flex gap-12 text-[10px] tracking-[0.3em] uppercase">
             <Magnetic strength={0.2}>

@@ -26,14 +26,26 @@ export const client = createClient({
   apiVersion,
   useCdn: false, // Set to false if statically generating pages, using ISR or tag-based revalidation
   token,
+  stega: {
+    enabled: getEnvVar('NEXT_PUBLIC_VERCEL_ENV') === 'preview' || process.env.NODE_ENV === 'development',
+    studioUrl: '/studio',
+  },
 });
 
 /**
  * Helper function to get the client with draft mode support
- * In Next.js 15, draftMode() is asynchronous
+ * In Next.js 15, draftMode() is asynchronous.
+ * We wrap it in a try-catch to avoid build errors during generateStaticParams.
  */
 async function getClient() {
-  const isDraftMode = (await draftMode()).isEnabled;
+  let isDraftMode = false;
+  try {
+    isDraftMode = (await draftMode()).isEnabled;
+  } catch (e) {
+    // draftMode() can throw during build time in generateStaticParams
+    isDraftMode = false;
+  }
+
   if (isDraftMode && !token) {
     throw new Error('The SANITY_API_TOKEN environment variable is required for Draft Mode.');
   }
@@ -42,6 +54,10 @@ async function getClient() {
         token,
         perspective: 'previewDrafts',
         useCdn: false,
+        stega: {
+          enabled: true,
+          studioUrl: '/studio',
+        },
       })
     : client;
 }

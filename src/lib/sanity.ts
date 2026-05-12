@@ -17,7 +17,7 @@ if (!projectId) {
   console.error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID environment variable');
 }
 
-const apiVersion = '2025-01-01'; // Use current date for latest features
+const apiVersion = '2022-03-07'; // Use a stable API version compatible with the Studio socket and Vision
 const token = getEnvVar('SANITY_API_TOKEN');
 
 export const client = createClient({

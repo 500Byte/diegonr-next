@@ -1,5 +1,6 @@
 import { createClient } from 'next-sanity';
 import { createImageUrlBuilder } from '@sanity/image-url';
+import * as queries from './sanity.queries';
 import { ProjectDocument, ServiceDocument, BlogPostDocument, SiteSettings, PageMetadata } from '../types';
 
 // Helper to get environment variables across different runtimes (Node.js, Cloudflare Workers)
@@ -39,13 +40,9 @@ export function urlFor(source: Parameters<typeof builder.image>[0]) {
 
 // For list views - lightweight projection
 export async function getAllProjects(): Promise<ProjectDocument[]> {
-  const projects = await client.fetch<ProjectDocument[]>(
-    `*[_type == "project" && !(_id in path("drafts.**"))] | order(year desc) {
-      _id, _type, title, slug, category, year, featured, image, description_es
-    }`
-  );
+  const projects = await client.fetch(queries.projectsQuery);
 
-  return projects.sort((a, b) => {
+  return (projects as any).sort((a: any, b: any) => {
     if (a.featured && !b.featured) return -1;
     if (!a.featured && b.featured) return 1;
     return String(b.year || '').localeCompare(String(a.year || ''));
@@ -54,16 +51,11 @@ export async function getAllProjects(): Promise<ProjectDocument[]> {
 
 // For detail views - full document
 export async function getAllProjectsFull(): Promise<ProjectDocument[]> {
-  return await client.fetch<ProjectDocument[]>(
-    `*[_type == "project" && !(_id in path("drafts.**"))] | order(year desc)`
-  );
+  return await client.fetch(queries.projectsFullQuery) as any;
 }
 
 export async function getProject(slug: string): Promise<ProjectDocument | null> {
-  return await client.fetch<ProjectDocument | null>(
-    `*[_type == "project" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
-    { slug }
-  );
+  return await client.fetch(queries.projectBySlugQuery, { slug }) as any;
 }
 
 // ============================================================================
@@ -72,25 +64,16 @@ export async function getProject(slug: string): Promise<ProjectDocument | null> 
 
 // For list views - lightweight projection
 export async function getAllServices(): Promise<ServiceDocument[]> {
-  return await client.fetch<ServiceDocument[]>(
-    `*[_type == "service" && !(_id in path("drafts.**"))] | order(order asc) {
-      _id, _type, title, title_es, slug, description_es, items, order
-    }`
-  );
+  return await client.fetch(queries.servicesQuery) as any;
 }
 
 // For detail views - full document
 export async function getAllServicesFull(): Promise<ServiceDocument[]> {
-  return await client.fetch<ServiceDocument[]>(
-    `*[_type == "service" && !(_id in path("drafts.**"))] | order(order asc)`
-  );
+  return await client.fetch(queries.servicesFullQuery) as any;
 }
 
 export async function getService(slug: string): Promise<ServiceDocument | null> {
-  return await client.fetch<ServiceDocument | null>(
-    `*[_type == "service" && slug.current == $slug && !(_id in path("drafts.**"))][0]`,
-    { slug }
-  );
+  return await client.fetch(queries.serviceBySlugQuery, { slug }) as any;
 }
 
 // ============================================================================
@@ -99,25 +82,16 @@ export async function getService(slug: string): Promise<ServiceDocument | null> 
 
 // For list views - lightweight projection
 export async function getAllPosts(): Promise<BlogPostDocument[]> {
-  return await client.fetch<BlogPostDocument[]>(
-    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc) {
-      _id, _type, title, slug, date, category, read_time, excerpt, image
-    }`
-  );
+  return await client.fetch(queries.postsQuery) as any;
 }
 
 // For detail views - full document (includes content)
 export async function getAllPostsFull(): Promise<BlogPostDocument[]> {
-  return await client.fetch<BlogPostDocument[]>(
-    `*[_type == "blog_post" && !(_id in path("drafts.**")) && published == true] | order(date desc)`
-  );
+  return await client.fetch(queries.postsFullQuery) as any;
 }
 
 export async function getPost(slug: string): Promise<BlogPostDocument | null> {
-  return await client.fetch<BlogPostDocument | null>(
-    `*[_type == "blog_post" && slug.current == $slug && !(_id in path("drafts.**")) && published == true][0]`,
-    { slug }
-  );
+  return await client.fetch(queries.postBySlugQuery, { slug }) as any;
 }
 
 // ============================================================================
@@ -125,9 +99,7 @@ export async function getPost(slug: string): Promise<BlogPostDocument | null> {
 // ============================================================================
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
-  return await client.fetch<SiteSettings | null>(
-    `*[_type == "siteSettings" && !(_id in path("drafts.**"))][0]`
-  )
+  return await client.fetch(queries.siteSettingsQuery) as any
 }
 
 // ============================================================================
@@ -135,10 +107,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 // ============================================================================
 
 export async function getPageMetadata(page: string): Promise<PageMetadata | null> {
-  return await client.fetch<PageMetadata | null>(
-    `*[_type == "pageMetadata" && page == $page && !(_id in path("drafts.**"))][0]`,
-    { page }
-  )
+  return await client.fetch(queries.pageMetadataQuery, { page }) as any
 }
 
 

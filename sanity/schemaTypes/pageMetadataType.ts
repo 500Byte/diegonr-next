@@ -1,9 +1,11 @@
 import { defineType, defineField } from 'sanity'
+import { SearchIcon } from '@sanity/icons'
 
 export const pageMetadataType = defineType({
   name: 'pageMetadata',
   title: 'Page Metadata',
   type: 'document',
+  icon: SearchIcon,
   fields: [
     defineField({
       name: 'page',

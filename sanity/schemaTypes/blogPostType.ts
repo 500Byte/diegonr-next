@@ -1,9 +1,11 @@
 import { defineType, defineField } from 'sanity'
+import { DocumentIcon } from '@sanity/icons'
 
 export const blogPostType = defineType({
   name: 'blog_post',
   title: 'Blog Post',
   type: 'document',
+  icon: DocumentIcon,
   fields: [
     defineField({
       name: 'title',
@@ -44,4 +46,15 @@ export const blogPostType = defineType({
     defineField({ name: 'tags', title: 'Tags', type: 'array', of: [{ type: 'object', fields: [{ name: 'tag', type: 'string' }] }] }),
     defineField({ name: 'content', title: 'Content', type: 'array', of: [{ type: 'block' }, { type: 'image' }] }),
   ],
+  initialValue: {
+    published: true,
+    date: new Date().toISOString().split('T')[0],
+  },
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'date',
+      media: 'image',
+    },
+  },
 })

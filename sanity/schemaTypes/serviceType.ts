@@ -1,9 +1,11 @@
 import { defineType, defineField } from 'sanity'
+import { SparklesIcon } from '@sanity/icons'
 
 export const serviceType = defineType({
   name: 'service',
   title: 'Service',
   type: 'document',
+  icon: SparklesIcon,
   fields: [
     defineField({
       name: 'title',
@@ -38,4 +40,19 @@ export const serviceType = defineType({
     defineField({ name: 'order', title: 'Order', type: 'number' }),
     defineField({ name: 'content', title: 'Content', type: 'array', of: [{ type: 'block' }] }),
   ],
+  initialValue: {
+    order: 0,
+  },
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'order',
+    },
+    prepare({ title, subtitle }) {
+      return {
+        title,
+        subtitle: subtitle !== undefined ? `Order: ${subtitle}` : 'No order set',
+      }
+    },
+  },
 })

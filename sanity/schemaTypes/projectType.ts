@@ -1,9 +1,11 @@
 import { defineType, defineField } from 'sanity'
+import { CaseIcon } from '@sanity/icons'
 
 export const projectType = defineType({
   name: 'project',
   title: 'Project',
   type: 'document',
+  icon: CaseIcon,
   fields: [
     defineField({
       name: 'title',
@@ -74,4 +76,14 @@ export const projectType = defineType({
     defineField({ name: 'image', title: 'Image', type: 'image', options: { hotspot: true } }),
     defineField({ name: 'content', title: 'Content', type: 'array', of: [{ type: 'block' }] }),
   ],
+  initialValue: {
+    featured: false,
+  },
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'year',
+      media: 'image',
+    },
+  },
 })

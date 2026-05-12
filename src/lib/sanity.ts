@@ -1,5 +1,6 @@
 import { createClient } from 'next-sanity';
 import { createImageUrlBuilder } from '@sanity/image-url';
+import { draftMode } from 'next/headers';
 import * as queries from './sanity.queries';
 import { ProjectDocument, ServiceDocument, BlogPostDocument, SiteSettings, PageMetadata } from '../types';
 
@@ -27,6 +28,24 @@ export const client = createClient({
   token,
 });
 
+/**
+ * Helper function to get the client with draft mode support
+ * In Next.js 15, draftMode() is asynchronous
+ */
+async function getClient() {
+  const isDraftMode = (await draftMode()).isEnabled;
+  if (isDraftMode && !token) {
+    throw new Error('The SANITY_API_TOKEN environment variable is required for Draft Mode.');
+  }
+  return isDraftMode
+    ? client.withConfig({
+        token,
+        perspective: 'previewDrafts',
+        useCdn: false,
+      })
+    : client;
+}
+
 const builder = createImageUrlBuilder(client);
 
 
@@ -40,7 +59,10 @@ export function urlFor(source: Parameters<typeof builder.image>[0]) {
 
 // For list views - lightweight projection
 export async function getAllProjects(): Promise<ProjectDocument[]> {
-  const projects = await client.fetch(queries.projectsQuery);
+  const currentClient = await getClient();
+  const projects = await currentClient.fetch(queries.projectsQuery, {}, {
+    next: { tags: ['project'] }
+  });
 
   return (projects as any).sort((a: any, b: any) => {
     if (a.featured && !b.featured) return -1;
@@ -51,11 +73,17 @@ export async function getAllProjects(): Promise<ProjectDocument[]> {
 
 // For detail views - full document
 export async function getAllProjectsFull(): Promise<ProjectDocument[]> {
-  return await client.fetch(queries.projectsFullQuery) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.projectsFullQuery, {}, {
+    next: { tags: ['project'] }
+  }) as any;
 }
 
 export async function getProject(slug: string): Promise<ProjectDocument | null> {
-  return await client.fetch(queries.projectBySlugQuery, { slug }) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.projectBySlugQuery, { slug }, {
+    next: { tags: ['project'] }
+  }) as any;
 }
 
 // ============================================================================
@@ -64,16 +92,25 @@ export async function getProject(slug: string): Promise<ProjectDocument | null> 
 
 // For list views - lightweight projection
 export async function getAllServices(): Promise<ServiceDocument[]> {
-  return await client.fetch(queries.servicesQuery) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.servicesQuery, {}, {
+    next: { tags: ['service'] }
+  }) as any;
 }
 
 // For detail views - full document
 export async function getAllServicesFull(): Promise<ServiceDocument[]> {
-  return await client.fetch(queries.servicesFullQuery) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.servicesFullQuery, {}, {
+    next: { tags: ['service'] }
+  }) as any;
 }
 
 export async function getService(slug: string): Promise<ServiceDocument | null> {
-  return await client.fetch(queries.serviceBySlugQuery, { slug }) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.serviceBySlugQuery, { slug }, {
+    next: { tags: ['service'] }
+  }) as any;
 }
 
 // ============================================================================
@@ -82,16 +119,25 @@ export async function getService(slug: string): Promise<ServiceDocument | null> 
 
 // For list views - lightweight projection
 export async function getAllPosts(): Promise<BlogPostDocument[]> {
-  return await client.fetch(queries.postsQuery) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.postsQuery, {}, {
+    next: { tags: ['blog_post'] }
+  }) as any;
 }
 
 // For detail views - full document (includes content)
 export async function getAllPostsFull(): Promise<BlogPostDocument[]> {
-  return await client.fetch(queries.postsFullQuery) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.postsFullQuery, {}, {
+    next: { tags: ['blog_post'] }
+  }) as any;
 }
 
 export async function getPost(slug: string): Promise<BlogPostDocument | null> {
-  return await client.fetch(queries.postBySlugQuery, { slug }) as any;
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.postBySlugQuery, { slug }, {
+    next: { tags: ['blog_post'] }
+  }) as any;
 }
 
 // ============================================================================
@@ -99,7 +145,10 @@ export async function getPost(slug: string): Promise<BlogPostDocument | null> {
 // ============================================================================
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
-  return await client.fetch(queries.siteSettingsQuery) as any
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.siteSettingsQuery, {}, {
+    next: { tags: ['siteSettings'] }
+  }) as any
 }
 
 // ============================================================================
@@ -107,7 +156,10 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 // ============================================================================
 
 export async function getPageMetadata(page: string): Promise<PageMetadata | null> {
-  return await client.fetch(queries.pageMetadataQuery, { page }) as any
+  const currentClient = await getClient();
+  return await currentClient.fetch(queries.pageMetadataQuery, { page }, {
+    next: { tags: ['pageMetadata'] }
+  }) as any
 }
 
 

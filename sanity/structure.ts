@@ -15,7 +15,7 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       S.listItem()
         .title('Page Metadata')
-        .id('pageMetadata')
+        .id('pageMetadata-list')
         .child(
           S.documentTypeList('pageMetadata')
             .title('Page Metadata')

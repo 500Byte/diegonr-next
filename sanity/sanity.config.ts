@@ -3,7 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schema } from './schemaTypes'
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'qda0c21o'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 
 

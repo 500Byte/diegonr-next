@@ -31,7 +31,7 @@ export const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
   const email = siteSettings?.contact?.email;
   const copyright = siteSettings?.copyright;
 
-  const location = resolveI18n(siteSettings?.contact, 'location', locale);
+  const location = resolveI18n<string>(siteSettings?.contact, 'location', locale);
   const locationCity = location || t('location_city');
 
   const displayEmail = email || 'hola@diegonr.com';

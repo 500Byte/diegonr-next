@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import { getPageMetadata, urlFor, getSiteSettings } from './sanity'
+import { resolveI18n } from './sanity.utils'
 
 interface BuildMetadataOptions {
   page: string
@@ -20,15 +21,23 @@ export async function buildPageMetadata({
     getSiteSettings(),
   ])
 
+  // Sanity Site Settings as primary source of truth
   const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com'
   const twitterHandle = settings?.seo?.twitterHandle || '@diegonr'
   const brandName = settings?.brand?.name || 'Diego NR'
-  const localeKey = locale as 'es' | 'en'
   const ogLocale = locale === 'en' ? 'en_US' : 'es_ES'
 
-  const title = pageMeta?.metaTitle?.[localeKey] || fallback?.title || `${brandName} | Portfolio`
-  const description = pageMeta?.metaDescription?.[localeKey] || fallback?.description || ''
-  const keywords = pageMeta?.keywords?.[localeKey] || []
+  // Resolve localized fields from PageMetadata
+  // Handles both field_locale and { es, en } object patterns
+  const getLocalized = (field: any, key: string) => {
+    const resolved = resolveI18n<any>(pageMeta, key, locale)
+    if (typeof resolved === 'string') return resolved
+    return field?.[locale]
+  }
+
+  const title = getLocalized(pageMeta?.metaTitle, 'metaTitle') || fallback?.title || `${brandName} | Portfolio`
+  const description = getLocalized(pageMeta?.metaDescription, 'metaDescription') || fallback?.description || ''
+  const keywords = getLocalized(pageMeta?.keywords, 'keywords') || []
   const robotsIndex = pageMeta?.robotsIndex ?? true
 
   const path = page === 'home' ? '' : `/${page}`
@@ -56,7 +65,7 @@ export async function buildPageMetadata({
       title,
       description,
       url: `/${locale}${path}`,
-      siteName: `${brandName} Portfolio`,
+      siteName: brandName,
       locale: ogLocale,
       type: 'website',
       images: [
@@ -72,6 +81,7 @@ export async function buildPageMetadata({
       card: 'summary_large_image',
       title,
       description,
+      site: twitterHandle,
       creator: twitterHandle,
       images: [ogImageUrl],
     },

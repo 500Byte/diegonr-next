@@ -7,16 +7,17 @@ import { Magnetic } from './Magnetic';
 import { Marquee } from './animations/marquee';
 import { scrollTo } from '@/lib/lenis';
 import { Link } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import { SiteSettings } from '@/types';
+import { resolveI18n } from '@/lib/sanity.utils';
 
 interface FooterProps {
-  socialLinks?: { platform: string; url: string }[];
-  email?: string;
-  copyright?: string;
+  siteSettings?: SiteSettings | null;
 }
 
-export const Footer: React.FC<FooterProps> = ({ socialLinks, email, copyright }) => {
+export const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
   const t = useTranslations('Footer');
+  const locale = useLocale();
 
   const navLinks = [
     { label: t('links.about'), path: '/about' as const },
@@ -25,6 +26,13 @@ export const Footer: React.FC<FooterProps> = ({ socialLinks, email, copyright })
     { label: t('links.blog'), path: '/blog' as const },
     { label: t('links.contact'), path: '/contact' as const }
   ];
+
+  const socialLinks = siteSettings?.socialLinks;
+  const email = siteSettings?.contact?.email;
+  const copyright = siteSettings?.copyright;
+
+  const location = resolveI18n(siteSettings?.contact, 'location', locale);
+  const locationCity = location || t('location_city');
 
   const displayEmail = email || 'hola@diegonr.com';
   const mailtoHref = `mailto:${displayEmail}`;
@@ -66,8 +74,8 @@ export const Footer: React.FC<FooterProps> = ({ socialLinks, email, copyright })
           </div>
           <div className="md:col-span-4 md:text-right">
             <p className="font-mono text-[10px] text-white/40 uppercase tracking-widest mb-8">{t('location_label')}</p>
-            <p className="text-lg font-light">{t('location_city')}</p>
-            <p className="text-lg font-light opacity-60">{t('location_remote')}</p>
+            <p className="text-lg font-light">{locationCity}</p>
+            {!location && <p className="text-lg font-light opacity-60">{t('location_remote')}</p>}
           </div>
         </div>
 

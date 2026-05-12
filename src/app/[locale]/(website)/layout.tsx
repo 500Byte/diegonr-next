@@ -40,7 +40,7 @@ export default async function WebsiteLayout({
         <CustomCursor />
         <Navigation socialLinks={socialLinks} email={email} />
         <main className="relative min-h-screen">{children}</main>
-        <Footer socialLinks={socialLinks} email={email} copyright={copyright} />
+        <Footer siteSettings={siteSettings} />
       </div>
       <StructuredData data={generatePersonStructuredData(siteSettings ?? undefined)} />
       <StructuredData data={generateWebSiteStructuredData(siteSettings ?? undefined)} />

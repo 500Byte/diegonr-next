@@ -29,8 +29,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectsPage({ params }: Props) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'ProjectsPage' });
-  const projects = await getAllProjects();
+  const [t, projects] = await Promise.all([
+    getTranslations({ locale, namespace: 'ProjectsPage' }),
+    getAllProjects(),
+  ]);
 
   return (
     <div className="page-content">

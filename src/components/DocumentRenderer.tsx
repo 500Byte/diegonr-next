@@ -1,8 +1,10 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react';
 import { PortableTextBlock } from '@portabletext/types';
 import Link from 'next/link';
-import Image from 'next/image';
 import { urlFor } from '../lib/sanity';
+import { ResearchTable } from './ResearchTable';
+import { ResearchCallout } from './ResearchCallout';
+import { CodeBlock } from './CodeBlock';
 
 const components: PortableTextComponents = {
   block: {
@@ -38,27 +40,37 @@ const components: PortableTextComponents = {
     code: ({ children }) => <code className="bg-white/10 px-1 py-0.5 rounded font-mono text-sm">{children}</code>,
   },
   types: {
-    image: ({ value }) => {
-      if (!value?.asset?._ref) {
-        return null;
-      }
+    image: () => null,
+    codeBlock: ({ value }) => {
+      if (!value?.code) return null;
       return (
-        <div className="relative w-full h-auto my-8">
-            <Image
-                src={urlFor(value).url()}
-                alt={value.alt || 'Image'}
-                width={800} // Set realistic default width, will be styled via Tailwind
-                height={600}
-                className="rounded-lg w-full h-auto object-cover border border-white/10"
-            />
-        </div>
+        <CodeBlock
+          code={value.code}
+          language={value.language}
+          filename={value.filename}
+        />
       );
     },
-    code: ({ value }) => (
-      <pre className="bg-white/10 px-4 py-3 rounded-lg font-mono text-sm overflow-x-auto mb-6">
-        {value.code}
-      </pre>
-    )
+    table: ({ value }) => {
+      if (!value?.headers || !value?.rows) return null;
+      return (
+        <ResearchTable
+          caption={value.caption}
+          headers={value.headers}
+          rows={value.rows}
+        />
+      );
+    },
+    callout: ({ value }) => {
+      if (!value?.content) return null;
+      return (
+        <ResearchCallout
+          variant={value.variant}
+          title={value.title}
+          content={value.content}
+        />
+      );
+    },
   },
   list: {
     bullet: ({ children }) => <ul className="list-disc list-outside mb-6 ml-4 text-white/80 space-y-2">{children}</ul>,

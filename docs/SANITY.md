@@ -31,11 +31,16 @@ sanity/
 
 ```typescript
 // sanity.config.ts
-plugins: [structureTool(), visionTool()]
+plugins: [
+  structureTool({ structure }),
+  visionTool({ defaultApiVersion: '2022-03-07' }),
+  codeInput(), // @sanity/code-input for code blocks in Portable Text
+]
 ```
 
 - `structureTool`: Sidebar navigation in Studio
 - `visionTool`: GROQ query playground (accessible at `/sanity/studio/vision`)
+- `codeInput`: Code block editor with syntax highlighting support for Portable Text
 
 ### Schemas
 
@@ -185,11 +190,45 @@ import { DocumentRenderer } from '@/components/DocumentRenderer';
 // Custom components:
 // - block (h1-h6, p, blockquote)
 // - marks (link, code)
-// - types (image, code)
+// - types (codeBlock, table, callout)
 // - list (bullet, number)
+// Note: images are handled by ResearchContent for lightbox support
 
 <DocumentRenderer field={project.content} />
 ```
+
+### ResearchContent
+
+Client component wrapper (`src/components/ResearchContent.tsx`) that renders Portable Text content with:
+- Text blocks via `DocumentRenderer`
+- Images with lightbox (click to fullscreen, keyboard navigation with ← → Esc)
+- Code blocks with copy button
+- Tables with Swiss-Brutalist styling
+- Callouts (info, warning, insight, quote variants)
+
+Used in blog post detail pages to render research-style content.
+
+### ResearchTable
+
+Table component (`src/components/ResearchTable.tsx`) with:
+- Headers in monospace, uppercase, tracking-widest
+- Horizontal scroll on mobile
+- Caption as metadata below the table
+
+### CodeBlock
+
+Code block component (`src/components/CodeBlock.tsx`) with:
+- Language label and optional filename
+- Copy-to-clipboard button
+- Horizontal scroll for long lines
+
+### ResearchCallout
+
+Callout component (`src/components/ResearchCallout.tsx`) with 4 variants:
+- `info`: Info icon, subtle border
+- `warning`: AlertTriangle icon, higher contrast border
+- `insight`: Lightbulb icon, medium border
+- `quote`: Blockquote style, Quote icon
 
 ### toPlainText
 

@@ -1,5 +1,5 @@
 import { toPlainText } from '@portabletext/react';
-import { DocumentRenderer } from '@/components/DocumentRenderer';
+import { ResearchContent } from '@/components/ResearchContent';
 import { SwissContainer } from '@/components/Layout';
 import { PageHeader } from '@/components/PageHeader';
 import {
@@ -16,6 +16,7 @@ import { urlFor } from '@/lib/sanity';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
+import { PortableTextBlock } from '@portabletext/types';
 
 
 export async function generateStaticParams() {
@@ -121,6 +122,15 @@ export default async function PostSingle({ params }: PageProps) {
   }
 
   const post = postDoc;
+  const content = post.content as PortableTextBlock[] | undefined;
+  const images = (content || [])
+    .filter((block): block is PortableTextBlock & { _type: 'image'; asset: { _ref: string }; alt?: string } =>
+      block._type === 'image' && (block as any).asset?._ref
+    )
+    .map((block) => ({
+      src: urlFor(block as any).url(),
+      alt: (block as any).alt || 'Research image',
+    }));
 
   return (
     <div className="page-content">
@@ -148,11 +158,13 @@ export default async function PostSingle({ params }: PageProps) {
         <SwissContainer>
           <div className="max-w-4xl mx-auto">
             <FadeIn>
-              <div className="aspect-video bg-white/5 overflow-hidden mb-16 relative">
-                { post.image && <Image src={urlFor(post.image).url()} alt={`Cover image for ${post.title}`} fill
-                  className="object-cover grayscale"
-                 /> }
-              </div>
+              { post.image && (
+                <div className="aspect-video bg-white/5 overflow-hidden mb-16 relative border border-white/10">
+                  <Image src={urlFor(post.image).url()} alt={`Cover image for ${post.title}`} fill
+                    className="object-cover grayscale"
+                  />
+                </div>
+              ) }
 
               <div className="flex items-center gap-8 mb-16 py-8 border-y border-white/10">
                 <div className="flex items-center gap-2">
@@ -174,7 +186,7 @@ export default async function PostSingle({ params }: PageProps) {
                   {toPlainText(post.excerpt || [])}
                 </p>
                 <div className="text-xl font-light leading-relaxed text-white/60 space-y-8 portable-text-content">
-                  <DocumentRenderer field={post.content} />
+                  <ResearchContent content={content} images={images} />
                 </div>
               </div>
             </FadeIn>

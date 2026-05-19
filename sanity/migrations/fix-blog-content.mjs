@@ -33,6 +33,37 @@ async function main() {
     }
     return block
   })
+
+  // Step 3: Remove excessive callouts - keep only the most impactful ones
+  const calloutsToRemove = new Set([
+    'Sin esto',
+    'Impacto',
+    '¿Por qué complementa la cuantitativa?',
+  ])
+
+  content = content.filter(block => {
+    if (block._type === 'callout' && block.title) {
+      return !calloutsToRemove.has(block.title)
+    }
+    return true
+  })
+
+  console.log(`Post-cleanup block count: ${content.length}`)
+
+  // Step 4: Commit the patch to Sanity
+  try {
+    console.log('Applying patch to Sanity...')
+    await client.patch(POST_ID).set({ content }).commit()
+    console.log('✅ Fix applied successfully!')
+  } catch (err) {
+    console.error('❌ Fix failed:', err.message)
+    process.exit(1)
+  }
 }
 
-main()
+try {
+  main()
+} catch (err) {
+  console.error('❌ Script failed:', err.message)
+  process.exit(1)
+}

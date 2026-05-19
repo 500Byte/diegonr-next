@@ -16,7 +16,23 @@ async function main() {
   const initialCount = content.length
   console.log(`Initial block count: ${initialCount}`)
 
-  // Logic will go here
+  // Step 1: Log detected invalid list styles
+  const bulletStyleCount = content.filter(b => b._type === 'block' && b.style === 'bullet').length
+  const numberStyleCount = content.filter(b => b._type === 'block' && b.style === 'number').length
+  console.log(`Detected invalid styles: ${bulletStyleCount} bullets, ${numberStyleCount} numbers`)
+
+  // Step 2: Convert style: bullet/number to proper listItem structure
+  content = content.map(block => {
+    if (block._type === 'block') {
+      if (block.style === 'bullet') {
+        return { ...block, style: 'normal', listItem: 'bullet' }
+      }
+      if (block.style === 'number') {
+        return { ...block, style: 'normal', listItem: 'number' }
+      }
+    }
+    return block
+  })
 }
 
 main()

@@ -1,12 +1,11 @@
-import React from 'react';
-import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { PageHeader } from '@/components/PageHeader';
-import { SwissContainer } from '@/components/Layout';
 import { FadeIn } from '@/components/animations/text-reveal';
 import { ContactForm } from '@/components/ContactForm';
-import { getSiteSettings } from '@/lib/sanity';
+import { SwissContainer } from '@/components/Layout';
+import { PageHeader } from '@/components/PageHeader';
 import { buildPageMetadata } from '@/lib/metadata';
+import { getSiteSettings } from '@/lib/sanity';
+import type { Metadata } from 'next';
+import { getTranslations } from 'next-intl/server';
 // import { NewsletterSignup } from '@/components/NewsletterSignup'; // Disabled - not needed
 
 type Props = {
@@ -75,14 +74,6 @@ export default async function ContactPage({ params }: Props) {
                   </div>
                 </div>
               </FadeIn>
-
-              {/* Newsletter Signup - Disabled
-              <FadeIn delay={0.6}>
-                <div className="pt-8 border-t border-white/10">
-                  <NewsletterSignup />
-                </div>
-              </FadeIn>
-              */}
             </div>
           </div>
         </SwissContainer>

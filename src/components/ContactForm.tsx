@@ -1,39 +1,41 @@
 "use client"
 
-import React, { useState, useRef, useMemo } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import emailjs from '@emailjs/browser'
 import { Magnetic } from '@/components/Magnetic'
-import { Send, CheckCircle, AlertCircle, MessageSquare, User, Mail, Briefcase } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Turnstile } from '@marsidev/react-turnstile'
+import { AlertCircle, Briefcase, CheckCircle, Mail, MessageSquare, Send, User } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useMemo, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 interface ContactFormProps {
-  toEmail?: string;
+  toEmail?: string; // kept for backwards compat but unused
 }
 
 export function ContactForm({ toEmail }: ContactFormProps) {
   const t = useTranslations('ContactForm')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const formRef = useRef<HTMLFormElement>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
 
   // Define schema inside component to access translations
   const contactSchema = useMemo(() => z.object({
-    name: z.string().min(2, t('validation.name_min')).max(50, t('validation.name_max')),
-    email: z.string().email(t('validation.email_invalid')),
-    company: z.string().optional(),
-    subject: z.string().min(5, t('validation.subject_min')).max(100, t('validation.subject_max')),
-    message: z.string().min(20, t('validation.message_min')).max(1000, t('validation.message_max')),
-    service: z.enum(['development', 'design', 'ai', 'consulting', 'other']).refine(val => val, {
-      message: t('validation.service_required'),
+    name: z.string().trim().min(2, t('validation.name_min')).max(50, t('validation.name_max')),
+    email: z.string().trim().email(t('validation.email_invalid')),
+    company: z.string().trim().optional(),
+    subject: z.string().trim().min(5, t('validation.subject_min')).max(100, t('validation.subject_max')),
+    message: z.string().trim().min(20, t('validation.message_min')).max(1000, t('validation.message_max')),
+    // honeypot — must stay empty; real users never see or fill this field
+    website: z.string().max(0).optional(),
+    service: z.enum(['development', 'design', 'ai', 'consulting', 'other'], {
+      error: t('validation.service_required'),
     }),
-    budget: z.enum(['small', 'medium', 'large', 'enterprise', 'discuss']).refine(val => val, {
-      message: t('validation.budget_required'),
+    budget: z.enum(['small', 'medium', 'large', 'enterprise', 'discuss'], {
+      error: t('validation.budget_required'),
     }),
-    timeline: z.enum(['asap', '1month', '3months', '6months', 'flexible']).refine(val => val, {
-      message: t('validation.timeline_required'),
+    timeline: z.enum(['asap', '1month', '3months', '6months', 'flexible'], {
+      error: t('validation.timeline_required'),
     }),
   }), [t])
 
@@ -74,36 +76,41 @@ export function ContactForm({ toEmail }: ContactFormProps) {
   })
 
   const onSubmit = async (data: ContactFormData) => {
+    // guard against double submits (e.g. Enter key firing while button is disabled)
+    if (isSubmitting) return
+
+    // honeypot tripped — silently pretend success, do not send
+    if (data.website) {
+      setSubmitStatus('success')
+      reset()
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
     try {
-      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || ''
-      const templateId = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID || ''
-      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
-      const resolvedToEmail = toEmail || process.env.CONTACT_FORM_TO_EMAIL || 'your-email@domain.com'
-
-      if (!serviceId || !templateId || !publicKey) {
-        console.warn('EmailJS not configured for contact. Simulating send...')
-        await new Promise(resolve => setTimeout(resolve, 1500))
-        setSubmitStatus('success')
-        reset()
-        return
-      }
-
-      const templateParams = {
-        from_name: data.name,
-        from_email: data.email,
-        company: data.company || t('fields.company.placeholder'),
+      const payload = {
+        name: data.name,
+        email: data.email,
+        company: data.company || '',
         subject: data.subject,
         message: data.message,
         service: services.find(s => s.value === data.service)?.label || data.service,
         budget: budgets.find(b => b.value === data.budget)?.label || data.budget,
         timeline: timelines.find(tm => tm.value === data.timeline)?.label || data.timeline,
-        to_email: resolvedToEmail,
+        'cf-turnstile-response': turnstileToken,
       }
 
-      await emailjs.send(serviceId, templateId, templateParams, publicKey)
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!res.ok) {
+        throw new Error(`Request failed: ${res.status}`)
+      }
 
       setSubmitStatus('success')
       reset()
@@ -129,7 +136,19 @@ export function ContactForm({ toEmail }: ContactFormProps) {
         </p>
       </div>
 
-      <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-6">
+        {/* Honeypot field — hidden from sighted users and screen readers, bots tend to fill it */}
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="website">Website</label>
+          <input
+            {...register('website')}
+            type="text"
+            id="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="name" className="block text-sm font-mono text-white/60 uppercase tracking-widest mb-2">
@@ -141,12 +160,14 @@ export function ContactForm({ toEmail }: ContactFormProps) {
                 {...register('name')}
                 type="text"
                 id="name"
+                aria-invalid={errors.name ? 'true' : 'false'}
+                aria-describedby={errors.name ? 'name-error' : undefined}
                 className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
                 placeholder={t('fields.name.placeholder')}
               />
             </div>
             {errors.name && (
-              <p className="text-error text-sm mt-1">{errors.name.message}</p>
+              <p id="name-error" role="alert" className="text-error text-sm mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -160,12 +181,14 @@ export function ContactForm({ toEmail }: ContactFormProps) {
                 {...register('email')}
                 type="email"
                 id="email"
+                aria-invalid={errors.email ? 'true' : 'false'}
+                aria-describedby={errors.email ? 'email-error' : undefined}
                 className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
                 placeholder={t('fields.email.placeholder')}
               />
             </div>
             {errors.email && (
-              <p className="text-error text-sm mt-1">{errors.email.message}</p>
+              <p id="email-error" role="alert" className="text-error text-sm mt-1">{errors.email.message}</p>
             )}
           </div>
         </div>
@@ -193,6 +216,9 @@ export function ContactForm({ toEmail }: ContactFormProps) {
           <select
             {...register('service')}
             id="service"
+            defaultValue=""
+            aria-invalid={errors.service ? 'true' : 'false'}
+            aria-describedby={errors.service ? 'service-error' : undefined}
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-white/30 transition-colors"
           >
             <option value="" className="bg-swiss-black">{t('fields.service.placeholder')}</option>
@@ -203,7 +229,7 @@ export function ContactForm({ toEmail }: ContactFormProps) {
             ))}
           </select>
           {errors.service && (
-            <p className="text-error text-sm mt-1">{errors.service.message}</p>
+            <p id="service-error" role="alert" className="text-error text-sm mt-1">{errors.service.message}</p>
           )}
         </div>
 
@@ -215,6 +241,9 @@ export function ContactForm({ toEmail }: ContactFormProps) {
             <select
               {...register('budget')}
               id="budget"
+              defaultValue=""
+              aria-invalid={errors.budget ? 'true' : 'false'}
+              aria-describedby={errors.budget ? 'budget-error' : undefined}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-white/30 transition-colors"
             >
               <option value="" className="bg-swiss-black">{t('fields.budget.placeholder')}</option>
@@ -225,7 +254,7 @@ export function ContactForm({ toEmail }: ContactFormProps) {
               ))}
             </select>
             {errors.budget && (
-              <p className="text-error text-sm mt-1">{errors.budget.message}</p>
+              <p id="budget-error" role="alert" className="text-error text-sm mt-1">{errors.budget.message}</p>
             )}
           </div>
 
@@ -236,6 +265,9 @@ export function ContactForm({ toEmail }: ContactFormProps) {
             <select
               {...register('timeline')}
               id="timeline"
+              defaultValue=""
+              aria-invalid={errors.timeline ? 'true' : 'false'}
+              aria-describedby={errors.timeline ? 'timeline-error' : undefined}
               className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-white/30 transition-colors"
             >
               <option value="" className="bg-swiss-black">{t('fields.timeline.placeholder')}</option>
@@ -246,7 +278,7 @@ export function ContactForm({ toEmail }: ContactFormProps) {
               ))}
             </select>
             {errors.timeline && (
-              <p className="text-error text-sm mt-1">{errors.timeline.message}</p>
+              <p id="timeline-error" role="alert" className="text-error text-sm mt-1">{errors.timeline.message}</p>
             )}
           </div>
         </div>
@@ -259,11 +291,13 @@ export function ContactForm({ toEmail }: ContactFormProps) {
             {...register('subject')}
             type="text"
             id="subject"
+            aria-invalid={errors.subject ? 'true' : 'false'}
+            aria-describedby={errors.subject ? 'subject-error' : undefined}
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
             placeholder={t('fields.subject.placeholder')}
           />
           {errors.subject && (
-            <p className="text-error text-sm mt-1">{errors.subject.message}</p>
+            <p id="subject-error" role="alert" className="text-error text-sm mt-1">{errors.subject.message}</p>
           )}
         </div>
 
@@ -275,24 +309,33 @@ export function ContactForm({ toEmail }: ContactFormProps) {
             {...register('message')}
             id="message"
             rows={6}
+            aria-invalid={errors.message ? 'true' : 'false'}
+            aria-describedby={errors.message ? 'message-error' : undefined}
             className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors resize-none"
             placeholder={t('fields.message.placeholder')}
           />
           {errors.message && (
-            <p className="text-error text-sm mt-1">{errors.message.message}</p>
+            <p id="message-error" role="alert" className="text-error text-sm mt-1">{errors.message.message}</p>
           )}
         </div>
 
         <div className="pt-4">
+          <div className="flex justify-center mb-4">
+            <Turnstile
+              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+              onSuccess={(token) => setTurnstileToken(token)}
+              onExpire={() => setTurnstileToken(null)}
+            />
+          </div>
           <div id="form-status" aria-live="polite" aria-atomic="true" className="sr-only">
             {submitStatus === 'success' && t('aria.success')}
             {submitStatus === 'error' && t('aria.error')}
             {isSubmitting && t('aria.sending')}
           </div>
-          <Magnetic strength={0.3}>
+          <Magnetic strength={0.01}>
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !turnstileToken}
               aria-describedby={submitStatus !== 'idle' ? 'form-status' : undefined}
               className="group w-full md:w-auto px-8 py-4 bg-swiss-white text-swiss-black font-medium rounded-lg hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-swiss-black"
             >

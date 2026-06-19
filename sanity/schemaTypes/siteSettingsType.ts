@@ -46,7 +46,6 @@ export const siteSettingsType = defineType({
       type: 'object',
       fields: [
         { name: 'siteUrl', title: 'Site URL', type: 'url' },
-        { name: 'twitterHandle', title: 'Twitter Handle', type: 'string' },
       ]
     }),
     defineField({ name: 'copyright', title: 'Copyright', type: 'string' }),

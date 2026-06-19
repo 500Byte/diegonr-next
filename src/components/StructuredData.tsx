@@ -130,7 +130,6 @@ export function generatePersonStructuredData(settings?: SiteSettings): Structure
   const sameAs = settings?.socialLinks?.map(l => l.url) || [
     'https://github.com/diegonr',
     'https://linkedin.com/in/diegonr',
-    'https://twitter.com/diegonr'
   ];
 
   return {
@@ -293,7 +292,6 @@ export function generateOrganizationStructuredData(settings?: SiteSettings): Str
   const sameAs = settings?.socialLinks?.map(l => l.url) || [
     'https://github.com/diegonr',
     'https://linkedin.com/in/diegonr',
-    'https://twitter.com/diegonr'
   ];
 
   return {

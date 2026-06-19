@@ -23,7 +23,6 @@ export async function buildPageMetadata({
 
   // Sanity Site Settings as primary source of truth
   const siteUrl = settings?.seo?.siteUrl || 'https://diegonr.com'
-  const twitterHandle = settings?.seo?.twitterHandle || '@diegonr'
   const brandName = settings?.brand?.name || 'Diego NR'
   const ogLocale = locale === 'en' ? 'en_US' : 'es_ES'
 
@@ -81,8 +80,6 @@ export async function buildPageMetadata({
       card: 'summary_large_image',
       title,
       description,
-      site: twitterHandle,
-      creator: twitterHandle,
       images: [ogImageUrl],
     },
     robots: {

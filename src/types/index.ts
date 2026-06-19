@@ -92,7 +92,6 @@ export interface SiteSettings {
   socialLinks: { platform: string; url: string }[];
   seo: {
     siteUrl: string;
-    twitterHandle: string;
   };
   copyright: string;
 }

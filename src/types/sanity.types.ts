@@ -125,7 +125,6 @@ export type SiteSettings = {
   }>;
   seo?: {
     siteUrl?: string;
-    twitterHandle?: string;
   };
   copyright?: string;
 };
@@ -1562,7 +1561,6 @@ export type SiteSettingsQueryResult = {
   }>;
   seo?: {
     siteUrl?: string;
-    twitterHandle?: string;
   };
   copyright?: string;
 } | null;

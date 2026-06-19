@@ -47,11 +47,9 @@ async function seedSiteSettings() {
     socialLinks: [
       { _key: 'l1', platform: 'LinkedIn', url: 'https://linkedin.com/in/diegonr' },
       { _key: 'l2', platform: 'GitHub', url: 'https://github.com/500byte' },
-      { _key: 'l3', platform: 'Twitter', url: 'https://twitter.com/diegonr' },
     ],
     seo: {
       siteUrl: 'https://diegonr.com',
-      twitterHandle: '@diegonr',
     },
     copyright: `© ${new Date().getFullYear()} Diego NR. All rights reserved.`,
   }

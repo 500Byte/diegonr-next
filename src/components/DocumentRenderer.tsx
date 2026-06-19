@@ -3,7 +3,14 @@ import { PortableTextBlock } from '@portabletext/types';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ZoomIn } from 'lucide-react';
-import { urlFor } from '../lib/sanity';
+import { createImageUrlBuilder } from '@sanity/image-url';
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || '';
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
+
+const builder = createImageUrlBuilder({ projectId, dataset });
+
+const urlFor = (source: any) => builder.image(source);
 import { ResearchTable } from './ResearchTable';
 import { ResearchCallout } from './ResearchCallout';
 import { CodeBlock } from './CodeBlock';

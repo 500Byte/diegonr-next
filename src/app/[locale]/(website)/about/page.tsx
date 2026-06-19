@@ -53,7 +53,7 @@ export default async function AboutPage({ params }: Props) {
               <FadeIn delay={0.2}>
                 <div className="aspect-[4/5] bg-white/5 border border-white/10 relative overflow-hidden group">
                   <Image
-                    src="https://picsum.photos/seed/about/800/1000"
+                    src="/images/about.jpg"
                     alt={t('image_alt')}
                     fill
                     className="object-cover grayscale hover:grayscale-0 transition-all duration-700"

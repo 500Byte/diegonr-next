@@ -7,7 +7,6 @@ import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { useRef } from "react";
 
 const getStats = (t: (key: string) => string) => [
@@ -175,20 +174,6 @@ export function About() {
 
           {/* Right column - Stats, Skills, Experience */}
           <div className="lg:col-span-7 space-y-16">
-            {/* Profile Image */}
-            <FadeIn>
-              <div className="relative aspect-[3/4] overflow-hidden bg-swiss-gray-dark/10">
-                <Image
-                  src="/images/about.jpg"
-                  alt={t("image_alt")}
-                  fill
-                  className="object-cover object-center"
-                  quality={85}
-                  priority
-                />
-              </div>
-            </FadeIn>
-
             {/* Stats - Static values */}
             <FadeIn>
               <div className="grid grid-cols-3 gap-6 md:gap-12 border-b border-white/10 pb-12 md:pb-16">

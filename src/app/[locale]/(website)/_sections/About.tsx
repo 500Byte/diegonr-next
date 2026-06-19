@@ -7,6 +7,7 @@ import { gsap } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 import { useGSAP } from "@gsap/react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useRef } from "react";
 
 const getStats = (t: (key: string) => string) => [
@@ -123,9 +124,9 @@ export function About() {
         </div>
 
         {/* Main content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 xl:gap-20">
           {/* Left column - Description */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-4 space-y-8">
             <FadeIn delay={0.2}>
               <p className="text-xl md:text-2xl text-white leading-relaxed font-light">
                 {t("bio_1")}
@@ -172,11 +173,26 @@ export function About() {
             </FadeIn>
           </div>
 
+          {/* Middle column - The Pillar */}
+          <div className="lg:col-span-3">
+            <FadeIn delay={0.3} className="h-full">
+              <div className="relative w-full h-64 lg:h-full min-h-[400px] bg-white/5 border border-white/10 overflow-hidden group">
+                <Image
+                  src="/images/about-pillar.jpg"
+                  alt={t("image_alt")}
+                  fill
+                  className="object-cover object-center grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                  sizes="(max-width: 1024px) 100vw, 25vw"
+                />
+              </div>
+            </FadeIn>
+          </div>
+
           {/* Right column - Stats, Skills, Experience */}
-          <div className="lg:col-span-7 space-y-16">
+          <div className="lg:col-span-5 space-y-16">
             {/* Stats - Static values */}
             <FadeIn>
-              <div className="grid grid-cols-3 gap-6 md:gap-12 border-b border-white/10 pb-12 md:pb-16">
+              <div className="grid grid-cols-3 gap-4 md:gap-8 border-b border-white/10 pb-12 md:pb-16">
                 {getStats(t).map((stat) => (
                   <div key={stat.label} className="stat-item">
                     <div className="flex items-baseline gap-1">

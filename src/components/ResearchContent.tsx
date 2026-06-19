@@ -101,6 +101,7 @@ export function ResearchContent({ content, images }: ResearchContentProps) {
             field={content}
             images={images}
             onImageClick={open}
+            className="prose prose-invert prose-lg max-w-none"
           />
         )}
       </div>

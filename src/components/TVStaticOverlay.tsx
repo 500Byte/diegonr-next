@@ -1,6 +1,7 @@
 'use client';
 
 import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export interface TVStaticConfig {
@@ -51,6 +52,7 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
   const isDarkRef = useRef<boolean>(true);
 
   const { resolvedTheme } = useTheme();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
   const mergedConfig = { ...defaultConfig, ...config };
@@ -187,6 +189,11 @@ export function TVStaticOverlay({ config = {} }: TVStaticOverlayProps) {
   const scanlineColor = isDark
     ? 'rgba(0, 0, 0, 0.08)'
     : 'rgba(255, 255, 255, 0.04)';
+
+  // Disable noise on single blog posts
+  if (pathname?.match(/\/blog\/[^/]+/)) {
+    return null;
+  }
 
   return (
     <>

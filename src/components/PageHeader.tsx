@@ -18,7 +18,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle, descrip
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           <div className="md:col-span-8">
             <p className="font-mono text-xs text-white/60 mb-6 uppercase tracking-widest">{subtitle}</p>
-            <h1 className="text-7xl md:text-9xl lg:text-[12rem] font-medium leading-[0.85] tracking-tighter mb-12">
+            <h1 className="text-5xl md:text-9xl lg:text-[10rem] font-medium leading-[0.85] tracking-tighter mb-12">
               <SplitText>{title}</SplitText>
             </h1>
           </div>

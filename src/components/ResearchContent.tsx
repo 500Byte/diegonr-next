@@ -153,13 +153,14 @@ export function ResearchContent({ content, images }: ResearchContentProps) {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="relative w-full aspect-video max-h-[80vh]">
-                <Image
-                  src={current.src}
-                  alt={current.alt}
-                  fill
-                  className="object-contain"
-                  priority
-                />
+              <Image
+                src={current.src}
+                alt={current.alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                priority
+              />
               </div>
               {current.alt && (
                 <p className="text-center text-white/40 font-mono text-[10px] uppercase tracking-widest mt-4">

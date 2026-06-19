@@ -93,49 +93,16 @@ export function ResearchContent({ content, images }: ResearchContentProps) {
 
   const current = images[currentIndex];
 
-  const nonImageBlocks = (content || []).filter((block) => block._type !== 'image');
-
   return (
     <>
       <div className="research-content-body">
-        {nonImageBlocks.length > 0 && <DocumentRenderer field={nonImageBlocks as PortableTextBlock[]} />}
-
-        {images.map((img, index) => (
-          <div
-            key={index}
-            className="relative w-full my-8 group cursor-pointer"
-            onClick={() => open(index)}
-            role="button"
-            tabIndex={0}
-            aria-label={`View ${img.alt} in full size`}
-            onKeyDown={(e) => e.key === 'Enter' && open(index)}
-          >
-            <div className="relative w-full aspect-video bg-white/5 overflow-hidden border border-white/10">
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover grayscale transition-transform duration-500 group-hover:grayscale-0 group-hover:scale-105"
-              />
-            </div>
-            <div
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-              style={{
-                opacity: 0,
-                transition: 'opacity 0.3s ease',
-              }}
-            >
-              <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity">
-                <ZoomIn className="w-6 h-6 text-white" />
-              </div>
-            </div>
-            {img.alt && (
-              <p className="mt-3 text-white/40 font-mono text-[10px] uppercase tracking-widest">
-                {img.alt}
-              </p>
-            )}
-          </div>
-        ))}
+        {content && (
+          <DocumentRenderer
+            field={content}
+            images={images}
+            onImageClick={open}
+          />
+        )}
       </div>
 
       {mounted && createPortal(

@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const CONTACT_TO_EMAIL = process.env.CONTACT_FORM_TO_EMAIL || 'diegolnr3@gmail.com';
 const CONTACT_FROM_EMAIL = process.env.CONTACT_FORM_FROM_EMAIL || 'onboarding@resend.dev';
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY || '';
@@ -48,6 +46,7 @@ async function verifyTurnstile(token: string): Promise<boolean> {
 
 export async function POST(req: NextRequest) {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const data = await req.json() as ContactPayload;
 
     // Basic server-side validation

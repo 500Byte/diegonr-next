@@ -110,7 +110,6 @@ export function DocumentRenderer({
   const components: PortableTextComponents = {
     ...(isProse ? {} : defaultComponents),
     block: isProse ? {} : defaultComponents.block,
-    list: isProse ? {} : defaultComponents.list,
     listItem: isProse 
       ? { bullet: ({ children }) => <li className="ml-4">{children}</li>, number: ({ children }) => <li className="ml-4">{children}</li> } 
       : defaultComponents.listItem,

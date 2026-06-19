@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SwissContainer } from '../components/Layout';
 import { FadeIn } from './animations/text-reveal';
-import { SplitText } from './animations/split-text';
 
 interface PageHeaderProps {
   title: string;
@@ -13,25 +12,33 @@ interface PageHeaderProps {
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ title, subtitle, description }) => {
   return (
-    <section className="pt-48 pb-24 border-b border-white/10">
+    <section className="pt-40 pb-20 border-b border-white/10">
       <SwissContainer>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-          <div className="md:col-span-8">
-            <p className="font-mono text-xs text-white/60 mb-6 uppercase tracking-widest">{subtitle}</p>
-            <h1 className="text-5xl md:text-9xl lg:text-[10rem] font-medium leading-[0.85] tracking-tighter mb-12">
-              <SplitText>{title}</SplitText>
-            </h1>
-          </div>
-          {description && (
-            <div className="md:col-span-4 flex items-end">
-              <FadeIn delay={0.5}>
-                <p className="text-xl text-white/60 leading-relaxed font-light">
+        {/* Bloque Superior: Subtítulo y Título masivo a ancho completo */}
+        <div className="w-full mb-16 lg:mb-24">
+          <p className="font-mono text-xs text-white/50 mb-6 uppercase tracking-widest">
+            {subtitle}
+          </p>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[7.5rem] font-medium leading-[0.85] tracking-tighter break-keep">
+            {title}
+          </h1>
+        </div>
+
+        {/* Bloque Inferior: Descripción alineada a la derecha mediante CSS Grid */}
+        {description && (
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            {/* Dejamos un espacio vacío a la izquierda en pantallas grandes para empujar el texto */}
+            <div className="hidden md:block md:col-span-6 lg:col-span-7" />
+            
+            <div className="md:col-span-6 lg:col-span-5">
+              <FadeIn delay={0.3}>
+                <p className="text-lg md:text-xl text-white/60 leading-relaxed font-light balanced-text">
                   {description}
                 </p>
               </FadeIn>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </SwissContainer>
     </section>
   );

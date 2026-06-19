@@ -178,7 +178,7 @@ export function About() {
             <FadeIn delay={0.3} className="h-full">
               <div className="relative w-full h-64 lg:h-full min-h-[400px] bg-white/5 border border-white/10 overflow-hidden group">
                 <Image
-                  src="/images/about-pillar.jpg"
+                  src="/images/about-pillar.webp"
                   alt={t("image_alt")}
                   fill
                   className="object-cover object-center grayscale contrast-125 opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"

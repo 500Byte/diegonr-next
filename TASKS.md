@@ -18,16 +18,16 @@
   - Run Playwright smoke tests on the updated portfolio pages.
 
 ### Maintenance
-- [ ] **High: Skip Link for Main Content**
+- [x] **High: Skip Link for Main Content** (2026-06-19)
   - Add skip link as first focusable element
   - Improves keyboard navigation WCAG compliance
-- [ ] **Medium: Button Types Missing**
+- [x] **Medium: Button Types Missing** (2026-06-19)
   - Add `type="button"` to non-submit buttons
   - Files: `Footer.tsx:77`, `Vision.tsx:52`, `offline/page.tsx:38`
-- [ ] **Medium: Dead Links in Footer**
+- [x] **Medium: Dead Links in Footer** (2026-06-19)
   - Fix `href="#"` to real URLs or remove
   - Files: `Footer.tsx:46-47` (Twitter, Instagram placeholder links)
-- [ ] **Medium: CSS Duplicate Selector**
+- [x] **Medium: CSS Duplicate Selector** (2026-06-19)
   - Fix duplicate `.light` selector in `src/index.css:24-35`
   - Remove redundant lines 31-35
 - [ ] **Medium: GROQ Fields (revisar uso real)**

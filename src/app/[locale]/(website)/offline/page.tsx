@@ -36,6 +36,7 @@ export default function OfflinePage() {
             </Magnetic>
 
             <button
+              type="button"
               onClick={() => window.location.reload()}
               className="px-8 py-4 border border-white/20 text-white font-medium rounded-lg hover:border-white/40 transition-colors"
             >

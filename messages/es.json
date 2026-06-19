@@ -305,5 +305,8 @@
     "cta_button": "Iniciar consulta",
     "process_label": "Proceso",
     "deliverables_label": "Entregables"
+  },
+  "Common": {
+    "skip_link": "Saltar al contenido principal"
   }
 }

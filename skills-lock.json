@@ -62,6 +62,12 @@
       "sourceType": "github",
       "computedHash": "ea5d6d0faa9fabd6a8a3165dca69dac9ab7c622dc130bdce3f1dfa88e02ba948"
     },
+    "jules": {
+      "source": "sanjay3290/ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/jules/SKILL.md",
+      "computedHash": "7411eeaf9d480bd2e2589c6f5b120f66447311f7fc88f2848bd140bd4c98be4b"
+    },
     "optimize": {
       "source": "pbakaus/impeccable",
       "sourceType": "github",

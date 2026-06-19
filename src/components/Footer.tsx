@@ -99,6 +99,7 @@ export const Footer: React.FC<FooterProps> = ({ siteSettings }) => {
           <div className="flex gap-12 text-[10px] tracking-[0.3em] uppercase">
             <Magnetic strength={0.2}>
               <button 
+                type="button"
                 onClick={() => {
                   scrollTo(0);
                 }}

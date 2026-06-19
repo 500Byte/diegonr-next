@@ -51,6 +51,7 @@ export const Vision: React.FC = () => {
               {tabs.map((tab, i) => (
                 <button
                   key={i}
+                  type="button"
                   onClick={() => setActiveTab(i)}
                   className={cn(
                     "relative text-2xl md:text-4xl font-medium tracking-tighter transition-all duration-500 uppercase",

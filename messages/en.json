@@ -305,8 +305,8 @@
     "cta_button": "Start consultation",
     "process_label": "Process",
     "deliverables_label": "Deliverables"
+  },
+  "Common": {
+    "skip_link": "Skip to main content"
   }
-}les_label": "Deliverables"
-  }
-}
 }
